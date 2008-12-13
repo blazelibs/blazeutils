@@ -69,3 +69,85 @@ def setup_virtual_env(pysmvt_libs_module, lib_path, *args):
     
     # load the local 'libs' directory
     prependsitedir(lib_path, *args)
+
+class NotGivenBase(object):
+    """ an empty sentinel object that acts like None """
+    
+    def __str__(self):
+        return 'None'
+    
+    def __unicode__(self):
+        return u'None'
+    
+    def __nonzero__(self):
+        return False
+    
+    def __ne__(self, other):
+        if other is None or isinstance(other, NotGivenBase):
+            return False
+        return True
+    
+    def __eq__(self, other):
+        if other is None or isinstance(other, NotGivenBase):
+            return True
+        return False
+NotGiven = NotGivenBase()
+
+class NotGivenIterBase(NotGivenBase):
+    """ an empty sentinel object that acts like an empty list """
+    def __str__(self):
+        return '[]'
+    
+    def __unicode__(self):
+        return u'[]'
+    
+    def __nonzero__(self):
+        return False
+    
+    def __ne__(self, other):
+        if other == [] or isinstance(other, NotGivenBase):
+            return False
+        return True
+    
+    def __eq__(self, other):
+        if other == [] or isinstance(other, NotGivenBase):
+            return True
+        return False
+    
+    # we also want to emulate an empty list
+    def __iter__(self):
+        return self
+    
+    def next(self):
+        raise StopIteration
+    
+    def __len__(self):
+        return 0
+NotGivenIter = NotGivenIterBase()
+
+def is_iterable(possible_iterable):
+    if isinstance(possible_iterable, basestring):
+        return False
+    try:
+        iter(possible_iterable)
+        return True
+    except TypeError:
+        return False
+
+def is_notgiven(object):
+    """ checks for either of our NotGiven sentinel objects """
+    return isinstance(object, NotGivenBase)
+    
+def is_empty(value):
+    """ a boolean test except 0 and False are considered True """
+    if not value and value is not 0 and value is not False:
+        return True
+    return False
+
+def multi_pop(d, *args):
+    """ pops multiple keys off a dict like object """
+    retval = {}
+    for key in args:
+        if d.has_key(key):
+            retval[key] = d.pop(key)
+    return retval
