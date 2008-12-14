@@ -8,7 +8,7 @@ except ImportError:
 
 setup(
     name = "pysutils",
-    version = "0.1.0",
+    version = "0.1.0-dev",
     description = "A collection of python utility functions and classes.",
     author = "Randy Syring",
     author_email = "randy@rcs-comp.com",
