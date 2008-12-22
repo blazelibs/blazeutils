@@ -166,3 +166,22 @@ def case_us2mc(x): # underscore to mixed case notation
 def case_us2cw(x): # underscore to capwords notation
     s = case_us2mc(x)
     return s[0].upper()+s[1:]
+
+# copied form webhelpers
+class DumbObject(object):
+    """A container for arbitrary attributes.
+
+    Usage::
+    
+        >>> do = DumbObject(a=1, b=2)
+        >>> do.b
+        2
+    
+    Alternatives to this class include ``collections.namedtuple`` in Python
+    2.6, and ``formencode.declarative.Declarative`` in Ian Bicking's FormEncode
+    package.  Both alternatives offer more featues, but ``DumbObject``
+    shines in its simplicity and lack of dependencies.
+
+    """
+    def __init__(self, **kw):
+        self.__dict__.update(kw)

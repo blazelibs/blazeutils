@@ -8,6 +8,11 @@ pysutils is a library to hold common tools for the pys* library family:
 - `pysapp <http://pypi.python.org/pypi/pysapp/>`_
 - `pysform <http://pypi.python.org/pypi/pysform/>`_
 
+Questions & Comments
+---------------------
+
+Please visit: http://groups.google.com/group/pyslibs
+
 Current Status
 ---------------
 
