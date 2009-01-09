@@ -168,16 +168,20 @@ def multi_pop(d, *args):
     return retval
 
 # next four functions from: http://code.activestate.com/recipes/66009/
-def case_cw2us(x): # capwords to underscore notation
+def case_cw2us(x):
+    """ capwords to underscore notation """
     return re.sub(r'(?<=[a-z])[A-Z]|(?<!^)[A-Z](?=[a-z])', r"_\g<0>", x).lower()
 
-def case_mc2us(x): # mixed case to underscore notation
+def case_mc2us(x):
+    """ mixed case to underscore notation """
     return case_cw2us(x)
 
-def case_us2mc(x): # underscore to mixed case notation
+def case_us2mc(x):
+    """ underscore to mixed case notation """
     return re.sub(r'_([a-z])', lambda m: (m.group(1).upper()), x)
 
-def case_us2cw(x): # underscore to capwords notation
+def case_us2cw(x):
+    """ underscore to capwords notation """
     s = case_us2mc(x)
     return s[0].upper()+s[1:]
 
