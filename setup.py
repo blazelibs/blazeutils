@@ -16,11 +16,9 @@ Please visit: http://groups.google.com/group/pyslibs
 Current Status
 ---------------
 
-We are currently in an alpha phase which means lots of stuff can change, maybe rapidly, and we are not interested in backwards compatibility at this point.
+The code for 0.1 is pretty stable.  API, however, will be changing in 0.2.
 
-I am currently using this library for some production websites, but I wouldn't recommend you do that unless you **really** know what you are doing.
-
-The unstable `development version
+The mostly stable `development version
 <https://svn.rcslocal.com:8443/svn/pysmvt/pysutils/trunk#egg=pysutils-dev>`_.
 """
 import sys
@@ -33,14 +31,14 @@ except ImportError:
 
 setup(
     name = "pysutils",
-    version = "0.1dev",
+    version = "0.1",
     description = "A collection of python utility functions and classes.",
     long_description = __doc__,
     author = "Randy Syring",
     author_email = "randy@rcs-comp.com",
     url='http://pypi.python.org/pypi/pysutils/',
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
       ],
