@@ -1,5 +1,6 @@
 from pysutils import multi_pop, NotGiven, is_iterable, NotGivenIter, \
-    is_notgiven
+    is_notgiven, find_path_package
+from os import path
 
 def test_multi_pop():
     start = {'a':1, 'b':2, 'c':3}
@@ -49,3 +50,20 @@ def test_is_notgiven():
     assert is_notgiven(NotGiven)
     assert is_notgiven(NotGivenIter)
     assert not is_notgiven(None)
+
+def test_find_path_package():
+    import email
+    import email.mime
+    import email.mime.base
+    import test
+    assert email is find_path_package(email.__file__)
+    assert email is find_path_package(path.dirname(email.__file__))
+    assert email is find_path_package(email.mime.__file__)
+    assert email is find_path_package(email.mime.base.__file__)
+    assert None is find_path_package(path.join(path.dirname(__file__), 'notthere.py'))
+    assert test is find_path_package(path.join(path.dirname(test.__file__), 'output', 'test_cgi'))
+    
+    drive, casepath = path.splitdrive(path.dirname(email.__file__))
+    if drive:
+        assert email is find_path_package(drive.upper() + casepath)
+        assert email is find_path_package(drive.lower() + casepath)

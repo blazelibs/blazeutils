@@ -4,6 +4,7 @@ import random
 from os import path
 from pprint import PrettyPrinter
 import re
+import imp
 
 def tolist(x, default=[]):
     if x is None:
@@ -206,3 +207,71 @@ class DumbObject(object):
     """
     def __init__(self, **kw):
         self.__dict__.update(kw)
+
+def find_path_package_name(thepath):
+    """
+        Takes a file system path and returns the name of the python package
+        the said path belongs to.  If the said path can not be determined, it
+        returns None.
+    """
+    pymodpath = find_first_python_module(thepath)
+    if pymodpath is None:
+        return None
+    
+    if path.isfile(pymodpath):
+        pymodpath, ext = path.splitext(pymodpath)
+        
+    drive, relpath = path.splitdrive(pymodpath)
+    
+    dotpath = path.normpath(relpath).replace('\\', '/').lstrip('/').replace('/', '.')
+    
+    while dotpath:
+        try:
+            pymod = __import__(dotpath, globals(), locals(), [''])
+            pymodteststr = path.normcase(path.normpath(path.dirname(pymod.__file__)))
+            thepathteststr = path.normcase(path.normpath(thepath))
+            if pymodteststr in thepathteststr:
+                return dotpath.split('.', 1)[0]
+        except ImportError:
+            pass
+        try:
+            _, dotpath = dotpath.split('.', 1)
+        except ValueError, e:
+            if 'more than 1 value to unpack' not in str(e):
+                raise
+            dotpath = None
+    return None
+
+def find_path_package(thepath):
+    """
+        Takes a file system path and returns the module object of the python
+        package the said path belongs to. If the said path can not be
+        determined, it returns None.
+    """
+    pname = find_path_package_name(thepath)
+    if not pname:
+        return None
+    return __import__(pname, globals(), locals(), [''])
+
+def find_first_python_module(thepath):
+    """
+        given a file system path, return the first python module in the
+        ancestory of the path.
+    """
+    thepath = path.normpath(thepath)
+
+    if path.isfile(thepath):
+        base, ext = path.splitext(thepath)
+        if ext in ('.pyc', '.py', '.pyo'):
+            return thepath
+        thepath = path.dirname(thepath)
+
+    if path.isdir(thepath):
+        if path.isfile(path.join(thepath, '__init__.py')):
+            return thepath
+        if path.isfile(path.join(thepath, '__init__.pyo')):
+            return thepath
+        if path.isfile(path.join(thepath, '__init__.pyc')):
+            return thepath
+        return find_first_python_module(path.dirname(thepath))
+    return None
