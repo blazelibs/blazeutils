@@ -208,40 +208,6 @@ class DumbObject(object):
     def __init__(self, **kw):
         self.__dict__.update(kw)
 
-def find_path_package_name(thepath):
-    """
-        Takes a file system path and returns the name of the python package
-        the said path belongs to.  If the said path can not be determined, it
-        returns None.
-    """
-    pymodpath = find_first_python_module(thepath)
-    if pymodpath is None:
-        return None
-    
-    if path.isfile(pymodpath):
-        pymodpath, ext = path.splitext(pymodpath)
-        
-    drive, relpath = path.splitdrive(pymodpath)
-    
-    dotpath = path.normpath(relpath).replace('\\', '/').lstrip('/').replace('/', '.')
-    
-    while dotpath:
-        try:
-            pymod = __import__(dotpath, globals(), locals(), [''])
-            pymodteststr = path.normcase(path.normpath(path.dirname(pymod.__file__)))
-            thepathteststr = path.normcase(path.normpath(thepath))
-            if pymodteststr in thepathteststr:
-                return dotpath.split('.', 1)[0]
-        except ImportError:
-            pass
-        try:
-            _, dotpath = dotpath.split('.', 1)
-        except ValueError, e:
-            if 'more than 1 value to unpack' not in str(e):
-                raise
-            dotpath = None
-    return None
-
 def find_path_package(thepath):
     """
         Takes a file system path and returns the module object of the python
@@ -253,25 +219,48 @@ def find_path_package(thepath):
         return None
     return __import__(pname, globals(), locals(), [''])
 
-def find_first_python_module(thepath):
+_py_suffixes = [suffix for suffix, _, _ in imp.get_suffixes()]
+
+def find_path_package_name(thepath):
     """
-        given a file system path, return the first python module in the
-        ancestory of the path.
+        Takes a file system path and returns the name of the python package
+        the said path belongs to.  If the said path can not be determined, it
+        returns None.
+    """
+    module_found = False
+    last_module_found = None
+    continue_ = True
+    while continue_:
+        module_found = is_path_python_module(thepath)
+        next_path = path.dirname(thepath)
+        if next_path == thepath:
+            continue_ = False
+        if module_found:
+            init_names = ['__init__%s' % suffix.lower() for suffix in _py_suffixes]
+            if path.basename(thepath).lower() in init_names:
+                last_module_found = path.basename(path.dirname(thepath))
+            else:
+                last_module_found = path.basename(thepath)
+        if last_module_found and not module_found:
+            continue_ = False
+        thepath = next_path
+    return last_module_found
+
+def is_path_python_module(thepath):
+    """
+        Given a path, find out of the path is a python module or is inside
+        a python module.
     """
     thepath = path.normpath(thepath)
 
     if path.isfile(thepath):
         base, ext = path.splitext(thepath)
-        if ext in ('.pyc', '.py', '.pyo'):
-            return thepath
-        thepath = path.dirname(thepath)
+        if ext in _py_suffixes:
+            return True
+        return False
 
     if path.isdir(thepath):
-        if path.isfile(path.join(thepath, '__init__.py')):
-            return thepath
-        if path.isfile(path.join(thepath, '__init__.pyo')):
-            return thepath
-        if path.isfile(path.join(thepath, '__init__.pyc')):
-            return thepath
-        return find_first_python_module(path.dirname(thepath))
-    return None
+        for suffix in _py_suffixes:
+            if path.isfile(path.join(thepath, '__init__%s' % suffix)):
+                return True
+    return False

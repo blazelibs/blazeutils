@@ -61,8 +61,9 @@ def test_find_path_package():
     assert email is find_path_package(email.mime.__file__)
     assert email is find_path_package(email.mime.base.__file__)
     assert None is find_path_package(path.join(path.dirname(__file__), 'notthere.py'))
+    assert None is find_path_package(path.dirname(__file__))
     assert test is find_path_package(path.join(path.dirname(test.__file__), 'output', 'test_cgi'))
-    
+
     drive, casepath = path.splitdrive(path.dirname(email.__file__))
     if drive:
         assert email is find_path_package(drive.upper() + casepath)
