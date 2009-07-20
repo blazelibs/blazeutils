@@ -25,7 +25,11 @@ def toset(x):
 def pprint( stuff, indent = 4):
     pp = PrettyPrinter(indent=indent)
     print pp.pprint(stuff)
-    
+
+def pformat(stuff, indent = 4):
+    pp = PrettyPrinter(indent=indent)
+    return pp.pformat(stuff)
+
 def randchars(n = 12):
     charlist = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
     return ''.join(random.choice(charlist) for _ in range(n))
