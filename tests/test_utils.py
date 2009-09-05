@@ -1,6 +1,7 @@
 from pysutils import multi_pop, NotGiven, is_iterable, NotGivenIter, \
-    is_notgiven, find_path_package
+    is_notgiven, find_path_package, import_split
 from os import path
+from nose.tools import eq_
 
 def test_multi_pop():
     start = {'a':1, 'b':2, 'c':3}
@@ -68,3 +69,10 @@ def test_find_path_package():
     if drive:
         assert email is find_path_package(drive.upper() + casepath)
         assert email is find_path_package(drive.lower() + casepath)
+
+def test_import_split():
+    assert import_split('path') == ('path', None, None)
+    assert import_split('path.part.object') == ('path.part', 'object', None)
+    assert import_split('path.part:object') == ('path.part', 'object', None )
+    eq_(import_split('path.part:object.attribute'),
+        ('path.part', 'object', 'attribute') )

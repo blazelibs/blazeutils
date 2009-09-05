@@ -268,3 +268,26 @@ def is_path_python_module(thepath):
             if path.isfile(path.join(thepath, '__init__%s' % suffix)):
                 return True
     return False
+
+def import_split(import_name):
+    """ takes a dotted string path and returns the components:
+        import_split('path') == 'path', None, None
+        import_split('path.part.object') == 'path.part', 'object', None
+        import_split('path.part:object') == 'path.part', 'object', None
+        import_split('path.part:object.attribute')
+            == 'path.part', 'object', 'attribute'
+    """
+    obj = None
+    attr = None
+    if ':' in import_name:
+        module, obj = import_name.split(':', 1)
+        if '.' in obj:
+            obj, attr = obj.rsplit('.', 1)
+    elif '.' in import_name:
+        module, obj = import_name.rsplit('.', 1)
+    else:
+        module = import_name
+    return module, obj, attr
+
+
+
