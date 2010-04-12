@@ -35,9 +35,32 @@ def pformat(stuff, indent = 4):
     pp = PrettyPrinter(indent=indent)
     return pp.pformat(stuff)
 
-def randchars(n = 12):
-    charlist = u'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    return u''.join(random.choice(charlist) for _ in range(n))
+def randchars(n = 12, chartype='alphanumeric', alphacase='both', unique=False):
+    if alphacase == 'both':
+        alphalist = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    elif alphacase == 'upper':
+        alphalist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    elif alphacase == 'lower':
+        alphalist = 'abcdefghijklmnopqrstuvwxyz'
+    else:
+        raise ValueError('alphacase "%s" not recognized' % alphacase)
+        
+    if chartype == 'alphanumeric':
+        charlist = alphalist + '0123456789'
+    elif chartype == 'alpha':
+        charlist = alphalist
+    elif chartype == 'numeric':
+        charlist = '0123456789'
+    else:
+        raise ValueError('chartype "%s" not recognized' % chartype)
+
+    retval = []
+    for _ in range(n):
+        chosen = random.choice(charlist)
+        if unique:
+            charlist = charlist.replace(chosen, '')
+        retval.append(chosen)
+    return u''.join(retval)
 
 def randnumerics(n = 12):
     charlist = '0123456789'
