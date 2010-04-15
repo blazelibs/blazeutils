@@ -43,5 +43,5 @@ setup(
         'License :: OSI Approved :: BSD License',
       ],
     license='BSD',
-    py_modules=['pysutils']
+    packages=['pysutils']
 )
