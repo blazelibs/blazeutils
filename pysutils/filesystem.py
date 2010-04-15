@@ -1,3 +1,5 @@
+from os import path
+from pysutils.strings import randchars
 
 def randfile(fdir, ext=None, length=12, fullpath=False):
     if not ext:

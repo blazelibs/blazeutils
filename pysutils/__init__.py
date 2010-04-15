@@ -1,9 +1,3 @@
-#import sys
-#import site
-#from os import path
-#
-#import re
-
 # legacy imports, future imports should use the full import path
 from pysutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
     HtmlAttributeHolder
