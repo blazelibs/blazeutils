@@ -287,3 +287,17 @@ class TestQuickSettings(object):
         eq_(s.modules.users.level5.level2.var2, 'baz')
         
         eq_(s.modules.users.enabled, True)
+
+def test_set_dotted():
+    qs = QuickSettings()
+    qs.set_dotted('foo.bar.wow', 'baz')
+    qs.lock()
+    assert qs.foo.bar.wow == 'baz'
+    
+    qs = QuickSettings()
+    qs.set_dotted('foo', 'baz')
+    qs.lock()
+    assert qs.foo == 'baz'
+    
+    qs = QuickSettings()
+    qs.set_dotted('', 'baz')

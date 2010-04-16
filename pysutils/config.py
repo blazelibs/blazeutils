@@ -40,3 +40,20 @@ class QuickSettings(OrderedProperties):
                     self[key] = value
         if kwargs:
             self.update(kwargs)
+    
+    def set_dotted(self, key, value):
+        """
+                qs.set_dotted('foo.bar', 'baz')
+            
+            is equivelent to:
+            
+                qs.foo.bar = baz
+        """
+        parts = key.split('.')
+        cobj = self
+        if len(parts) > 1:
+            key = parts.pop()
+            for name in parts:
+                cobj = getattr(cobj, name)
+        setattr(cobj, key, value)
+            
