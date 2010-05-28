@@ -1,4 +1,4 @@
-from pysutils.datastructures import OrderedProperties
+from pysutils.datastructures import OrderedProperties, OrderedDict
 
 class QuickSettings(OrderedProperties):
     def __init__(self, initialize=True):
@@ -56,4 +56,36 @@ class QuickSettings(OrderedProperties):
             for name in parts:
                 cobj = getattr(cobj, name)
         setattr(cobj, key, value)
+        
+    def get_dotted(self, key):
+        """
+                obj = qs.get_dotted('foo.bar.baz')
             
+            is equivelent to:
+            
+                obj = qs.foo.bar.baz
+        """
+        parts = key.split('.')
+        cobj = self
+        for attr in parts:
+            cobj = getattr(cobj, attr)
+        return cobj
+    
+    def expandkeys(self):
+        retval = OrderedDict()
+        for k in self.keys():
+            v = getattr(self, k)
+            if isinstance(v, QuickSettings):
+                for vk, vv in v.expandkeys().iteritems():
+                    new_key = '%s.%s' % (k, vk)
+                    retval[new_key] = vv
+            else:
+                retval[k] = v
+        return retval
+    
+    @property
+    def pformat(self):
+        retval = ''
+        for k, v in self.expandkeys().iteritems():
+            retval += '%s = %s\n' % (k, v)
+        return retval.rstrip()

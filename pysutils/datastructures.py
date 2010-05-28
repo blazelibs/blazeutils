@@ -33,7 +33,7 @@ class OrderedProperties(object):
     def __init__(self, initialize=True):
         self._data = OrderedDict()
         self._initialized=initialize
-        
+
     def __len__(self):
         return len(self._data)
 
@@ -78,7 +78,7 @@ class OrderedProperties(object):
             return self._data[key]
         except KeyError:
             raise AttributeError(key)
-    
+
     def __delattr__(self, key):
         if self.__dict__.has_key(key):
             del self.__dict__[key]
@@ -108,7 +108,7 @@ class OrderedProperties(object):
 
     def clear(self):
         self._data.clear()
-    
+
     def todict(self):
         return self._data
 
@@ -127,8 +127,14 @@ class OrderedDict(dict):
         self._list = []
         dict.clear(self)
 
-    def sort(self, fn=None):
-        self._list.sort(fn)
+    def copy(self):
+        return self.__copy__()
+
+    def __copy__(self):
+        return OrderedDict(self)
+
+    def sort(self, *arg, **kw):
+        self._list.sort(*arg, **kw)
 
     def update(self, ____sequence=None, **kwargs):
         if ____sequence is not None:

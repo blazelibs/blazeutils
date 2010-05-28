@@ -85,4 +85,6 @@ try:
                 self.FONT_FACTORY[font_key] = f
             return f
 except ImportError:
-    pass
+    class XlwtHelper(object):
+        def __init__(*args, **kwargs):
+            raise ImportError('you must have xlwt installed to use XlwtHelper')

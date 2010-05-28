@@ -12,6 +12,7 @@ from pysutils.importing import find_path_package, find_path_package_name,\
     import_split, is_path_python_module, prependsitedir, setup_virtual_env 
 from pysutils.numbers import moneyfmt
 from pysutils.sentinels import *
+from spreadsheets import XlwtHelper
 from pysutils.strings import StringIndenter, simplify_string, case_cw2us, \
     case_mc2us, case_us2cw, case_us2mc, randchars, \
     randhash, randnumerics, reindent, simplify_string

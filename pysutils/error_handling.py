@@ -11,6 +11,7 @@ def tb_depth_in(depths):
     if traceback_depth() in depths:
         return True
     return False
+traceback_depth_in = tb_depth_in
 
 def traceback_depth(tb=None):
     if tb == None:

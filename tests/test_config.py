@@ -301,3 +301,23 @@ def test_set_dotted():
     
     qs = QuickSettings()
     qs.set_dotted('', 'baz')
+
+def test_get_dotted():
+    qs = QuickSettings()
+    qs.set_dotted('foo.bar.wow', 'baz')
+    qs.lock()
+    eq_(qs.get_dotted('foo.bar.wow'), 'baz')
+    
+    eq_(qs.get_dotted('foo.bar'), qs.foo.bar)
+    
+    eq_(qs.get_dotted('foo'), qs.foo)
+    
+    try:
+        qs.get_dotted('foo.none')
+    except AttributeError, e:
+        if 'none' not in str(e):
+            raise
+    
+    qs.unlock()
+    assert isinstance(qs.get_dotted('foo.none'), QuickSettings)
+    

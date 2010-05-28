@@ -1,5 +1,7 @@
+import csv
 from pprint import PrettyPrinter
 from pysutils.datastructures import OrderedDict
+import time
 
 def tolist(x, default=[]):
     if x is None:
@@ -73,3 +75,34 @@ def grouper(records, *fields):
     for record in records:
         setup_grouping(record, *fields)
     return grouped_records
+
+class Tee(object):
+     """A file-like that writes to all the file-likes it has."""
+
+     def __init__(self, *files):
+         """Make a Tee that writes to all the files in `files.`"""
+         self.files = files
+
+     def write(self, data):
+         """Write `data` to all the files."""
+         for f in self.files:
+             f.write(data)
+
+def csvtolist(inputstr):
+    """ converts a csv string into a list """
+    reader = csv.reader([inputstr], skipinitialspace=True)
+    output = []
+    for r in reader:
+      output += r
+    return output
+
+class Timer(object):
+    
+    def __init__(self):
+        self.timers = {}
+    
+    def start(self, name='default'):
+        self.timers[name] = time.time()
+    
+    def elapsed(self, name='default'):
+        return time.time() - self.timers[name]
