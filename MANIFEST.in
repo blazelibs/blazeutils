@@ -1,0 +1,7 @@
+recursive-include pysmvt/paster_tpls *
+recursive-include tests *
+recursive-include docs *
+recursive-include pysmvttestapp *
+recursive-include pysmvttestapp2 *
+include authors.txt changes.txt license.txt
+global-exclude *.pyc
