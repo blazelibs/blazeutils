@@ -18,7 +18,7 @@ Current Status
 
 The code stays pretty stable, but the API is likely to change in the future.
 
-The `pysutils tip <http://bitbucket.org/rsyring/pysutils/get/tip.zip>`_
+The `pysutils tip <http://bitbucket.org/rsyring/pysutils/get/tip.zip#egg=pysutils-dev>`_
 is installable via `easy_install` with ``easy_install pysutils==dev``
 """
 import sys
@@ -37,7 +37,7 @@ setup(
     description = "A collection of python utility functions and classes.",
     long_description = __doc__,
     author = "Randy Syring",
-    author_email = "randy@rcs-comp.com",
+    author_email = "rsyring@gmail.com",
     url='http://pypi.python.org/pypi/pysutils/',
     classifiers=[
         'Development Status :: 4 - Beta',
