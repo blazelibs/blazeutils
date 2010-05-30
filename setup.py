@@ -16,10 +16,10 @@ Please visit: http://groups.google.com/group/pyslibs
 Current Status
 ---------------
 
-The code for 0.1 is pretty stable.  API, however, will be changing in 0.2.
+The code stays pretty stable, but the API is likely to change in the future.
 
-The mostly stable `development version
-<https://svn.rcslocal.com:8443/svn/pysmvt/pysutils/trunk#egg=pysutils-dev>`_.
+The `pysutils tip <http://bitbucket.org/rsyring/pysutils/get/tip.zip>`_
+is installable via `easy_install` with ``easy_install pysutils==dev``
 """
 import sys
 try:
@@ -29,9 +29,11 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages
 
+version = '0.2'
+
 setup(
     name = "pysutils",
-    version = "0.1",
+    version = version,
     description = "A collection of python utility functions and classes.",
     long_description = __doc__,
     author = "Randy Syring",
