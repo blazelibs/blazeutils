@@ -18,6 +18,7 @@ class DumbObject(object):
     """
     def __init__(self, **kw):
         self.__dict__.update(kw)
+BlankObject = DumbObject
 
 class OrderedProperties(object):
     """An object that maintains the order in which attributes are set upon it.
