@@ -29,11 +29,11 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages
 
-version = '0.2.1'
+from pysutils import VERSION
 
 setup(
     name = "pysutils",
-    version = version,
+    version = VERSION,
     description = "A collection of python utility functions and classes.",
     long_description = __doc__,
     author = "Randy Syring",
