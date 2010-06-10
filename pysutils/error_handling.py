@@ -1,4 +1,5 @@
 import sys
+import traceback
 from pysutils.helpers import tolist
 
 def tb_depth_in(depths):
@@ -21,3 +22,15 @@ def traceback_depth(tb=None):
         depth += 1
         tb = tb.tb_next
     return depth
+
+def raise_unexpected_import_error(our_import, exc):
+    """
+        See if our_import caused the import error, if not, raise the last
+        exception
+    """
+    if '.' in our_import:
+        last_part = our_import.split('.').pop()
+    else:
+        last_part = our_import
+    if not str(exc).endswith(last_part):
+        raise

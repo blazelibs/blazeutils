@@ -1,15 +1,15 @@
 from pysutils.sentinels import NotGiven
 
 # copied form webhelpers
-class DumbObject(object):
+class BlankObject(object):
     """A container for arbitrary attributes.
 
     Usage::
-    
+
         >>> do = DumbObject(a=1, b=2)
         >>> do.b
         2
-    
+
     Alternatives to this class include ``collections.namedtuple`` in Python
     2.6, and ``formencode.declarative.Declarative`` in Ian Bicking's FormEncode
     package.  Both alternatives offer more featues, but ``DumbObject``
@@ -18,7 +18,7 @@ class DumbObject(object):
     """
     def __init__(self, **kw):
         self.__dict__.update(kw)
-BlankObject = DumbObject
+DumbObject = BlankObject
 
 class OrderedProperties(object):
     """An object that maintains the order in which attributes are set upon it.
@@ -59,7 +59,7 @@ class OrderedProperties(object):
             self.__dict__[item] = value
         # any normal attributes are handled normally when they already exist
         # this would happen if they are given different values after initilization
-        elif self.__dict__.has_key(item):       
+        elif self.__dict__.has_key(item):
             self.__dict__[item] = value
         # attributes added after initialization are stored in _data
         else:
@@ -202,21 +202,21 @@ class HtmlAttributeHolder(object):
         self._cleankeys(kwargs)
         #: a dictionary that represents html attributes
         self.attributes = kwargs
-        
+
     def setm(self, **kwargs ):
         self._cleankeys(kwargs)
         self.attributes.update(kwargs)
-    
+
     def set(self, key, value):
         if key.endswith('_'):
             key = key[:-1]
         self.attributes[key] = value
-        
+
     def setdefault(self, key, value):
         if key.endswith('_'):
             key = key[:-1]
         self.attributes.setdefault(key, value)
-    
+
     def add(self, key, value):
         """
             Creates a space separated string of attributes.  Mostly for the
@@ -228,12 +228,12 @@ class HtmlAttributeHolder(object):
             self.attributes[key] = self.attributes[key] + ' ' + value
         else:
             self.attributes[key] = value
-        
+
     def delete(self, key):
         if key.endswith('_'):
             key = key[:-1]
         del self.attributes[key]
-    
+
     def get(self, key, defaultval = NotGiven):
         try:
             if key.endswith('_'):
@@ -243,7 +243,7 @@ class HtmlAttributeHolder(object):
             if defaultval is not NotGiven:
                 return defaultval
             raise
-    
+
     def _cleankeys(self, dict):
         """
             When using kwargs, some attributes can not be sent directly b/c

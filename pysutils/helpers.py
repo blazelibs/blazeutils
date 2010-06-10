@@ -10,7 +10,7 @@ def tolist(x, default=[]):
         return [x]
     else:
         return x
-    
+
 def toset(x):
     if x is None:
         return set()
@@ -21,7 +21,7 @@ def toset(x):
 
 def pprint( stuff, indent = 4):
     pp = PrettyPrinter(indent=indent)
-    print pp.pprint(stuff)
+    pp.pprint(stuff)
 
 def pformat(stuff, indent = 4):
     pp = PrettyPrinter(indent=indent)
@@ -35,7 +35,7 @@ def is_iterable(possible_iterable):
         return True
     except TypeError:
         return False
-    
+
 def is_empty(value):
     """ a boolean test except 0 and False are considered True """
     if not value and value is not 0 and value is not False:
@@ -49,16 +49,16 @@ def multi_pop(d, *args):
         if d.has_key(key):
             retval[key] = d.pop(key)
     return retval
-    
+
 def grouper(records, *fields):
     grouped_records = OrderedDict()
-    
+
     def setup_grouping(record, *fields):
         location = []
         for field in fields:
             location.append(record[field])
         save_at_location(record, location)
-    
+
     def save_at_location(record, location):
         at = grouped_records
         final_kpos = len(location)-1
@@ -97,12 +97,12 @@ def csvtolist(inputstr):
     return output
 
 class Timer(object):
-    
+
     def __init__(self):
         self.timers = {}
-    
+
     def start(self, name='default'):
         self.timers[name] = time.time()
-    
+
     def elapsed(self, name='default'):
         return time.time() - self.timers[name]
