@@ -9,32 +9,32 @@ class StringIndenter(object):
         self.output = []
         self.level = 0
         self.indent_with = '    '
-    
+
     def dec(self, value, level=None):
         self.level -= 1
         return self.render(value, level=level)
-            
+
     def inc(self, value, level=None):
         self.render(value, level=level)
         self.level += 1
-    
+
     def __call__(self, value, level=None):
         self.render(value, level=level)
-    
+
     def render(self, value, level=None):
         self.output.append('%s%s' % (self.indent(level), value) )
-    
+
     def indent(self, level = None):
         if level == None:
             return self.indent_with * self.level
         else:
             return self.indent_with * level
-    
+
     def get(self):
         retval = '\n'.join(self.output)
         self.output = []
         return retval
-    
+
 def simplify_string(s, length=None, replace_with='-'):
     #$slug = str_replace("&", "and", $string);
     # only keep alphanumeric characters, underscores, dashes, and spaces
@@ -65,14 +65,14 @@ def case_us2cw(x):
     """ underscore to capwords notation """
     s = case_us2mc(x)
     return s[0].upper()+s[1:]
-    
+
 def reindent(s, numspaces):
     """ reinidents a string (s) by the given number of spaces (numspaces) """
     leading_space = numspaces * ' '
     lines = [ leading_space + line.strip()
                 for line in s.splitlines()]
     return '\n'.join(lines)
-    
+
 def randchars(n = 12, chartype='alphanumeric', alphacase='both', unique=False):
     if alphacase == 'both':
         alphalist = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -82,7 +82,7 @@ def randchars(n = 12, chartype='alphanumeric', alphacase='both', unique=False):
         alphalist = 'abcdefghijklmnopqrstuvwxyz'
     else:
         raise ValueError('alphacase "%s" not recognized' % alphacase)
-        
+
     if chartype == 'alphanumeric':
         charlist = alphalist + '0123456789'
     elif chartype == 'alpha':
