@@ -278,3 +278,26 @@ class LazyOrderedDict(OrderedDict):
         # attributes added after initialization are stored in _data
         else:
             self[item] = value
+
+class LazyDict(dict):
+    def __init__(self, **kwargs):
+        self._ld_initialized=kwargs.pop('_ld_initialize', True)
+        dict.__init__(self, **kwargs)
+
+    def __getattr__(self, attr):
+        if attr in self:
+            return self[attr]
+        raise AttributeError, "'%s' object has no attribute '%s'" \
+            % (self.__class__.__name__, attr)
+
+    def __setattr__(self, item, value):
+        # this test allows attributes to be set in the __init__ method
+        if self.__dict__.has_key('_ld_initialized') == False or self.__dict__['_ld_initialized'] == False:
+            self.__dict__[item] = value
+        # any normal attributes are handled normally when they already exist
+        # this would happen if they are given different values after initilization
+        elif self.__dict__.has_key(item):
+            self.__dict__[item] = value
+        # attributes added after initialization are stored in _data
+        else:
+            self[item] = value
