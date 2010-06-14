@@ -255,3 +255,26 @@ class HtmlAttributeHolder(object):
             if key.endswith('_'):
                 del dict[key]
                 dict[key[:-1]] = val
+
+class LazyOrderedDict(OrderedDict):
+    def __init__(self, ____sequence=None, **kwargs):
+        OrderedDict.__init__(self, ____sequence, **kwargs)
+        self._lod_initialized=kwargs.pop('lod_initialize', True)
+
+    def __getattr__(self, attr):
+        if attr in self.keys():
+            return self[attr]
+        raise AttributeError, "'%s' object has no attribute '%s'" \
+            % (self.__class__.__name__, attr)
+
+    def __setattr__(self, item, value):
+        # this test allows attributes to be set in the __init__ method
+        if self.__dict__.has_key('_lod_initialized') == False or self.__dict__['_lod_initialized'] == False:
+            self.__dict__[item] = value
+        # any normal attributes are handled normally when they already exist
+        # this would happen if they are given different values after initilization
+        elif self.__dict__.has_key(item):
+            self.__dict__[item] = value
+        # attributes added after initialization are stored in _data
+        else:
+            self[item] = value
