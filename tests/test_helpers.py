@@ -1,4 +1,4 @@
-from pysutils import multi_pop, is_iterable, grouper, is_empty, pformat, \
+from blazeutils import multi_pop, is_iterable, grouper, is_empty, pformat, \
     pprint, tolist, toset
 
 def test_multi_pop():

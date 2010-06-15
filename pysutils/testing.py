@@ -1,8 +1,8 @@
 import sys
 import logging
 from cStringIO import StringIO
-from pysutils.log import clear_handlers_by_attr
-from pysutils.helpers import Tee
+from blazeutils.log import clear_handlers_by_attr
+from blazeutils.helpers import Tee
 
 class LoggingHandler(logging.Handler):
     """ logging handler to check for expected logs when testing"""
@@ -40,7 +40,7 @@ class LoggingHandler(logging.Handler):
 
 def logging_handler(name=None, level=1):
     lh = LoggingHandler()
-    lh.__pysutils_testing__ = True
+    lh.__blazeutils_testing__ = True
     lh.setLevel(level)
     if name:
         class NameFilter(logging.Filter):
@@ -54,7 +54,7 @@ def logging_handler(name=None, level=1):
     return lh
 
 def clear_test_handlers():
-    clear_handlers_by_attr('__pysutils_testing__')
+    clear_handlers_by_attr('__blazeutils_testing__')
 
 class StdCapture(object):
 

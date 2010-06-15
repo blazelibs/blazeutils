@@ -1,4 +1,4 @@
-from pysutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
+from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
     HtmlAttributeHolder, LazyOrderedDict, LazyDict
 
 def test_dumbobject():

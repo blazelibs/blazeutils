@@ -1,5 +1,5 @@
-from pysutils import NotGiven, NotGivenIter, is_notgiven
-from pysutils.helpers import is_iterable
+from blazeutils import NotGiven, NotGivenIter, is_notgiven
+from blazeutils.helpers import is_iterable
 
 def test_notgiven():
     assert not None
