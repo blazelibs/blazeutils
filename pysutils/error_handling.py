@@ -1,6 +1,6 @@
 import sys
 import traceback
-from pysutils.helpers import tolist
+from blazeutils.helpers import tolist
 
 def tb_depth_in(depths):
     """

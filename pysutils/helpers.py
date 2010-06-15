@@ -1,6 +1,6 @@
 import csv
 from pprint import PrettyPrinter
-from pysutils.datastructures import OrderedDict
+from blazeutils.datastructures import OrderedDict
 import time
 
 def tolist(x, default=[]):

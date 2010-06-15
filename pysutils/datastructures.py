@@ -1,4 +1,4 @@
-from pysutils.sentinels import NotGiven
+from blazeutils.sentinels import NotGiven
 
 # copied form webhelpers
 class BlankObject(object):

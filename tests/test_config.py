@@ -1,5 +1,5 @@
 from nose.tools import eq_
-from pysutils.config import QuickSettings
+from blazeutils.config import QuickSettings
 
 class Base(QuickSettings):
     
