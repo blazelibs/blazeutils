@@ -108,4 +108,4 @@ def randhash():
     return hashlib.md5(str(random.random()) + str(time.clock())).hexdigest()
 
 def normalizews(string):
-    return ' '.join(string.split())
+    return ' '.join(string.replace('\r','').split())
