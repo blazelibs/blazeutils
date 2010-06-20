@@ -106,3 +106,19 @@ class Timer(object):
 
     def elapsed(self, name='default'):
         return time.time() - self.timers[name]
+
+def unique(seq, preserve_order=True):
+    """
+        Take a sequence and make it unique.  Not preserving order is faster, but
+        that won't matter so much for most uses.
+
+        copied from: http://www.peterbe.com/plog/uniqifiers-benchmark/uniqifiers_benchmark.py
+    """
+    if preserve_order:
+        # f8 by Dave Kirby
+        # Order preserving
+        seen = set()
+        return [x for x in seq if x not in seen and not seen.add(x)]
+    # f9
+    # Not order preserving
+    return {}.fromkeys(seq).keys()
