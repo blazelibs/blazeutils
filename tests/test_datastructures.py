@@ -1,7 +1,7 @@
 from nose.tools import eq_
 
 from pysutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
-    HtmlAttributeHolder, LazyOrderedDict, LazyDict, OrderedSet
+    HtmlAttributeHolder, LazyOrderedDict, LazyDict, UniqueList
 
 def test_dumbobject():
     assert DumbObject(a=1).a == 1
@@ -43,6 +43,9 @@ def test_ordereddict_lazy():
     except AttributeError:
         pass
 
-
-def test_ordered_set():
-    eq_(list(OrderedSet('abracadaba')), ['a', 'b', 'r', 'c', 'd'])
+def test_unique_list():
+    ul = UniqueList([1, 1, 2, 2, 3])
+    ul.append(2)
+    ul.append(5)
+    ul.extend([6,7, 7, 1])
+    assert ul == [1,2,3,5,6,7]

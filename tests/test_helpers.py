@@ -1,17 +1,18 @@
 from pysutils import multi_pop, is_iterable, grouper, is_empty, pformat, \
     pprint, tolist, toset
+from pysutils.helpers import unique
 
 def test_multi_pop():
     start = {'a':1, 'b':2, 'c':3}
     assert {'a':1, 'c':3} == multi_pop(start, 'a', 'c')
     assert start == {'b':2}
-    
+
 def test_is_iterable():
     assert is_iterable([])
     assert is_iterable(tuple())
     assert is_iterable({})
     assert not is_iterable('asdf')
-    
+
 def test_grouper():
     data = (
         {'color': 'red', 'number': 1, 'status':'active', 'link':'yes'},
@@ -52,7 +53,7 @@ def test_pformat():
 def test_pprint():
     # just making sure no errors
     pprint('')
-    
+
 def test_is_empty():
     assert is_empty('')
     assert not is_empty('1')
@@ -60,3 +61,8 @@ def test_is_empty():
     assert not is_empty('0')
     #TODO: this seems weird, I would consider False empty
     assert not is_empty(False)
+
+def test_unique():
+    testdata = ['f','g','c','c', 'd','b','a','a']
+    assert unique(testdata) == ['f', 'g', 'c', 'd', 'b', 'a']
+    assert len(unique(testdata, False)) == 6
