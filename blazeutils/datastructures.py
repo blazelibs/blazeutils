@@ -301,3 +301,31 @@ class LazyDict(dict):
         # attributes added after initialization are stored in _data
         else:
             self[item] = value
+
+from blazeutils.helpers import unique
+class UniqueList(list):
+    """
+        A special list that prevents append() and extend() from adding duplicate
+        entries.
+
+        insert() is not supported and will result in an exception if used
+    """
+    def __init__(self, iterable=None):
+        list.__init__(self)
+        self.seen = set()
+        if iterable:
+            self.extend(iterable)
+
+    def append(self, value):
+        if value not in self.seen:
+            self.seen.add(value)
+            list.append(self, value)
+
+    def extend(self, values):
+        for value in unique(values):
+            if value not in self.seen:
+                self.seen.add(value)
+                list.append(self, value)
+
+    def insert(self, index, object):
+        raise NotImplementedError('UniqueList doesn\'t support insert()')
