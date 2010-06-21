@@ -1,6 +1,6 @@
 from os import path
 from nose.tools import eq_
-from pysutils import find_path_package, import_split, posargs_limiter
+from blazeutils import find_path_package, import_split, posargs_limiter
 
 def test_find_path_package():
     import email

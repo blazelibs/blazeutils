@@ -1,4 +1,4 @@
-from pysutils.datastructures import OrderedProperties, OrderedDict
+from blazeutils.datastructures import OrderedProperties, OrderedDict
 
 class QuickSettings(OrderedProperties):
     def __init__(self, initialize=True):

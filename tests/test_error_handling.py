@@ -1,5 +1,5 @@
 from nose.tools import eq_
-from pysutils import tb_depth_in, traceback_depth
+from blazeutils import tb_depth_in, traceback_depth
 
 def test_traceback_funcs():
     try:

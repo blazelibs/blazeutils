@@ -1,7 +1,5 @@
-from nose.tools import eq_
-
-from pysutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
-    HtmlAttributeHolder, LazyOrderedDict, LazyDict, UniqueList
+from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
+    HtmlAttributeHolder, LazyOrderedDict, LazyDict
 
 def test_dumbobject():
     assert DumbObject(a=1).a == 1
@@ -43,9 +41,17 @@ def test_ordereddict_lazy():
     except AttributeError:
         pass
 
-def test_unique_list():
-    ul = UniqueList([1, 1, 2, 2, 3])
-    ul.append(2)
-    ul.append(5)
-    ul.extend([6,7, 7, 1])
-    assert ul == [1,2,3,5,6,7]
+
+def test_lazy_dict():
+
+    o = LazyDict(a=1, b=2)
+    assert o.a == 1
+    assert o.b == 2
+    o.c = 3
+    assert o.c == 3, o.c
+    assert o['c'] == 3
+    try:
+        o.d
+        assert False
+    except AttributeError:
+        pass

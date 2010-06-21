@@ -1,5 +1,5 @@
 from nose.tools import eq_
-from pysutils import StringIndenter, simplify_string, case_cw2us, case_mc2us, \
+from blazeutils import StringIndenter, simplify_string, case_cw2us, case_mc2us, \
     case_us2mc, case_us2cw, reindent, randchars, randnumerics, randhash
 
 def test_string_indent_helper():
