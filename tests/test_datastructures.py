@@ -1,5 +1,5 @@
 from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
-    HtmlAttributeHolder, LazyOrderedDict, LazyDict
+    HtmlAttributeHolder, LazyOrderedDict, LazyDict, UniqueList
 
 def test_dumbobject():
     assert DumbObject(a=1).a == 1
@@ -55,3 +55,10 @@ def test_lazy_dict():
         assert False
     except AttributeError:
         pass
+
+def test_unique_list():
+    ul = UniqueList([1, 1, 2, 2, 3])
+    ul.append(2)
+    ul.append(5)
+    ul.extend([6,7, 7, 1])
+    assert ul == [1,2,3,5,6,7]
