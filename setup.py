@@ -2,11 +2,11 @@
 Introduction
 ---------------
 
-pysutils is a library to hold common tools for the pys* library family:
+BlazeUtils is a library to hold common tools for the Blaze library family:
 
-- `pysmvt <http://pypi.python.org/pypi/pysmvt/>`_
-- `pysapp <http://pypi.python.org/pypi/pysapp/>`_
-- `pysform <http://pypi.python.org/pypi/pysform/>`_
+- `pysmvt <http://pypi.python.org/pypi/BlazeWeb/>`_
+- `pysapp <http://pypi.python.org/pypi/TioBWA/>`_
+- `pysform <http://pypi.python.org/pypi/BlazeForm/>`_
 
 Questions & Comments
 ---------------------
@@ -18,8 +18,8 @@ Current Status
 
 The code stays pretty stable, but the API is likely to change in the future.
 
-The `pysutils tip <http://bitbucket.org/rsyring/pysutils/get/tip.zip#egg=pysutils-dev>`_
-is installable via `easy_install` with ``easy_install pysutils==dev``
+The `blazeutils tip <http://bitbucket.org/rsyring/blazeutils/get/tip.zip#egg=blazeutils-dev>`_
+is installable via `easy_install` with ``easy_install blazeutils==dev``
 """
 import sys
 try:
@@ -29,21 +29,21 @@ except ImportError:
     use_setuptools()
     from setuptools import setup, find_packages
 
-from pysutils import VERSION
+from blazeutils import VERSION
 
 setup(
-    name = "pysutils",
+    name = "BlazeUtils",
     version = VERSION,
     description = "A collection of python utility functions and classes.",
     long_description = __doc__,
     author = "Randy Syring",
     author_email = "rsyring@gmail.com",
-    url='http://pypi.python.org/pypi/pysutils/',
+    url='http://pypi.python.org/pypi/blazeutils/',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
       ],
     license='BSD',
-    packages=['pysutils']
+    packages=['blazeutils']
 )

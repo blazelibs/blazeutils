@@ -1,6 +1,6 @@
-from pysutils import multi_pop, is_iterable, grouper, is_empty, pformat, \
+from blazeutils import multi_pop, is_iterable, grouper, is_empty, pformat, \
     pprint, tolist, toset
-from pysutils.helpers import unique
+from blazeutils.helpers import unique
 
 def test_multi_pop():
     start = {'a':1, 'b':2, 'c':3}

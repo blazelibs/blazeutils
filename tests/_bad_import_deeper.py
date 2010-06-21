@@ -1,3 +1,3 @@
-from pysutils import ireallyhopewenevernameanythinglikethis
+from blazeutils import ireallyhopewenevernameanythinglikethis
 
 foobar = 1

@@ -1,4 +1,4 @@
-from pysutils import curry, decorator
+from blazeutils import curry, decorator
 
 def test_curry():
     

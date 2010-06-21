@@ -1,4 +1,4 @@
-from pysutils import posargs_limiter
+from blazeutils import posargs_limiter
 
 def test_posargs_limiter():
     def take0():
