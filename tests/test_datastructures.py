@@ -59,6 +59,10 @@ def test_ordereddict_lazy():
 def test_lazy_dict():
 
     o = LazyDict(a=1, b=2)
+
+    ostr = pickle.dumps(o, pickle.HIGHEST_PROTOCOL)
+    o = pickle.loads(ostr)
+
     assert o.a == 1
     assert o.b == 2
     o.c = 3
