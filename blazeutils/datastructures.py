@@ -178,7 +178,12 @@ class OrderedDict(dict):
 
     def __setitem__(self, key, object):
         if key not in self:
-            self._list.append(key)
+            try:
+                self._list.append(key)
+            except AttributeError:
+                # work around Python pickle loads() with
+                # dict subclass (seems to ignore __setstate__?)
+                self._list = [key]
         dict.__setitem__(self, key, object)
 
     def __delitem__(self, key):

@@ -1,3 +1,4 @@
+import cPickle as pickle
 from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
     HtmlAttributeHolder, LazyOrderedDict, LazyDict, UniqueList
 
@@ -21,6 +22,19 @@ def test_ordereddict():
             assert v == 1
         else:
             assert v == 2
+
+def test_ordereddict_pickle():
+    o = OrderedDict(a=1, b=2)
+
+    ostr = pickle.dumps(o, pickle.HIGHEST_PROTOCOL)
+    o = pickle.loads(ostr)
+
+    for i, v in enumerate(o.values()):
+        if i == 0:
+            assert v == 1
+        else:
+            assert v == 2
+
 
 def test_ordereddict_lazy():
 
