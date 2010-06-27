@@ -67,6 +67,14 @@ def case_us2cw(x):
     s = case_us2mc(x)
     return s[0].upper()+s[1:]
 
+def case_cw2dash(x):
+    """ capwords to dash notation """
+    return re.sub(r'(?<=[a-z])[A-Z]|(?<!^)[A-Z](?=[a-z])', r"-\g<0>", x).lower()
+
+def case_mc2dash(x):
+    """ mixed case to underscore notation """
+    return case_cw2dash(x)
+
 def reindent(s, numspaces):
     """ reinidents a string (s) by the given number of spaces (numspaces) """
     leading_space = numspaces * ' '
