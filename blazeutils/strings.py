@@ -98,6 +98,8 @@ def randchars(n = 12, chartype='alphanumeric', alphacase='both', unique=False):
         charlist = alphalist
     elif chartype == 'numeric':
         charlist = '0123456789'
+    elif chartype == 'all':
+        charlist = alphalist + '0123456789' + """`~!@#$%^&*()_-+={}|[]\:";'<>?,./"""
     else:
         raise ValueError('chartype "%s" not recognized' % chartype)
 
