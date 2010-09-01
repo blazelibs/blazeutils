@@ -12,9 +12,13 @@ try:
         
         def __init__(self):
             self.ws = None
+            self.rownum = 0
+            self.colnum = 0
             
         def set_sheet(self, ws):
             self.ws = ws
+            self.rownum = 0
+            self.colnum = 0
         
         def write(self, row, col, data, style=None):
             """
@@ -34,6 +38,18 @@ try:
                 ws.write(row, col, data, s)
             else:
                 ws.write(row, col, data)
+        
+        def awrite(self, data=None, style=None, nextrow=False):
+            """
+                Auto Write: Similar to write, except that the row and column
+                numbers are handled automatically and based on the extra
+                parameters to this method.
+            """
+            self.write(self.rownum, self.colnum, data, style)
+            self.colnum += 1
+            if nextrow:
+                self.rownum +=1
+                self.colnum = 0
         
         def get_style(self, style):
             """
