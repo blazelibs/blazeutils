@@ -55,7 +55,6 @@ def test_ordereddict_lazy():
     except AttributeError:
         pass
 
-
 def test_lazy_dict():
 
     o = LazyDict(a=1, b=2)
@@ -73,6 +72,23 @@ def test_lazy_dict():
         assert False
     except AttributeError:
         pass
+
+def test_lazy_dict_with_setter_property():
+
+    class CustomLD(LazyDict):
+        def __init__(self):
+            self._x = True
+            LazyDict.__init__(self)
+        def getx(self):
+            return self._x
+        def setx(self, value):
+            self._x = value
+        x = property(getx, setx)
+
+    o = CustomLD()
+    assert o.x
+    o.x = False
+    assert not o.x
 
 def test_unique_list():
     ul = UniqueList([1, 1, 2, 2, 3])
