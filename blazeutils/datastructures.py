@@ -296,7 +296,6 @@ class LazyDict(dict):
             % (self.__class__.__name__, attr)
 
     def __setattr__(self, item, value):
-        print item, self.__dict__, self.__class__.__dict__
         # this test allows attributes to be set in the __init__ method
         if self.__dict__.has_key('_ld_initialized') == False or self.__dict__['_ld_initialized'] == False:
             self.__dict__[item] = value
