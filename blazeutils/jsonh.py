@@ -1,3 +1,8 @@
+"""
+json helpers
+
+can't name the module just "json" because 'import json' will not work
+"""
 
 ###
 ### json code from Flask:
@@ -6,10 +11,10 @@
 # try to load the best simplejson implementation available.
 json_available = True
 try:
-    import simplejson as json
+    import simplejson as jsonmod
 except ImportError:
     try:
-        import json
+        import json as jsonmod
     except ImportError:
         json_available = False
 
