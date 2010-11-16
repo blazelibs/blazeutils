@@ -38,7 +38,7 @@ setup(
     long_description = __doc__,
     author = "Randy Syring",
     author_email = "rsyring@gmail.com",
-    url='http://pypi.python.org/pypi/blazeutils/',
+    url='http://bitbucket.org/rsyring/blazeutils/',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
