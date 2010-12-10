@@ -49,6 +49,9 @@ def logging_handler(name=None, level=1):
                     return True
                 return False
         lh.addFilter(NameFilter(name))
+        # set the level on the logger object so that it sends messages
+        log = logging.getLogger(name)
+        log.setLevel(level)
     logging.root.addHandler(lh)
     logging.root.setLevel(level)
     return lh
