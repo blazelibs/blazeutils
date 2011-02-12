@@ -17,4 +17,4 @@ from blazeutils.strings import StringIndenter, simplify_string, case_cw2us, \
     case_mc2us, case_us2cw, case_us2mc, randchars, \
     randhash, randnumerics, reindent, simplify_string
 
-VERSION = '0.3.1'
+VERSION = '0.3.2'
