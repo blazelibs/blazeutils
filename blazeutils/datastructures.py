@@ -310,6 +310,9 @@ class LazyDict(dict):
         else:
             self[item] = value
 
+    def __delattr__(self, name):
+        del self[name]
+
 from blazeutils.helpers import unique
 class UniqueList(list):
     """

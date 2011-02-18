@@ -73,6 +73,9 @@ def test_lazy_dict():
     except AttributeError:
         pass
 
+    del o.c
+    assert not hasattr(o, 'c')
+
 def test_lazy_dict_with_setter_property():
 
     class CustomLD(LazyDict):
