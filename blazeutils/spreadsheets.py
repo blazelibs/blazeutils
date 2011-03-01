@@ -1,30 +1,30 @@
 
 try:
     import xlwt
-    
+
     class XlwtHelper(object):
         """
             code from : http://panela.blog-city.com/pyexcelerator_xlwt_cheatsheet_create_native_excel_from_pu.htm
         """
-        
+
         STYLE_FACTORY = {}
         FONT_FACTORY = {}
-        
+
         def __init__(self):
             self.ws = None
             self.rownum = 0
             self.colnum = 0
-            
+
         def set_sheet(self, ws):
             self.ws = ws
             self.rownum = 0
             self.colnum = 0
-        
+
         def write(self, row, col, data, style=None):
             """
             Write data to row, col of worksheet (ws) using the style
             information.
-    
+
             Again, I'm wrapping this because you'll have to do it if you
             create large amounts of formatted entries in your spreadsheet
             (else Excel, but probably not OOo will crash).
@@ -32,13 +32,19 @@ try:
             ws = self.ws
             if not ws:
                 raise Exception('you must use set_sheet() before write()')
-                
+
             if style:
                 s = self.get_style(style)
                 ws.write(row, col, data, s)
             else:
                 ws.write(row, col, data)
-        
+
+        def mwrite(self, col_vals, style=None, nextrow=False):
+            for val in col_vals:
+                self.awrite(val, style)
+            if nextrow:
+                self.newrow()
+
         def awrite(self, data=None, style=None, nextrow=False):
             """
                 Auto Write: Similar to write, except that the row and column
@@ -48,14 +54,17 @@ try:
             self.write(self.rownum, self.colnum, data, style)
             self.colnum += 1
             if nextrow:
-                self.rownum +=1
-                self.colnum = 0
-        
+                self.newrow()
+
+        def newrow(self):
+            self.rownum +=1
+            self.colnum = 0
+
         def get_style(self, style):
             """
             Style is a dict maping key to values.
             Valid keys are: background, format, alignment, border
-    
+
             The values for keys are lists of tuples containing (attribute,
             value) pairs to set on model instances...
             """
@@ -87,7 +96,7 @@ try:
                         s.font = f
                 self.STYLE_FACTORY[style_key] = s
             return s
-    
+
         def get_font(self, values):
             """
             'height' 10pt = 200, 8pt = 160
