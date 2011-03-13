@@ -1,0 +1,15 @@
+
+pysutils Changelog
+==================
+
+Version ??
+-----------
+(??, release date to be announced)
+
+Version 0.2.0
+-------------
+(bugfixes/features/**BC BREAKS!!**, released on 2010-05-30)
+
+- this release may contain BC BREAKS!
+- see bitbucket changesets: http://bitbucket.org/rsyring/pysutils/changesets
+

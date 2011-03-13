@@ -1,0 +1,2 @@
+include authors.txt changes.txt license.txt
+global-exclude *.pyc
