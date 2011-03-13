@@ -1,2 +1,6 @@
 include authors.txt changes.txt license.txt
+include setup.py
+include pavement.py
+include paver-minilib.zip
+
 global-exclude *.pyc
