@@ -22,7 +22,6 @@ The `blazeutils tip <http://bitbucket.org/rsyring/blazeutils/get/tip.zip#egg=bla
 is installable via `easy_install` with ``easy_install blazeutils==dev``
 """
 from paver.easy import *
-import paver.doctools
 from paver.setuputils import setup
 
 setup(
