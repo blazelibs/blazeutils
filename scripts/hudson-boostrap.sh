@@ -1,15 +1,20 @@
 #!/bin/bash
-#rm -rf blazeutils-hudson-root
-#mkdir -p blazeutils-hudson-root/src
-#hg clone ssh://hg@bitbucket.org/rsyring/blazeutils blazeutils-hudson-root/src
-#cd blazeutils-hudson-root/src
-#paver hudson-test
 
 MYDIR="$( cd "$( dirname "$0" )" && pwd )"
 
-cd $MYDIR/..
+SRCDIR="$MYDIR/.."
+ROOTDIR="$MYDIR/../.."
+VENVDIR="$ROOTDIR/blazeutils-hudson-venv"
 
-# update source
+cd $SRCDIR
 hg pull -u
 
-# remove the virtualenv
+# setup a virtualenv
+rm -rf $VENVDIR
+virtualenv --no-site-packages "$VENVDIR"
+
+# activate virtualenv
+source "$VENVDIR/bin/activate"
+
+# install blazeutils
+python setup.py install
