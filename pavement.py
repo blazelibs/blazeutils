@@ -21,6 +21,7 @@ The code and API stay pretty stable.
 The `blazeutils tip <http://bitbucket.org/rsyring/blazeutils/get/tip.zip#egg=blazeutils-dev>`_
 is installable via `easy_install` with ``easy_install blazeutils==dev``
 """
+import os
 from paver.easy import *
 from paver.setuputils import setup
 
@@ -46,3 +47,10 @@ setup(
 def sdist():
     """Overrides sdist to make sure that our setup.py is generated."""
     pass
+
+@task
+@needs('setuptools.command.sdist')
+def develop():
+    venv_dir = os.environ.get('VIRTUAL_ENV')
+    sh('pip -E "%s" install nose' % venv_dir)
+    #environment.call_task('setuptools.command.sdist')
