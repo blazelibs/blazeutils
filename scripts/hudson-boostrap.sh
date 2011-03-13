@@ -2,9 +2,10 @@
 
 MYDIR="$( cd "$( dirname "$0" )" && pwd )"
 
+PKGNAME="BlazeUtils"
 SRCDIR="$MYDIR/.."
 ROOTDIR="$MYDIR/../.."
-VENVDIR="$ROOTDIR/blazeutils-hudson-venv"
+VENVDIR="$ROOTDIR/hudson-venv"
 
 cd $SRCDIR
 hg pull -u
@@ -16,5 +17,14 @@ virtualenv --no-site-packages "$VENVDIR"
 # activate virtualenv
 source "$VENVDIR/bin/activate"
 
-# install blazeutils
+# install package
 python setup.py install
+
+# uninstall blazeutils from venv
+pip uninstall -y "$PKGNAME"
+
+# install as dev package
+python setup.py develop
+
+# run tests
+nosetests tests
