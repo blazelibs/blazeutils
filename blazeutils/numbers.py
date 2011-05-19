@@ -28,6 +28,8 @@ def moneyfmt(value, places=2, curr='', sep=',', dp='.',
 
     """
     if not isinstance(value, Decimal):
+        if isinstance(value, float):
+            value = str(value)
         value = Decimal(value)
     q = Decimal(10) ** -places      # 2 places --> '0.01'
     sign, digits, exp = value.quantize(q).as_tuple()
@@ -55,4 +57,4 @@ def moneyfmt(value, places=2, curr='', sep=',', dp='.',
 decimalfmt = moneyfmt
 
 def round_down_to_n(x, rounder = 5):
-    return (x // rounder) * rounder 
+    return (x // rounder) * rounder
