@@ -1,10 +1,10 @@
 
-pysutils Changelog
-==================
+BlazeUtils Changelog
+=====================
 
-Version ??
------------
-(??, release date to be announced)
+0.3.3 released 2011-05-19
+--------------------------
+* made moneyfmt/decimalfmt handle floats
 
 Version 0.2.0
 -------------
@@ -12,4 +12,3 @@ Version 0.2.0
 
 - this release may contain BC BREAKS!
 - see bitbucket changesets: http://bitbucket.org/rsyring/pysutils/changesets
-
