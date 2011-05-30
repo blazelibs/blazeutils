@@ -16,4 +16,4 @@ source "$VENVDIR/bin/activate"
 pip install "$PKGNAME"
 
 # import it
-python -c 'import blazeweb'
+python -c 'import blazeutils'
