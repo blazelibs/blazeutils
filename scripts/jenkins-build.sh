@@ -1,5 +1,5 @@
 PKGNAME="BlazeUtils"
-VENVDIR="$WORKSPACE/.venv"
+VENVDIR="$WORKSPACE/.venv-dev"
 
 cd $WORKSPACE
 
@@ -16,9 +16,6 @@ source "$VENVDIR/bin/activate"
 
 # install test requirements
 pip install -r requirements-testing.txt
-
-# install package
-python setup.py develop
 
 # install as dev package
 python setup.py --quiet develop
