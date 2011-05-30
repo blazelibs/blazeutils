@@ -4,7 +4,7 @@ VENVDIR="$WORKSPACE/.venv-dev"
 cd $WORKSPACE
 
 # setup a virtualenv
-if [ -d ".venv" ]; then
+if [ -d "$VENVDIR" ]; then
     echo "**> virtualenv exists"
 else
     echo "**> creating virtualenv"
