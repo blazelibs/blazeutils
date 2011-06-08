@@ -1,6 +1,11 @@
-import sys
-import logging
 from cStringIO import StringIO
+import itertools
+import logging
+import re
+import sys
+import warnings
+
+from blazeutils.decorators import decorator
 from blazeutils.log import clear_handlers_by_attr
 from blazeutils.helpers import Tee
 
@@ -98,3 +103,28 @@ class ListIO(object):
     @property
     def current(self):
         return self.contents[self.index]
+
+def emits_deprecation(*messages):
+    """
+        Decorate a test encorcing it emits the given DeprecationWarnings with
+        the given messages in the given order.
+
+        Note: requires Python 2.6 or later
+    """
+    @decorator
+    def decorate(fn, *args, **kw):
+        if sys.version_info < (2, 6):
+            raise NotImplementedError('warnings.catch_warnings() is needed, but not available in Python versions < 2.6')
+        with warnings.catch_warnings(record=True) as wcm:
+            retval = fn(*args, **kw)
+            count = 0
+            for w, m in itertools.izip_longest(wcm, messages):
+                count += 1
+                assert m is not None, 'No message to match warning: %s' % w.message
+                assert w is not None, 'No warning to match message #%s: %s' % (count, m)
+                assert w.category is DeprecationWarning, 'DeprecationWarning not emitted, got %s type instead' % w.category
+                assert re.search(m, str(w.message)), 'Message regex "%s" did not match %s' % (m, w.message)
+            return retval
+    return decorate
+
+
