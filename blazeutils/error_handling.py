@@ -1,6 +1,9 @@
 import sys
 import traceback
+import warnings
+
 from blazeutils.helpers import tolist
+from blazeutils.decorators import deprecate
 
 def tb_depth_in(depths):
     """
@@ -14,6 +17,7 @@ def tb_depth_in(depths):
     return False
 traceback_depth_in = tb_depth_in
 
+@deprecate('tb_depth_in(), traceback_depth() deprecated, its a bad idea')
 def traceback_depth(tb=None):
     if tb == None:
         _, _, tb = sys.exc_info()
