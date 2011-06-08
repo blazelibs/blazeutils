@@ -1,5 +1,6 @@
 from functools import update_wrapper
 import inspect, itertools
+import warnings
 
 def format_argspec_plus(fn, grouped=True):
     """Returns a dictionary of formatted, introspected function arguments.
@@ -65,7 +66,7 @@ def unique_symbols(used, *bases):
                 break
         else:
             raise NameError("exhausted namespace for symbol base %s" % base)
-            
+
 def decorator(target):
     """A signature-matching decorator factory."""
 
@@ -103,3 +104,14 @@ def curry(fn, *args, **kwargs):
             return fn(*fnargs)
     tocall.cargs = cargs
     return tocall
+
+def deprecate(message):
+    """
+        Decorate a function to emit a deprecation warning with the given
+        message.
+    """
+    @decorator
+    def decorate(fn, *args, **kw):
+        warnings.warn(message, DeprecationWarning)
+        return fn(*args, **kw)
+    return decorate
