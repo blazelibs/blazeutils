@@ -158,11 +158,10 @@ def raises(arg1, arg2=None):
     def decorate(fn, *args, **kw):
         try:
             fn(*args, **kw)
-            assert False, '@raises: an exception was not raised'
+            assert False, '@raises: no exception raised in %s()' % fn.__name__
         except Exception, e:
             if etype is not None and not isinstance(e, etype):
                 raise
             if msgregex is not None and not re.match(msgregex, str(e)):
                 raise
     return decorate
-

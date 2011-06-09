@@ -50,5 +50,5 @@ class TestRaisesDecorator(object):
             wrapper()
             assert False, '@raises should have complained that an exception was not raised'
         except AssertionError, e:
-            if "@raises: an exception was not raised" != str(e):
+            if "@raises: no exception raised in wrapper()" != str(e):
                 raise
