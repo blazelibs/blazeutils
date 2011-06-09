@@ -112,6 +112,7 @@ def deprecate(message):
     """
     @decorator
     def decorate(fn, *args, **kw):
-        warnings.warn(message, DeprecationWarning)
+        warnings.warn(message, DeprecationWarning, 2)
         return fn(*args, **kw)
     return decorate
+

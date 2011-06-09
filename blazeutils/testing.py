@@ -106,7 +106,7 @@ class ListIO(object):
 
 def emits_deprecation(*messages):
     """
-        Decorate a test encorcing it emits the given DeprecationWarnings with
+        Decorate a test enforcing it emits the given DeprecationWarnings with
         the given messages in the given order.
 
         Note: requires Python 2.6 or later
@@ -122,9 +122,47 @@ def emits_deprecation(*messages):
                 count += 1
                 assert m is not None, 'No message to match warning: %s' % w.message
                 assert w is not None, 'No warning to match message #%s: %s' % (count, m)
-                assert w.category is DeprecationWarning, 'DeprecationWarning not emitted, got %s type instead' % w.category
+                assert issubclass(w.category, DeprecationWarning), 'DeprecationWarning not emitted, got %s type instead' % w.category
                 assert re.search(m, str(w.message)), 'Message regex "%s" did not match %s' % (m, w.message)
             return retval
     return decorate
 
+def raises(arg1, arg2=None):
+    """
+        Decorate a test encorcing it emits the given Exception and message
+        regex.
+
+        Arguments to this decorator can be one or both of:
+
+            A) Exception type
+            B) regex to match against the string representation of the exception
+
+        So, all the following are valid:
+
+            @raises(AttributeError)
+            @raises("^.+object has no attribute 'foo'")
+            @raises(AttributeError, "^.+object has no attribute 'foo'")
+            @raises("^.+object has no attribute 'foo'", AttributeError)
+    """
+    if isinstance(arg1, basestring):
+        msgregex = arg1
+        etype = arg2
+    elif isinstance(arg2, basestring):
+        etype = arg1
+        msgregex = arg2
+    else:
+        etype = arg1
+        msgregex = None
+
+    @decorator
+    def decorate(fn, *args, **kw):
+        try:
+            fn(*args, **kw)
+            assert False, '@raises: an exception was not raised'
+        except Exception, e:
+            if etype is not None and not isinstance(e, etype):
+                raise
+            if msgregex is not None and not re.match(msgregex, str(e)):
+                raise
+    return decorate
 
