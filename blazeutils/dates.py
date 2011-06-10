@@ -16,3 +16,12 @@ def ensure_datetime(dobj):
     if isinstance(dobj, dt.datetime):
         return dobj
     return dt.datetime.combine(dobj, dt.time())
+
+def ensure_date(dobj):
+    """
+        removes time part from dobj if its a datetime object, returns dobj
+        untouched if its a date object.
+    """
+    if isinstance(dobj, dt.datetime):
+        return dobj.date()
+    return dobj
