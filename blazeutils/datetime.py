@@ -1,4 +1,5 @@
-def safe_strftime(value, format='%m/%d/%Y %H:%M', on_none=''):
-    if value is None:
-        return on_none
-    return value.strftime(format)
+import warnings
+
+from blazeutils.dates import safe_strftime
+
+warnings.warn('blazeutils.datetime is deprecated, use blazeutils.dates instead', DeprecationWarning)
