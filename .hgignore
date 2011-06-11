@@ -6,3 +6,7 @@
 ^docs/_build
 [^/]+-stats\.txt$
 glob:*.komodo*
+syntax: glob
+.coverage
+coverage.xml
+nosetests.xml

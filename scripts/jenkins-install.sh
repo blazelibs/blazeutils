@@ -1,19 +1,27 @@
 PKGNAME="BlazeUtils"
-VENVDIR="$WORKSPACE/.venv-install"
+# script should be run from package root if not being run in Jenkins
+if [ -z "$WORKSPACE" ]; then
+    VENVDIR="/tmp/$PACKAGE-jenkins-venv"
+else
+    VENVDIR="$WORKSPACE/.venv-install"
+    cd "$WORKSPACE"
+fi
 
-cd $WORKSPACE
-
-# remove the install venv so we start from scratch
+# delete the virtualenv, this ensures all packages are installed from scratch
+# to make sure our dependencies are specified correctly
 rm -rf "$VENVDIR"
 
-# create a new virtualenv
+# create the venv
 virtualenv "$VENVDIR" --no-site-packages -q
 
-# activate virtualenv
-source "$VENVDIR/bin/activate"
+# If in jenkins, assuming the PATH has been set
+# correctly already, otherwise activate the VENV
+if [ -z "$WORKSPACE" ]; then
+    source "$VENVDIR/bin/activate"
+fi
 
 # install from pypi
-pip install "$PKGNAME"
+pip install BlazeUtils
 
 # import it
 python -c 'import blazeutils'
