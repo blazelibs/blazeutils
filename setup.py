@@ -1,27 +1,4 @@
-"""
-Introduction
----------------
-
-BlazeUtils is a library to hold common tools for the Blaze library family:
-
-- `BlazeWeb <http://pypi.python.org/pypi/BlazeWeb/>`_
-- `BaseBWA <http://pypi.python.org/pypi/BaseBWA/>`_
-- `BlazeForm <http://pypi.python.org/pypi/BlazeForm/>`_
-
-Questions & Comments
----------------------
-
-Please visit: http://groups.google.com/group/blazelibs
-
-Current Status
----------------
-
-The code and API stay pretty stable.
-
-The `blazeutils tip <http://bitbucket.org/rsyring/blazeutils/get/tip.zip#egg=blazeutils-dev>`_
-is installable via `easy_install` with ``easy_install blazeutils==dev``
-"""
-import sys
+import sys, os
 try:
     from setuptools import setup, find_packages
 except ImportError:
@@ -31,11 +8,15 @@ except ImportError:
 
 from blazeutils import VERSION
 
+cdir = os.path.abspath(os.path.dirname(__file__))
+README = open(os.path.join(cdir, 'readme.rst')).read()
+CHANGELOG = open(os.path.join(cdir, 'changelog.rst')).read()
+
 setup(
     name = "BlazeUtils",
     version = VERSION,
     description = "A collection of python utility functions and classes.",
-    long_description = __doc__,
+    long_description=README + '\n\n' + CHANGELOG,
     author = "Randy Syring",
     author_email = "rsyring@gmail.com",
     url='http://bitbucket.org/rsyring/blazeutils/',
