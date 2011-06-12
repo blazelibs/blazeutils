@@ -1,4 +1,5 @@
 from cStringIO import StringIO
+import difflib
 import itertools
 import logging
 import re
@@ -7,7 +8,7 @@ import warnings
 
 from blazeutils.decorators import decorator
 from blazeutils.log import clear_handlers_by_attr
-from blazeutils.helpers import Tee
+from blazeutils.helpers import Tee, prettifysql
 
 class LoggingHandler(logging.Handler):
     """ logging handler to check for expected logs when testing"""
@@ -165,3 +166,12 @@ def raises(arg1, arg2=None):
             if msgregex is not None and not re.match(msgregex, str(e)):
                 raise
     return decorate
+
+def assert_equal_sql(sql, correct_sql):
+    sql_split = prettifysql(sql)
+    correct_sql_split = prettifysql(correct_sql)
+    sql_diff = ''.join(list(
+        difflib.unified_diff(correct_sql_split, sql_split)
+    ))
+    failure_message = "%r != %r\n" % (sql, correct_sql) + sql_diff
+    assert sql == correct_sql, failure_message

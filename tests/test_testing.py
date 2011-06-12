@@ -1,6 +1,6 @@
 import sys
 
-from blazeutils.testing import raises
+from blazeutils.testing import raises, assert_equal_sql
 
 class TestRaisesDecorator(object):
 
@@ -52,3 +52,19 @@ class TestRaisesDecorator(object):
         except AssertionError, e:
             if "@raises: no exception raised in wrapper()" != str(e):
                 raise
+
+def test_assert_equal_sql():
+    s2 = s1 = """
+    select foo,
+    bar,
+    baz from bill"""
+    assert_equal_sql(s1, s2)
+
+@raises(AssertionError, ".+!=")
+def test_assert_equal_sql():
+    s2 = s1 = """
+    select foo,
+    bar,
+    baz from bill"""
+    s2 = s2[5:]
+    assert_equal_sql(s1, s2)

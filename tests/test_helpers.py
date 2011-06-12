@@ -1,6 +1,7 @@
 from blazeutils import multi_pop, is_iterable, grouper, is_empty, pformat, \
     pprint, tolist, toset
-from blazeutils.helpers import unique
+from blazeutils.helpers import unique, prettifysql, diff
+from blazeutils.strings import normalizews
 
 def test_multi_pop():
     start = {'a':1, 'b':2, 'c':3}
@@ -66,3 +67,28 @@ def test_unique():
     testdata = ['f','g','c','c', 'd','b','a','a']
     assert unique(testdata) == ['f', 'g', 'c', 'd', 'b', 'a']
     assert len(unique(testdata, False)) == 6
+
+def test_diff():
+    res = diff("one\ntwo\nthree", "one\n2\nthree").strip()
+    expect = """
+---
+
++++
+
+@@ -1,3 +1,3 @@
+
+ one
+-two
++2
+ three
+""".strip()
+    assert normalizews(res) == normalizews(expect)
+
+def test_prettifysql():
+    sql = """
+    select foo,
+    bar,
+    baz from bill""".strip()
+    expect = ['select foo,\n', ',\n', '    bar,\n', ',\n', '    baz from bill,\n']
+    res = prettifysql(sql)
+    assert expect == res

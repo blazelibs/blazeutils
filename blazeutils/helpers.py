@@ -1,7 +1,9 @@
 import csv
+import difflib
 from pprint import PrettyPrinter
-from blazeutils.datastructures import OrderedDict
 import time
+
+from blazeutils.datastructures import OrderedDict
 
 def tolist(x, default=[]):
     if x is None:
@@ -122,3 +124,19 @@ def unique(seq, preserve_order=True):
     # f9
     # Not order preserving
     return {}.fromkeys(seq).keys()
+
+def prettifysql(sql):
+    """Returns a prettified version of the SQL as a list of lines to help
+    in creating a useful diff between two SQL statements."""
+    pretty = []
+    for line in sql.split('\n'):
+        pretty.extend([ "%s,\n" % x for x in line.split(',')])
+    return pretty
+
+def diff(actual, expected):
+    """
+        normalize whitespace in actual and expected and return unified diff
+    """
+    return '\n'.join(list(
+        difflib.unified_diff(actual.replace('\r', '').split('\n'), expected.replace('\r', '').split('\n'))
+    ))
