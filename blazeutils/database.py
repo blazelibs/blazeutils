@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import sys
+import warnings
+
+warnings.warn('blazeutils.database is deprecated and will be removed in the future', DeprecationWarning)
 
 # Pagination
 from werkzeug import cached_property
