@@ -1,3 +1,4 @@
+import os
 from jenkinsutils import BuildHelper
 
 package = 'BlazeUtils'
@@ -9,6 +10,9 @@ bh = BuildHelper(package, type)
 bh.venv_create()
 
 # install test requirements
+print os.environ.get('PIP_INDEX_URL', None)
+print os.environ.get('PIP_EXTRA_INDEX_URL', None)
+
 bh.oscall('pwd')
 bh.oscall('which', 'pip')
 bh.pip_install_reqs('pip-jenkins-reqs.txt')
