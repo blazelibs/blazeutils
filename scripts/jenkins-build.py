@@ -9,6 +9,8 @@ bh = BuildHelper(package, type)
 bh.venv_create()
 
 # install test requirements
+bh.oscall('pwd')
+bh.oscall('which', 'pip')
 bh.pip_install_reqs('pip-jenkins-reqs.txt')
 
 # install package w/ setuptools develop
