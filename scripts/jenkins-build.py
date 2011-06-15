@@ -11,7 +11,7 @@ bh.venv_create()
 
 # install test requirements
 print os.environ.get('PIP_INDEX_URL', None)
-print os.environ.get('PIP_EXTRA_INDEX_URL', None)
+print os.environ.get('EASY_INSTALL_FIND_LINKS', None)
 
 bh.oscall('pwd')
 bh.oscall('which', 'pip')
@@ -22,7 +22,7 @@ bh.setuppy_develop()
 
 # run tests & coverage
 bh.vecall(
-    'nosetests', 'tests', '--with-coverage',
-    '--cover-package=blazeutils',
-    '--with-xunit', '--with-xcoverage', '--cover-tests'
+    'nosetests', 'tests', '--with-xunit',
+    '--with-coverage', '--cover-package=blazeutils', '--cover-tests',
+    '--with-xcoverage',
 )
