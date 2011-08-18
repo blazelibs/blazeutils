@@ -34,7 +34,10 @@ try:
                 raise Exception('you must use set_sheet() before write()')
 
             if style:
-                s = self.get_style(style)
+                if isinstance(style, xlwt.Style.XFStyle):
+                    s = style
+                else:
+                    s = self.get_style(style)
                 ws.write(row, col, data, s)
             else:
                 ws.write(row, col, data)
