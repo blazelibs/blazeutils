@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+0.3.5 released 2011-08-18
+==========================
+
++  XlwtHelper can now use XFStyle instances directly.
+
 0.3.4 released 2011-06-11
 ==========================
 
