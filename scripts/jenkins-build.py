@@ -24,6 +24,6 @@ bh.setuppy_develop()
 # run tests & coverage
 bh.vepycall(
     'nosetests', 'tests', '--with-xunit',
-    '--with-coverage', '--cover-package=blazeutils', '--cover-tests',
-    '--with-xcoverage',
+    '--with-xcoverage', '--cover-package=blazeutils', '--cover-tests',
+
 )
