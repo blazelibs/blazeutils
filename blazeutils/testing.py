@@ -128,7 +128,7 @@ def emits_deprecation(*messages):
             return retval
     return decorate
 
-def raises(arg1, arg2=None):
+def raises(arg1, arg2=None, re_esc=True):
     """
         Decorate a test encorcing it emits the given Exception and message
         regex.
@@ -155,6 +155,9 @@ def raises(arg1, arg2=None):
         etype = arg1
         msgregex = None
 
+    if re_esc and msgregex:
+        msgregex = re.escape(msgregex)
+
     @decorator
     def decorate(fn, *args, **kw):
         try:
@@ -163,7 +166,7 @@ def raises(arg1, arg2=None):
         except Exception, e:
             if etype is not None and not isinstance(e, etype):
                 raise
-            if msgregex is not None and not re.match(msgregex, str(e)):
+            if msgregex is not None and not re.search(msgregex, str(e)):
                 raise
     return decorate
 
