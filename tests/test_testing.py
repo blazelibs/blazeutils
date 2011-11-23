@@ -8,15 +8,15 @@ class TestRaisesDecorator(object):
     def test_arg1(self):
         assert sys.foo
 
-    @raises("^.+object has no attribute 'foo'")
+    @raises("object has no attribute 'foo'")
     def test_arg2(self):
         assert sys.foo
 
-    @raises(AttributeError, "^.+object has no attribute 'foo'")
+    @raises(AttributeError, "object has no attribute 'foo'")
     def test_arg3(self):
         assert sys.foo
 
-    @raises("^.+object has no attribute 'foo'", AttributeError)
+    @raises("object has no attribute 'foo'", AttributeError)
     def test_arg4(self):
         assert sys.foo
 
@@ -53,6 +53,10 @@ class TestRaisesDecorator(object):
             if "@raises: no exception raised in wrapper()" != str(e):
                 raise
 
+    @raises('[with brackets]')
+    def test_non_regex(self):
+        raise Exception('[with brackets]')
+
 def test_assert_equal_sql():
     s2 = s1 = """
     select foo,
@@ -60,7 +64,7 @@ def test_assert_equal_sql():
     baz from bill"""
     assert_equal_sql(s1, s2)
 
-@raises(AssertionError, ".+!=")
+@raises(AssertionError, ".+!=", re_esc=False)
 def test_assert_equal_sql():
     s2 = s1 = """
     select foo,
