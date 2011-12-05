@@ -10,10 +10,11 @@ bh = BuildHelper(package, type)
 bh.venv_create()
 
 # use easy_install for coverage so we get pre-compiled version on windows
-#
-# Also, have to do version 3.4 b/c nosexcover will fail with newer version)
-# bug report for that: https://github.com/cmheisel/nose-xcover/issues/5
-bh.vepycall('easy_install', 'coverage==3.4')
+bh.vepycall('easy_install', 'coverage')
+
+# have to install dev build of mock using pip directly because of pip bug:
+# https://github.com/pypa/pip/issues/145
+bh.vepycall('pip', 'install', 'mock==dev')
 
 # install other jenkins requirements
 bh.pip_install_reqs('pip-jenkins-reqs.txt')
