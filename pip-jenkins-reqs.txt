@@ -1,4 +1,4 @@
-mock
+mock==dev
 nose
 
 # xml coverage output that jenkins can read through the Cobertura Coverage
