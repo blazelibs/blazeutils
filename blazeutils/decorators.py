@@ -1,6 +1,11 @@
 from functools import update_wrapper
 import inspect, itertools
+import logging
+from traceback import format_exc
 import warnings
+import sys
+
+log = logging.getLogger(__name__)
 
 def format_argspec_plus(fn, grouped=True):
     """Returns a dictionary of formatted, introspected function arguments.
@@ -116,3 +121,41 @@ def deprecate(message):
         return fn(*args, **kw)
     return decorate
 
+def exc_emailer(send_mail_func, logger=None, catch=Exception):
+    """
+        Catch exceptions and email them using `send_mail_func` which should
+        accept a single string argument which will be the traceback to be
+        emailed. Will re-raise original exception if calling `send_mail_func`
+        raises an exception.
+
+        Provide a logging.Logger instance for `logger` if desired (recommended).
+
+        The exceptions this decorator handled can be adjusted by setting `catch`
+        to an Exception class or tuple of exception classes that should be
+        handled.
+
+    """
+    # if they don't give a logger, use our own
+    if logger is None:
+        logger = log
+
+    @decorator
+    def decorate(fn, *args, **kwargs):
+        exc_info = None
+        try:
+            return fn(*args, **kwargs)
+        except catch, e:
+            body = format_exc()
+            exc_info = sys.exc_info()
+            logger.exception('exc_mailer() caught an exception, email will be sent')
+            try:
+                send_mail_func(body)
+            except Exception:
+                logger.exception('exc_mailer(): send_mail_func() threw an exception, logging it & then re-raising original exception')
+                raise exc_info[0], exc_info[1], exc_info[2]
+        finally:
+            # delete the traceback so we don't have garbage collection issues.
+            # see warning at: http://docs.python.org/library/sys.html#sys.exc_info
+            if exc_info is not None:
+                del exc_info
+    return decorate

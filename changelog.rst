@@ -1,12 +1,13 @@
 Changelog
 ---------
 
-0.3.7 released
+0.3.7 released ???
 ==========================
 
-- BC BREAK: changed testing.raises() to regex escape by default.  There is now a
++ BC BREAK: changed testing.raises() to regex escape by default.  There is now a
     keyword arg to control regex escaping. Also switched it to be more lenient
     in its matching by using re.search() instead of re.match()
++ added exc_emailer() decorator
 
 0.3.6 released 2011-08-19
 ==========================
