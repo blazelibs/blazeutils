@@ -138,5 +138,5 @@ def diff(actual, expected):
         normalize whitespace in actual and expected and return unified diff
     """
     return '\n'.join(list(
-        difflib.unified_diff(actual.replace('\r', '').split('\n'), expected.replace('\r', '').split('\n'))
+        difflib.unified_diff(actual.splitlines(), expected.splitlines())
     ))
