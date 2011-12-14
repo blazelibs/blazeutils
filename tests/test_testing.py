@@ -1,6 +1,6 @@
 import sys
 
-from blazeutils.testing import raises, assert_equal_sql
+from blazeutils.testing import raises, assert_equal_sql, assert_equal_txt
 
 class TestRaisesDecorator(object):
 
@@ -72,3 +72,22 @@ def test_assert_equal_sql():
     baz from bill"""
     s2 = s2[5:]
     assert_equal_sql(s1, s2)
+
+def test_assert_equal_txt():
+    s1 = """
+    line 1
+    line 2
+    line 3"""
+    assert_equal_txt(s1, s1)
+
+    s2 = """
+    line 1
+    line 25
+    line 3"""
+
+    try:
+        assert_equal_txt(s1, s2)
+        assert False, 'expected exception'
+    except AssertionError, e:
+        assert '-    line 25' in str(e)
+        assert '+    line 2' in str(e)
