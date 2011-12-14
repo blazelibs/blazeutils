@@ -30,5 +30,6 @@ setup(
         'Programming Language :: Python :: 2.7',
       ],
     license='BSD',
-    packages=['blazeutils']
+    packages=['blazeutils'],
+    zip_safe=False,
 )
