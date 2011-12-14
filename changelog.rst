@@ -8,6 +8,7 @@ Changelog
     keyword arg to control regex escaping. Also switched it to be more lenient
     in its matching by using re.search() instead of re.match()
 + added exc_emailer() decorator
++ added testing.assert_equal_text()
 
 0.3.6 released 2011-08-19
 ==========================

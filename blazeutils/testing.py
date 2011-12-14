@@ -178,3 +178,12 @@ def assert_equal_sql(sql, correct_sql):
     ))
     failure_message = "%r != %r\n" % (sql, correct_sql) + sql_diff
     assert sql == correct_sql, failure_message
+
+def assert_equal_txt(txtblock, correct_txtblock):
+    tb_split = txtblock.splitlines()
+    ctb_split = correct_txtblock.splitlines()
+    if tb_split != ctb_split:
+        diff = '\n'.join(list(
+            difflib.unified_diff(ctb_split, tb_split)
+        ))
+        assert False, 'txt blocks not equal, diff follows: \n' + diff
