@@ -153,3 +153,23 @@ class TestRetry(object):
             if 'myfunc error' not in str(e):
                 raise
             eq_(logger.debug.call_count, 5)
+
+    @raises(TypeError, 'myfunc error')
+    def test_msg_param(self):
+        logger = Mock()
+
+        @retry(5, TypeError, delay=0.001, logger=logger, msg='foobar')
+        def myfunc():
+            if self.call_count == 0:
+                self.call_count += 1
+                raise TypeError('foobar')
+            return 5
+
+        assert myfunc() == 5
+        eq_(logger.debug.call_count, 1)
+
+        @retry(5, TypeError, delay=0.001, logger=logger, msg='foobar')
+        def myfunc():
+            raise TypeError('myfunc error')
+
+        myfunc()

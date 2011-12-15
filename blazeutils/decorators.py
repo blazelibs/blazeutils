@@ -163,7 +163,7 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception):
     return decorate
 
 class Retry(object):
-    def __init__(self, tries, exceptions, delay=0.1, logger=None):
+    def __init__(self, tries, exceptions, delay=0.1, logger=None, msg=None):
         """
         Decorator for retrying a function if exception occurs
 
@@ -181,6 +181,7 @@ class Retry(object):
             self.log = logger
         else:
             self.log = log
+        self.msg = msg
 
     def __call__(self, fn):
         @functools.wraps(fn)
@@ -189,7 +190,8 @@ class Retry(object):
                 try:
                     return fn(*args, **kwargs)
                 except self.exceptions, e:
-                    print 'exception'
+                    if self.msg is not None and self.msg not in str(e):
+                        raise
                     self.log.debug("Retry, exception: %s", e)
                     time.sleep(self.delay)
             # should only get to this point of we have an
