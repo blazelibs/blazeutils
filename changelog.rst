@@ -1,20 +1,25 @@
 Changelog
 ---------
 
+0.3.8 released ???
+==========================
+
++ ???
+
 0.3.7 released 2011-12-15
 ==========================
 
-+ BC BREAK: changed testing.raises() to regex escape by default.  There is now a
-    keyword arg to control regex escaping. Also switched it to be more lenient
-    in its matching by using re.search() instead of re.match()
++ (**BC BREAK**) changed testing.raises() to regex escape by default.  There is now a
+  keyword arg to control regex escaping. Also switched it to be more lenient
+  in its matching by using re.search() instead of re.match()
 + added exc_emailer() decorator
 + added testing.assert_equal_text()
-* add retry() decorator for retrying a function call when exceptions occur
++ add retry() decorator for retrying a function call when exceptions occur
 
 0.3.6 released 2011-08-19
 ==========================
 
-- fix bug in sdist build
++ fix bug in sdist build
 
 0.3.5 released 2011-08-18
 ==========================
