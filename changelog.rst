@@ -9,6 +9,7 @@ Changelog
     in its matching by using re.search() instead of re.match()
 + added exc_emailer() decorator
 + added testing.assert_equal_text()
+* add retry() decorator for retrying a function call when exceptions occur
 
 0.3.6 released 2011-08-19
 ==========================

@@ -1,9 +1,11 @@
+import functools
 from functools import update_wrapper
 import inspect, itertools
 import logging
+import time
 from traceback import format_exc
-import warnings
 import sys
+import warnings
 
 log = logging.getLogger(__name__)
 
@@ -159,3 +161,39 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception):
             if exc_info is not None:
                 del exc_info
     return decorate
+
+class Retry(object):
+    def __init__(self, tries, exceptions, delay=0.1, logger=None):
+        """
+        Decorator for retrying a function if exception occurs
+
+        tries -- num tries to repeat
+        exceptions -- exceptions to catch, single Exception class or tuple of exceptions
+        delay -- wait between retries
+        """
+        self.tries = tries
+        if isinstance(exceptions, Exception):
+            self.exceptions = (exceptions, )
+        else:
+            self.exceptions = exceptions
+        self.delay = delay
+        if logger is not None:
+            self.log = logger
+        else:
+            self.log = log
+
+    def __call__(self, fn):
+        @functools.wraps(fn)
+        def wrapfn(*args, **kwargs):
+            for _ in xrange(self.tries):
+                try:
+                    return fn(*args, **kwargs)
+                except self.exceptions, e:
+                    print 'exception'
+                    self.log.debug("Retry, exception: %s", e)
+                    time.sleep(self.delay)
+            # should only get to this point of we have an
+            # exception and have run out of tries
+            raise
+        return wrapfn
+retry = Retry
