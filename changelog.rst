@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-0.3.7 released ???
+0.3.7 released 2011-12-15
 ==========================
 
 + BC BREAK: changed testing.raises() to regex escape by default.  There is now a
