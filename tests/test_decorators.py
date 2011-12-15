@@ -2,7 +2,7 @@ from mock import Mock, patch, call
 from nose.tools import eq_
 
 from blazeutils import curry, decorator
-from blazeutils.decorators import exc_emailer
+from blazeutils.decorators import exc_emailer, retry
 from blazeutils.testing import raises
 
 def test_curry():
@@ -110,3 +110,46 @@ class TestExcEmailer(object):
 
         assert m_log.exception.call_count == 0
         assert logger.exception.call_count == 2
+
+
+class TestRetry(object):
+
+    def setUp(self):
+        self.call_count = 0
+
+    def test_succesfull_call(self):
+        logger = Mock()
+
+        @retry(5, TypeError, logger=logger)
+        def myfunc():
+            return 5
+
+        assert myfunc() == 5
+        assert logger.debug.call_count == 0
+
+    def test_error_then_success(self):
+        logger = Mock()
+
+        @retry(5, (ValueError,TypeError), delay=0.001, logger=logger)
+        def myfunc():
+            if self.call_count == 0:
+                self.call_count += 1
+                raise TypeError('test error')
+            return 5
+
+        assert myfunc() == 5
+        eq_(logger.debug.call_count, 1)
+
+    def test_too_many_exceptions(self):
+        logger = Mock()
+
+        @retry(5, TypeError, delay=0.001, logger=logger)
+        def myfunc():
+            raise TypeError('myfunc error')
+
+        try:
+            myfunc()
+        except TypeError, e:
+            if 'myfunc error' not in str(e):
+                raise
+            eq_(logger.debug.call_count, 5)
