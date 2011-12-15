@@ -170,6 +170,8 @@ class Retry(object):
         tries -- num tries to repeat
         exceptions -- exceptions to catch, single Exception class or tuple of exceptions
         delay -- wait between retries
+        logger -- python logger to write debug message to
+        msg = a string that the exception must contain in order to be caught
         """
         self.tries = tries
         if isinstance(exceptions, Exception):
