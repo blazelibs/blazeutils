@@ -187,3 +187,24 @@ def assert_equal_txt(txtblock, correct_txtblock):
             difflib.unified_diff(ctb_split, tb_split)
         ))
         assert False, 'txt blocks not equal, diff follows: \n' + diff
+
+class FailLoader(object):
+    """
+        When an isntance is added to sys.meta_path, it will raise an ImportError
+        when the given modules are imported.
+    """
+    def __init__(self, *modules):
+        self.modules = list(modules)
+
+    def find_module(self, fullname, path=None):
+        if fullname in self.modules:
+            raise ImportError('Debug import failure for %s' % fullname)
+
+    def modules_from_package(self, package_name):
+        for mod_name in sys.modules.keys():
+            if mod_name == package_name or mod_name.startswith('{0}.'.format(package_name)):
+                self.modules.append(mod_name)
+
+    def delete_from_sys_modules(self):
+        for mod_name in self.modules:
+            del sys.modules[mod_name]
