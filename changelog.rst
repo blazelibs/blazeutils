@@ -4,7 +4,8 @@ Changelog
 0.3.8 released ???
 ==========================
 
-+ ???
++ added some utility functions for reST processing with docutils
++ added testing.FailLoader to help when testing failed imports
 
 0.3.7 released 2011-12-15
 ==========================
