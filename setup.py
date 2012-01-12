@@ -16,7 +16,7 @@ setup(
     name = "BlazeUtils",
     version = VERSION,
     description = "A collection of python utility functions and classes.",
-    long_description=README + '\n\n' + CHANGELOG,
+    long_description= '\n\n'.join((README, CHANGELOG)),
     author = "Randy Syring",
     author_email = "rsyring@gmail.com",
     url='http://bitbucket.org/rsyring/blazeutils/',
