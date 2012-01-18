@@ -4,6 +4,7 @@ Changelog
 0.3.8 released ???
 ==========================
 
++ added rst.create_toc() to generate a table of contents from a reST document
 + added some utility functions for reST processing with docutils
 + added testing.FailLoader to help when testing failed imports
 
