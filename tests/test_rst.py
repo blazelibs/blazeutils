@@ -93,3 +93,95 @@ class TestNoDocutils(object):
     @raises(ImportError, 'docutils library is required')
     def test_no_docutils(self):
         blazeutils.rst.rst2html('foo')
+
+toc_rst = """
+Heading 1
+=========
+
+An introductory paragraph.
+
+Heading 1.1
+-----------
+
+Heading 1.1.1
++++++++++++++
+
+Heading 1.1.2
++++++++++++++
+
+Heading 1.2
+-----------
+
+Heading 1.2.1
++++++++++++++
+
+Heading 1.2.2
++++++++++++++
+"""
+
+all_headings_toc_html = """
+<ul class="simple">
+<li><a class="reference internal" href="#heading-1" id="toc-ref-1">Heading 1</a><ul>
+<li><a class="reference internal" href="#heading-1-1" id="toc-ref-2">Heading 1.1</a><ul>
+<li><a class="reference internal" href="#heading-1-1-1" id="toc-ref-3">Heading 1.1.1</a></li>
+<li><a class="reference internal" href="#heading-1-1-2" id="toc-ref-4">Heading 1.1.2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#heading-1-2" id="toc-ref-5">Heading 1.2</a><ul>
+<li><a class="reference internal" href="#heading-1-2-1" id="toc-ref-6">Heading 1.2.1</a></li>
+<li><a class="reference internal" href="#heading-1-2-2" id="toc-ref-7">Heading 1.2.2</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+""".lstrip()
+
+depth2_toc_html = """
+<ul class="simple">
+<li><a class="reference internal" href="#heading-1" id="toc-ref-1">Heading 1</a></li>
+</ul>
+""".lstrip()
+
+excluded_section_toc_html = """
+<ul class="simple">
+<li><a class="reference internal" href="#heading-1-1" id="toc-ref-1">Heading 1.1</a><ul>
+<li><a class="reference internal" href="#heading-1-1-1" id="toc-ref-2">Heading 1.1.1</a></li>
+<li><a class="reference internal" href="#heading-1-1-2" id="toc-ref-3">Heading 1.1.2</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#heading-1-2" id="toc-ref-4">Heading 1.2</a><ul>
+<li><a class="reference internal" href="#heading-1-2-1" id="toc-ref-5">Heading 1.2.1</a></li>
+<li><a class="reference internal" href="#heading-1-2-2" id="toc-ref-6">Heading 1.2.2</a></li>
+</ul>
+</li>
+</ul>
+""".lstrip()
+
+href_prefix_toc_html = """
+<ul class="simple">
+<li><a class="reference external" href="some-page.html#heading-1" id="toc-ref-1">Heading 1</a></li>
+</ul>
+""".lstrip()
+
+class TestCreatToc(object):
+
+    def test_all_headings(self):
+        pub = blazeutils.rst.rst2pub(toc_rst)
+        pub, _ = blazeutils.rst.create_toc(pub.document, exclude_first_section=False)
+        eq_(all_headings_toc_html, pub.writer.parts['body'])
+
+    def test_depth(self):
+        pub = blazeutils.rst.rst2pub(toc_rst)
+        pub, _ = blazeutils.rst.create_toc(pub.document, exclude_first_section=False, depth=1)
+        eq_(depth2_toc_html, pub.writer.parts['body'])
+
+    def test_excluded_section(self):
+        pub = blazeutils.rst.rst2pub(toc_rst)
+        pub, _ = blazeutils.rst.create_toc(pub.document)
+        eq_(excluded_section_toc_html, pub.writer.parts['body'])
+
+    def test_href_prefix(self):
+        pub = blazeutils.rst.rst2pub(toc_rst)
+        pub, _ = blazeutils.rst.create_toc(pub.document, exclude_first_section=False, depth=1, href_prefix='some-page.html')
+        eq_(href_prefix_toc_html, pub.writer.parts['body'])
