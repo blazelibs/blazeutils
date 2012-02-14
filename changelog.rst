@@ -7,6 +7,7 @@ Changelog
 + added rst.create_toc() to generate a table of contents from a reST document
 + added some utility functions for reST processing with docutils
 + added testing.FailLoader to help when testing failed imports
++ ensure_datetime() now takes a time_part argument
 
 0.3.7 released 2011-12-15
 ==========================
