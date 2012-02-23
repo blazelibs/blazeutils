@@ -1,6 +1,13 @@
 import cPickle as pickle
+
+from nose.tools import eq_
+
 from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
     HtmlAttributeHolder, LazyOrderedDict, LazyDict, UniqueList
+
+# leave this here it ensures that LazyDict is available from .datastructures
+# even though the code was moved to .containers.
+assert LazyDict
 
 def test_dumbobject():
     assert DumbObject(a=1).a == 1
@@ -54,44 +61,6 @@ def test_ordereddict_lazy():
         assert False
     except AttributeError:
         pass
-
-def test_lazy_dict():
-
-    o = LazyDict(a=1, b=2)
-
-    ostr = pickle.dumps(o, pickle.HIGHEST_PROTOCOL)
-    o = pickle.loads(ostr)
-
-    assert o.a == 1
-    assert o.b == 2
-    o.c = 3
-    assert o.c == 3, o.c
-    assert o['c'] == 3
-    try:
-        o.d
-        assert False
-    except AttributeError:
-        pass
-
-    del o.c
-    assert not hasattr(o, 'c')
-
-def test_lazy_dict_with_setter_property():
-
-    class CustomLD(LazyDict):
-        def __init__(self):
-            self._x = True
-            LazyDict.__init__(self)
-        def getx(self):
-            return self._x
-        def setx(self, value):
-            self._x = value
-        x = property(getx, setx)
-
-    o = CustomLD()
-    assert o.x
-    o.x = False
-    assert not o.x
 
 def test_unique_list():
     ul = UniqueList([1, 1, 2, 2, 3])
