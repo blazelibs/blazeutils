@@ -10,8 +10,8 @@ try:
         STYLE_FACTORY = {}
         FONT_FACTORY = {}
 
-        def __init__(self):
-            self.ws = None
+        def __init__(self, ws=None):
+            self.ws = ws
             self.rownum = 0
             self.colnum = 0
 
