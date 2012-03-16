@@ -10,6 +10,8 @@ Changelog
 + ensure_datetime() now takes a time_part argument
 + added HTMLAttributes to new containers module, moved LazyDict to containers but
     left reference in datastructures.
+* make error_handling.raise_unexpected_import_error() more thorough and stop
+    matching exceptions that shouldn't have been matched
 
 0.3.7 released 2011-12-15
 ==========================
