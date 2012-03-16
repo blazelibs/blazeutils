@@ -1,3 +1,4 @@
+import re
 import sys
 import traceback
 import warnings
@@ -32,9 +33,13 @@ def raise_unexpected_import_error(our_import, exc):
         See if our_import caused the import error, if not, raise the last
         exception
     """
-    if '.' in our_import:
-        last_part = our_import.split('.').pop()
-    else:
-        last_part = our_import
-    if not str(exc).endswith(last_part):
+    if not _uie_matches(our_import, str(exc)):
         raise
+
+_identifier = r'[^\d\W]\w+'
+_dotted_path_rx = re.compile(r'{0}(\.{0})*$'.format(_identifier), re.UNICODE)
+
+def _uie_matches(our_import, exc_str):
+    match = _dotted_path_rx.search(exc_str)
+    dotted_part = match.group(0)
+    return our_import.endswith(dotted_part)
