@@ -13,6 +13,23 @@ def tolist(x, default=[]):
     else:
         return x
 
+def ensure_list(x, default=[]):
+    if x is None:
+        return default
+    if isinstance(x, tuple):
+        return list(x)
+    if not isinstance(x, list):
+        return [x]
+    else:
+        return x
+
+def ensure_tuple(x):
+    if x is None:
+        return ()
+    if isinstance(x, tuple):
+        return x
+    return (x,)
+
 def toset(x):
     if x is None:
         return set()

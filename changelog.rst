@@ -13,6 +13,8 @@ Changelog
 * make error_handling.raise_unexpected_import_error() more thorough and stop
     matching exceptions that shouldn't have been matched
 
+* add helpers.ensure_list() and ensure_tuple()
+
 0.3.7 released 2011-12-15
 ==========================
 
