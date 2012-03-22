@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-0.3.8 released ???
+0.3.8 released 2012-03-22
 ==========================
 
 + added rst.create_toc() to generate a table of contents from a reST document
@@ -9,11 +9,10 @@ Changelog
 + added testing.FailLoader to help when testing failed imports
 + ensure_datetime() now takes a time_part argument
 + added HTMLAttributes to new containers module, moved LazyDict to containers but
-    left reference in datastructures.
-* make error_handling.raise_unexpected_import_error() more thorough and stop
-    matching exceptions that shouldn't have been matched
-
-* add helpers.ensure_list() and ensure_tuple()
+  left reference in datastructures.
++ make error_handling.raise_unexpected_import_error() more thorough and stop
+  matching exceptions that shouldn't have been matched
++ add helpers.ensure_list() and ensure_tuple()
 
 0.3.7 released 2011-12-15
 ==========================
