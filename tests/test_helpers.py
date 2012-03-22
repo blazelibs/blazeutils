@@ -1,6 +1,7 @@
 from blazeutils import multi_pop, is_iterable, grouper, is_empty, pformat, \
     pprint, tolist, toset
-from blazeutils.helpers import unique, prettifysql, diff
+from blazeutils.helpers import unique, prettifysql, diff, ensure_tuple, \
+    ensure_list
 from blazeutils.strings import normalizews
 
 def test_multi_pop():
@@ -43,6 +44,21 @@ def test_tolist():
     t = (1,2)
     #TODO: this is wrong I think as we could actually be wanting a mutable list
     assert t == tolist(t)
+
+def test_ensure_list():
+    assert [1] == ensure_list(1)
+    l = [1,2]
+    assert l is ensure_list(l)
+    t = (1,2)
+    assert [1,2] == ensure_list(t)
+    assert [] == ensure_list(None)
+
+def test_ensure_tuple():
+    assert ensure_tuple(1) == (1,)
+    t = (1,2)
+    assert t is ensure_tuple(t)
+    t = (1,2)
+    assert () == ensure_tuple(None)
 
 def test_toset():
     assert set([1]) == toset(1)
