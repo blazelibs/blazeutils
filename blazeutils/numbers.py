@@ -58,3 +58,15 @@ decimalfmt = moneyfmt
 
 def round_down_to_n(x, rounder = 5):
     return (x // rounder) * rounder
+
+def convert_int(value):
+    try:
+        return int(value)
+    except ValueError:
+        return None
+
+def ensure_int(value):
+    retval = convert_int(value)
+    if retval is None:
+        return 0
+    return retval
