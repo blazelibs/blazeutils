@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+0.3.9 released ???
+==========================
+
++ added numbers.ensure_int() and numbers.convert_int()
+
 0.3.8 released 2012-03-22
 ==========================
 
