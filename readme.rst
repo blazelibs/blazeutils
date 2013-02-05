@@ -17,5 +17,5 @@ Current Status
 
 The code and API stay pretty stable.
 
-The `blazeutils tip <http://bitbucket.org/rsyring/blazeutils/get/tip.zip#egg=BlazeUtils-dev>`_
+The `blazeutils tip <http://bitbucket.org/blazelibs/blazeutils/get/tip.zip#egg=BlazeUtils-dev>`_
 is installable via `easy_install` with ``easy_install BlazeUtils==dev``

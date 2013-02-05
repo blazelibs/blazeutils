@@ -1,10 +1,11 @@
 Changelog
 ---------
 
-0.3.9 released ???
+0.3.9 released 2013-02-05
 ==========================
 
 + added numbers.ensure_int() and numbers.convert_int()
++ fix readme to have correct bitbucket URL to source
 
 0.3.8 released 2012-03-22
 ==========================
