@@ -13,8 +13,10 @@ def test_ensure_int():
     eq_(ensure_int(10), 10)
     eq_(ensure_int('10'), 10)
     eq_(ensure_int('foo'), 0)
+    eq_(ensure_int(None), 0)
 
 def test_convert_int():
-    eq_(ensure_int(10), 10)
-    eq_(ensure_int('10'), 10)
+    eq_(convert_int(10), 10)
+    eq_(convert_int('10'), 10)
     eq_(convert_int('foo'), None)
+    eq_(convert_int(None), None)

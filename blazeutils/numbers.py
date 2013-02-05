@@ -62,8 +62,13 @@ def round_down_to_n(x, rounder = 5):
 def convert_int(value):
     try:
         return int(value)
-    except ValueError:
-        return None
+    except ValueError, e:
+        if 'invalid literal for int()' not in str(e):
+            raise
+    except TypeError, e:
+        if 'int() argument must be a string or a number' not in str(e):
+            raise
+    return None
 
 def ensure_int(value):
     retval = convert_int(value)
