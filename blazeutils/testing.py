@@ -1,4 +1,6 @@
+from __future__ import absolute_import
 from cStringIO import StringIO
+import datetime as dt
 import difflib
 import itertools
 import logging
@@ -208,3 +210,15 @@ class FailLoader(object):
     def delete_from_sys_modules(self):
         for mod_name in self.modules:
             del sys.modules[mod_name]
+
+def mock_date_today(mock_obj, year, month=1, day=1):
+    mock_obj.today.return_value = dt.date(year, month, day)
+    mock_obj.side_effect = lambda *args, **kw: dt.date(*args, **kw)
+
+def mock_datetime_now(mock_obj, year, month=1, day=1, hour=0, min=0, sec=0):
+    mock_obj.now.return_value = dt.datetime(year, month, day, hour, min, sec)
+    mock_obj.side_effect = lambda *args, **kw: dt.datetime(*args, **kw)
+
+def mock_datetime_utcnow(mock_obj, year, month=1, day=1, hour=0, min=0, sec=0):
+    mock_obj.utcnow.return_value = dt.datetime(year, month, day, hour, min, sec)
+    mock_obj.side_effect = lambda *args, **kw: dt.datetime(*args, **kw)

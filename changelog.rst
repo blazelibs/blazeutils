@@ -4,7 +4,7 @@ Changelog
 0.3.10 released ????
 ==========================
 
-+
++ added testing.mock_date*() methods
 
 0.3.9 released 2013-02-05
 ==========================
