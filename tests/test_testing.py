@@ -1,6 +1,11 @@
+import datetime as dt
 import sys
 
-from blazeutils.testing import raises, assert_equal_sql, assert_equal_txt
+import mock
+from nose.tools import eq_
+
+from blazeutils.testing import raises, assert_equal_sql, assert_equal_txt, \
+    mock_date_today, mock_datetime_now, mock_datetime_utcnow
 
 class TestRaisesDecorator(object):
 
@@ -91,3 +96,23 @@ def test_assert_equal_txt():
     except AssertionError, e:
         assert '-    line 25' in str(e)
         assert '+    line 2' in str(e)
+
+class TestMockDateTime(object):
+
+    @mock.patch('blazeutils_mock_date.dt_date')
+    def test_mock_today(self, m_date):
+        import blazeutils_mock_date
+        mock_date_today(m_date, 2012)
+        eq_(dt.date(2012,1,1), blazeutils_mock_date.dt_date.today())
+
+    @mock.patch('blazeutils_mock_date.dt_datetime')
+    def test_mock_now(self, m_datetime):
+        import blazeutils_mock_date
+        mock_datetime_now(m_datetime, 2012)
+        eq_(dt.datetime(2012,1,1,0,0,0), blazeutils_mock_date.dt_datetime.now())
+
+    @mock.patch('blazeutils_mock_date.dt_datetime')
+    def test_mock_utcnow(self, m_datetime):
+        import blazeutils_mock_date
+        mock_datetime_utcnow(m_datetime, 2012)
+        eq_(dt.datetime(2012,1,1,0,0,0), blazeutils_mock_date.dt_datetime.utcnow())
