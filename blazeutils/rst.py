@@ -150,16 +150,9 @@ def create_toc(doctree, depth=sys.maxint, writer_name='html',\
     toc_doc = new_document(None)
     toc_doc += toc_nodes
 
-    # The href comes out as just a fragment, but its possible that the HTML
-    # will be used on a page where relative links don't resolve to the current
-    # page.  In that case, an href_prefix can be sent in.  The only downfall
-    # to doing this way is that the writer automatically sets an "external"
-    # class on a reference with 'refuri' instead of 'refid'.
+    # fix fragements that reference the same page
     if href_prefix:
-        nodes = toc_doc.traverse(docutils.nodes.reference)
-        for node in nodes:
-            node['refuri'] = '{0}#{1}'.format(href_prefix, node['refid'])
-            del node['refid']
+        prefix_refids(toc_doc, href_prefix)
 
     # setup a publisher and publish from the TOC document
     reader = docutils.readers.doctree.Reader(parser_name='null')
@@ -185,3 +178,14 @@ def rst2html(rst_src, **kwargs):
     """
     pub = rst2pub(rst_src, settings_overrides=kwargs, writer_name='html')
     return pub.writer.parts['body']
+
+def prefix_refids(document, href_prefix):
+    # The href comes out as just a fragment, but its possible that the HTML
+    # will be used on a page where relative links don't resolve to the current
+    # page.  In that case, an href_prefix can be sent in.  The only downfall
+    # to doing this way is that the writer automatically sets an "external"
+    # class on a reference with 'refuri' instead of 'refid'.
+    nodes = document.traverse(docutils.nodes.reference)
+    for node in nodes:
+        node['refuri'] = '{0}#{1}'.format(href_prefix, node['refid'])
+        del node['refid']
