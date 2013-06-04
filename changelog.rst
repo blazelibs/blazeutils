@@ -6,6 +6,8 @@ Changelog
 
 + added testing.mock_date*() methods
 + rst: breakout refid prefixing into separate prefix_refids()
++ rst: doctree2dict() now handles RST without doctinfo fields, renamed that
+  function docinfo2dict(), but kept an alias for BC.
 
 0.3.9 released 2013-02-05
 ==========================
