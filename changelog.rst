@@ -5,6 +5,7 @@ Changelog
 ==========================
 
 + added testing.mock_date*() methods
++ rst: breakout refid prefixing into separate prefix_refids()
 
 0.3.9 released 2013-02-05
 ==========================
