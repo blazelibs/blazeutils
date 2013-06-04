@@ -1,5 +1,6 @@
 nose
 docutils
+mock
 
 # xml coverage output that jenkins can read through the Cobertura Coverage
 # plugin
