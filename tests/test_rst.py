@@ -75,6 +75,11 @@ class TestRST(object):
         expect = {u'f1': u'field value 1', u'f2': u'2 again', u'f3': u'field\nvalue 3'}
         eq_(expect, blazeutils.rst.doctree2dict(pub.document))
 
+    def test_docinfo_no_fields(self):
+        pub = blazeutils.rst.rst2pub(ds_rst)
+        expect = {}
+        eq_(expect, blazeutils.rst.doctree2dict(pub.document))
+
 class TestNoDocutils(object):
 
     @classmethod

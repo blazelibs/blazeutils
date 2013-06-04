@@ -68,9 +68,9 @@ def rst2pub(source, source_path=None, source_class=None,
         enable_exit_status=enable_exit_status)
     return pub
 
-def doctree2dict(doctree):
+def docinfo2dict(doctree):
     """
-    Return the docinfo field list from a doctree
+    Return the docinfo field list from a doctree as a dictionary
 
     Note: there can be multiple instances of a single field in the docinfo.
     Since a dictionary is returned, the last instance's value will win.
@@ -78,10 +78,12 @@ def doctree2dict(doctree):
     Example:
 
         pub = rst2pub(rst_string)
-        print doctree2dict(pub.document)
+        print docinfo2dict(pub.document)
     """
     nodes = doctree.traverse(docutils.nodes.docinfo)
     md = {}
+    if not nodes:
+        return md
     for node in nodes[0]:
         # copied this logic from Sphinx, not exactly sure why they use it, but
         # I figured it can't hurt
@@ -93,6 +95,9 @@ def doctree2dict(doctree):
             name, body = node
             md[name.astext()] = body.astext()
     return md
+
+# deprecate eventually
+doctree2dict = docinfo2dict
 
 def create_toc(doctree, depth=sys.maxint, writer_name='html',\
             exclude_first_section=True, href_prefix=None, id_prefix='toc-ref-'):
