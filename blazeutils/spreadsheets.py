@@ -42,6 +42,28 @@ try:
             else:
                 ws.write(row, col, data)
 
+        def write_merge(self, r1, r2, c1, c2, data, style=None):
+            """
+            Write data to row, col of worksheet (ws) using the style
+            information.
+
+            Again, I'm wrapping this because you'll have to do it if you
+            create large amounts of formatted entries in your spreadsheet
+            (else Excel, but probably not OOo will crash).
+            """
+            ws = self.ws
+            if not ws:
+                raise Exception('you must use set_sheet() before write()')
+
+            if style:
+                if isinstance(style, xlwt.Style.XFStyle):
+                    s = style
+                else:
+                    s = self.get_style(style)
+                ws.write_merge(r1, r2, c1, c2, data, s)
+            else:
+                ws.write_merge(r1, r2, c1, c2, data)
+
         def mwrite(self, col_vals, style=None, nextrow=False):
             for val in col_vals:
                 self.awrite(val, style)
