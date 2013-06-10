@@ -1,6 +1,12 @@
 Changelog
 ---------
 
+0.3.11 released <in development>
+================================
+
++ fix a deprecation warning bug in our error_handling.py tests
+
+
 0.3.10 released 2013-06-10
 ==========================
 
