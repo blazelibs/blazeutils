@@ -130,7 +130,7 @@ def emits_deprecation(*messages):
             return retval
     return decorate
 
-def raises(arg1, arg2=None, re_esc=True):
+def raises(arg1, arg2=None, re_esc=True, **kwargs):
     """
         Decorate a test encorcing it emits the given Exception and message
         regex.
@@ -170,6 +170,13 @@ def raises(arg1, arg2=None, re_esc=True):
                 raise
             if msgregex is not None and not re.search(msgregex, str(e)):
                 raise
+            for attrname, msg in kwargs.iteritems():
+                if not hasattr(e, attrname):
+                    print '@raises: exception missing "{0}" attribute'.format(attrname)
+                    raise
+                if getattr(e, attrname) != msg:
+                    raise
+
     return decorate
 
 def assert_equal_sql(sql, correct_sql):
