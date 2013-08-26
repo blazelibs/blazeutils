@@ -7,6 +7,18 @@ from nose.tools import eq_
 from blazeutils.testing import raises, assert_equal_sql, assert_equal_txt, \
     mock_date_today, mock_datetime_now, mock_datetime_utcnow
 
+class LikeWerkzeugExc(Exception):
+    description = None
+
+    def __init__(self, description=None):
+        Exception.__init__(self)
+        if description is not None:
+            self.description = description
+
+    def __str__(self):
+        return '%d: %s' % (self.code, self.name)
+
+
 class TestRaisesDecorator(object):
 
     @raises(AttributeError)
@@ -61,6 +73,31 @@ class TestRaisesDecorator(object):
     @raises('[with brackets]')
     def test_non_regex(self):
         raise Exception('[with brackets]')
+
+    @raises(LikeWerkzeugExc, description='Foobar')
+    def test_custom_attributes_ok(self):
+        raise LikeWerkzeugExc('Foobar')
+
+    def test_custom_attributes_missing(self):
+        try:
+            @raises(LikeWerkzeugExc, description='Foobar')
+            def wrapper():
+                raise Exception('baz')
+            wrapper()
+            assert False, '@raises should have complained that the exception was missing the description attribute'
+        except Exception, e:
+            if "baz" != str(e):
+                raise
+
+    def test_custom_attributes_fails(self):
+        try:
+            @raises(LikeWerkzeugExc, description='Foobar')
+            def wrapper():
+                raise LikeWerkzeugExc('baz')
+            wrapper()
+            assert False, '@raises should have complained that the description attribute did not match'
+        except LikeWerkzeugExc, e:
+            pass
 
 def test_assert_equal_sql():
     s2 = s1 = """
