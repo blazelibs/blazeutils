@@ -4,7 +4,7 @@ Changelog
 0.3.12 released <in development>
 ================================
 
-*
+* add stderr output when exc_email() encounters an exception
 
 0.3.11 released 2013-12-06
 ================================
