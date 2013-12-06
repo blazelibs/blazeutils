@@ -7,6 +7,9 @@ Changelog
 + fix a deprecation warning bug in our error_handling.py tests
 + modified testing.raises() decorator to accept keyword args that will
   be converted into tests of attributes on the exception object
++ move package version to text file
++ add dates.trim_mils()
+
 
 0.3.10 released 2013-06-10
 ==========================

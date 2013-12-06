@@ -25,3 +25,6 @@ def ensure_date(dobj):
     if isinstance(dobj, dt.datetime):
         return dobj.date()
     return dobj
+
+def trim_mils(dobj):
+    return dt.datetime(dobj.year, dobj.month, dobj.day, dobj.hour, dobj.minute, dobj.second)
