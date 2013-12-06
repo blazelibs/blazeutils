@@ -4,6 +4,9 @@ Changelog
 0.3.11 released <in development>
 ================================
 
++ DEPRECATE: xlrd.workbook_to_reader() moved to .spreadsheets
++ DEPRECATE: spreadsheets.XlwtHelper renamed to Writer
++ added spreadsheets.Reader
 + fix a deprecation warning bug in our error_handling.py tests
 + modified testing.raises() decorator to accept keyword args that will
   be converted into tests of attributes on the exception object
