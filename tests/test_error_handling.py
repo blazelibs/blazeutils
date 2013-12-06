@@ -1,13 +1,8 @@
-from warnings import filterwarnings
-
 from nose.tools import eq_
 from blazeutils import tb_depth_in, traceback_depth
 from blazeutils.error_handling import _uie_matches
 from blazeutils.testing import emits_deprecation
 
-# DeprecationWarning is no longer loud by default in PY 2.7
-# we need to make it loud for @emits_deprecation below
-filterwarnings("default", category=DeprecationWarning)
 
 @emits_deprecation('.+its a bad idea')
 def test_traceback_funcs():
