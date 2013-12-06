@@ -149,7 +149,9 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception):
         except catch, e:
             body = format_exc()
             exc_info = sys.exc_info()
-            logger.exception('exc_mailer() caught an exception, email will be sent')
+            error_msg = 'exc_mailer() caught an exception, email will be sent.'
+            logger.exception(error_msg)
+            print >> sys.stderr, error_msg + '  ' + str(e)
             try:
                 send_mail_func(body)
             except Exception:
