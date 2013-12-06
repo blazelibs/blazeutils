@@ -1,7 +1,12 @@
 Changelog
 ---------
 
-0.3.11 released <in development>
+0.3.12 released <in development>
+================================
+
+*
+
+0.3.11 released 2013-12-06
 ================================
 
 + DEPRECATE: xlrd.workbook_to_reader() moved to .spreadsheets
