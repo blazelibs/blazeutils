@@ -114,6 +114,10 @@ def emits_deprecation(*messages):
 
         Note: requires Python 2.6 or later
     """
+    # DeprecationWarning is no longer loud by default in PY 2.7
+    # we need to make it loud for @emits_deprecation below
+    warnings.filterwarnings("default", category=DeprecationWarning)
+
     @decorator
     def decorate(fn, *args, **kw):
         if sys.version_info < (2, 6):
@@ -126,7 +130,7 @@ def emits_deprecation(*messages):
                 assert m is not None, 'No message to match warning: %s' % w.message
                 assert w is not None, 'No warning to match message #%s: %s' % (count, m)
                 assert issubclass(w.category, DeprecationWarning), 'DeprecationWarning not emitted, got %s type instead' % w.category
-                assert re.search(m, str(w.message)), 'Message regex "%s" did not match %s' % (m, w.message)
+                assert re.search(m, str(w.message)), 'Message regex "%s" did not match "%s"' % (m, w.message)
             return retval
     return decorate
 

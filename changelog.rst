@@ -12,6 +12,7 @@ Changelog
   be converted into tests of attributes on the exception object
 + move package version to text file
 + add dates.trim_mils()
++ adjustments so deprecation warning always shows in testing
 
 
 0.3.10 released 2013-06-10
