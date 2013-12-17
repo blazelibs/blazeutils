@@ -4,11 +4,13 @@ Changelog
 0.3.13 released ???
 ================================
 
++ fix bug which was always causing xlwt to be imported
+
 0.3.12 released 2013-12-17
 ================================
 
-* add stderr output when exc_email() encounters an exception
-* add dates.trim_seconds()
++ add stderr output when exc_email() encounters an exception
++ add dates.trim_seconds()
 
 0.3.11 released 2013-12-06
 ================================
