@@ -2,23 +2,20 @@ import sys, os
 import os.path as osp
 try:
     from setuptools import setup, find_packages
-    from setuptools.command.develop import develop as STDevelopCmd
 except ImportError:
     from ez_setup import use_setuptools
     use_setuptools()
     from setuptools import setup, find_packages
 
-class DevelopCmd(STDevelopCmd):
-    def run(self):
-        # add in requirements for testing only when using the develop command
-        self.distribution.install_requires.extend([
-            'mock',
-            'nose',
-            'xlwt',
-            'xlrd',
-            'docutils',
-        ])
-        STDevelopCmd.run(self)
+# pip install -e .[develop]
+develop_requires = [
+    'mock',
+    'nose',
+    'xlwt',
+    'xlrd',
+    'docutils',
+]
+
 
 cdir = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(cdir, 'readme.rst')).read()
@@ -44,6 +41,6 @@ setup(
       ],
     license='BSD',
     packages=['blazeutils'],
+    extras_require={'develop': develop_requires},
     zip_safe=False,
-    cmdclass = {'develop': DevelopCmd},
 )
