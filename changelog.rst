@@ -1,7 +1,7 @@
 Changelog
 ---------
 
-0.3.13 released ???
+0.3.13 released 2013-12-17
 ================================
 
 + fix bug which was always causing xlwt to be imported
