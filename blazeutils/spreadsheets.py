@@ -41,8 +41,6 @@ def workbook_to_reader(xlwt_wb):
     fh.seek(0)
     return xlrd.open_workbook(file_contents=fh.read())
 
-import xlwt
-
 
 class Writer(object):
     """
