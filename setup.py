@@ -28,7 +28,7 @@ setup(
     description = "A collection of python utility functions and classes.",
     long_description= '\n\n'.join((README, CHANGELOG)),
     author = "Randy Syring",
-    author_email = "rsyring@gmail.com",
+    author_email = "randy@thesyrings.us",
     url='http://bitbucket.org/rsyring/blazeutils/',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -43,4 +43,5 @@ setup(
     packages=['blazeutils'],
     extras_require={'develop': develop_requires},
     zip_safe=False,
+    include_package_data=True,
 )
