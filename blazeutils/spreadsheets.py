@@ -177,9 +177,11 @@ class Writer(object):
         return f
 
 
-@deprecate('XlwtHelper has been renamed to Writer')
-def XlwtHelper(ws=None):
-    return Writer(ws)
+class XlwtHelper(Writer):
+
+    @deprecate('XlwtHelper has been renamed to Writer')
+    def __init__(self, ws=None):
+        Writer.__init__(self, ws)
 
 
 class Reader(object):
