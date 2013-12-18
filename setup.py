@@ -29,7 +29,7 @@ setup(
     long_description= '\n\n'.join((README, CHANGELOG)),
     author = "Randy Syring",
     author_email = "randy@thesyrings.us",
-    url='http://bitbucket.org/rsyring/blazeutils/',
+    url='http://bitbucket.org/blazelibs/blazeutils/',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
