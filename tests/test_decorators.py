@@ -33,7 +33,7 @@ class TestExcEmailer(object):
     def test_no_exception(self, m_log):
         send_mail = Mock()
 
-        @exc_emailer(send_mail)
+        @exc_emailer(send_mail, print_to_stderr=False)
         def myfunc():
             pass
 
@@ -46,7 +46,7 @@ class TestExcEmailer(object):
     def test_exception(self, m_log):
         send_mail = Mock()
 
-        @exc_emailer(send_mail)
+        @exc_emailer(send_mail, print_to_stderr=False)
         def myfunc():
             raise ValueError('test')
 
@@ -56,7 +56,7 @@ class TestExcEmailer(object):
         traceback = send_mail.call_args[0][0]
         assert 'Traceback' in traceback
         assert 'raise ValueError(\'test\')' in traceback
-        m_log.exception.assert_called_once_with('exc_mailer() caught an exception, email will be sent')
+        m_log.exception.assert_called_once_with('exc_mailer() caught an exception, email will be sent.')
 
     @patch('blazeutils.decorators.log')
     def test_send_mail_func_exception(self, m_log):
@@ -64,7 +64,7 @@ class TestExcEmailer(object):
         def send_mail(body):
             raise ValueError('send_mail')
 
-        @exc_emailer(send_mail)
+        @exc_emailer(send_mail, print_to_stderr=False)
         def myfunc():
             raise ValueError('myfunc')
 
@@ -76,7 +76,7 @@ class TestExcEmailer(object):
                 raise
 
         eq_(m_log.exception.call_args_list, [
-            call('exc_mailer() caught an exception, email will be sent'),
+            call('exc_mailer() caught an exception, email will be sent.'),
             call('exc_mailer(): send_mail_func() threw an exception, logging it & then re-raising original exception'),
         ])
 
@@ -84,7 +84,7 @@ class TestExcEmailer(object):
     def test_catch_arg_usage(self):
         send_mail = Mock()
 
-        @exc_emailer(send_mail, catch=TypeError)
+        @exc_emailer(send_mail, catch=TypeError, print_to_stderr=False)
         def myfunc():
             raise ValueError('myfunc')
 
@@ -97,7 +97,7 @@ class TestExcEmailer(object):
         def send_mail(body):
             raise ValueError('send_mail')
 
-        @exc_emailer(send_mail, logger)
+        @exc_emailer(send_mail, logger, print_to_stderr=False)
         def myfunc():
             raise ValueError('myfunc')
 

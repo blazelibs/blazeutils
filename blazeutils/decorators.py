@@ -123,7 +123,7 @@ def deprecate(message):
         return fn(*args, **kw)
     return decorate
 
-def exc_emailer(send_mail_func, logger=None, catch=Exception):
+def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=True):
     """
         Catch exceptions and email them using `send_mail_func` which should
         accept a single string argument which will be the traceback to be
@@ -151,7 +151,8 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception):
             exc_info = sys.exc_info()
             error_msg = 'exc_mailer() caught an exception, email will be sent.'
             logger.exception(error_msg)
-            print >> sys.stderr, error_msg + '  ' + str(e)
+            if print_to_stderr:
+                print >> sys.stderr, error_msg + '  ' + str(e)
             try:
                 send_mail_func(body)
             except Exception:
