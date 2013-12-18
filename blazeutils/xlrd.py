@@ -6,6 +6,6 @@ warnings.warn('xlrd module deprecated, workbook_to_reader() moved to spreadsheet
               DeprecationWarning)
 
 def workbook_to_reader(xlwt_wb):
-    _workbook_to_reader(xlwt_wb)
+    return _workbook_to_reader(xlwt_wb)
 
 
