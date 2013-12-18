@@ -5,6 +5,7 @@ Changelog
 ================================
 
 + fix bug in xlrd.workbook_to_reader()
++ exc_emailer() now has print_to_stderr argument, defaults to True
 
 0.3.13 released 2013-12-17
 ================================
