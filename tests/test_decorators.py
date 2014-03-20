@@ -5,15 +5,30 @@ from blazeutils import curry, decorator
 from blazeutils.decorators import exc_emailer, retry
 from blazeutils.testing import raises
 
+
 def test_curry():
 
     @curry
     def myfunc(a, b, c):
-        return a+b+c;
+        return a+b+c
 
     f = myfunc(1)
     f = f(2)
     assert f(3) == 6
+
+
+def test_two_currys():
+
+    @curry
+    def add(a, b):
+        return a+b
+
+    f1 = add(1)
+    f2 = add(2)
+
+    eq_(f1(1), 2)
+    eq_(f2(1), 3)
+
 
 def test_decorator():
 

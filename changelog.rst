@@ -5,6 +5,7 @@ Changelog
 ================================
 
 + testing.raises() gets support for custom exception validators, docstring updated w/ usage
++ decorators.curry() use a different approach so multiple curried functions can be used
 
 0.3.14 released 2013-12-17
 ================================
