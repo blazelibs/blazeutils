@@ -1,6 +1,11 @@
 Changelog
 ---------
 
+0.3.15 released ???
+================================
+
++ testing.raises() gets support for custom exception validators, docstring updated w/ usage
+
 0.3.14 released 2013-12-17
 ================================
 

@@ -19,6 +19,10 @@ class LikeWerkzeugExc(Exception):
         return '%d: %s' % (self.code, self.name)
 
 
+def _is_attribute_exception(exc):
+    return isinstance(exc, AttributeError)
+
+
 class TestRaisesDecorator(object):
 
     @raises(AttributeError)
@@ -35,6 +39,10 @@ class TestRaisesDecorator(object):
 
     @raises("object has no attribute 'foo'", AttributeError)
     def test_arg4(self):
+        assert sys.foo
+
+    @raises(_is_attribute_exception)
+    def test_callable_validator(self):
         assert sys.foo
 
     def test_non_matching_message(self):
@@ -57,6 +65,17 @@ class TestRaisesDecorator(object):
             assert False, '@raises hid the exception but shouldn\'t have'
         except AttributeError, e:
             if "'module' object has no attribute 'foo'" != str(e):
+                raise
+
+    def test_callable_validator_returns_false(self):
+        try:
+            @raises(_is_attribute_exception)
+            def wrapper():
+                raise ValueError('test ve')
+            wrapper()
+            assert False, '@raises hid the exception but shouldn\'t have'
+        except ValueError, e:
+            if "test ve" != str(e):
                 raise
 
     def test_no_exception_raised(self):

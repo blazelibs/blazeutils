@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from cStringIO import StringIO
 import datetime as dt
 import difflib
+import inspect
 import itertools
 import logging
 import re
@@ -141,17 +142,43 @@ def raises(arg1, arg2=None, re_esc=True, **kwargs):
 
         Arguments to this decorator can be one or both of:
 
-            A) Exception type
-            B) regex to match against the string representation of the exception
+            A) Exception type or callable to validate the exception
+            B) If A is an Exception type, then a message or regex to match against the string
+            representation of the exception
 
         So, all the following are valid:
 
             @raises(AttributeError)
-            @raises("^.+object has no attribute 'foo'")
-            @raises(AttributeError, "^.+object has no attribute 'foo'")
+            @raises("object has no attribute 'foo'")
+            @raises(AttributeError, "object has no attribute 'foo')
             @raises("^.+object has no attribute 'foo'", AttributeError)
+
+            # with regex support
+            @raises("^.+object has no attribute 'foo'", re_esc=False)
+
+            # using custom exception validator
+            @raises(my_custom_validator)
+
+            my_custom_validator() should accept a single argument, the exception caught by @raises,
+            and return True if the exception was expected and False otherwise
+
+        @raises also supports examing arbitrary attributes on the exception for a given message
+        by using keyword arguments:
+
+            @raises(SomeException, foo='bar')
+
+            This will ensure that the exception is of the SomeException type also that the exception
+            has an attribute "foo" with a value of "bar."  No regex support currently for these
+            messages.
     """
-    if isinstance(arg1, basestring):
+    exc_validator = None
+    # if arg1 is callable, and not a class or, if it is a class, not a BaseException, assume
+    # arg1 should be a validator of the exception
+    if callable(arg1) and (not inspect.isclass(arg1) or not issubclass(arg1, BaseException)):
+        exc_validator = arg1
+        msgregex = None
+        etype = None
+    elif isinstance(arg1, basestring):
         msgregex = arg1
         etype = arg2
     elif isinstance(arg2, basestring):
@@ -170,6 +197,8 @@ def raises(arg1, arg2=None, re_esc=True, **kwargs):
             fn(*args, **kw)
             assert False, '@raises: no exception raised in %s()' % fn.__name__
         except Exception, e:
+            if exc_validator is not None and not exc_validator(e):
+                raise
             if etype is not None and not isinstance(e, etype):
                 raise
             if msgregex is not None and not re.search(msgregex, str(e)):
