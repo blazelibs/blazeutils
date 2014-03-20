@@ -1,5 +1,5 @@
 import functools
-from functools import update_wrapper
+from functools import update_wrapper, partial
 import inspect, itertools
 import logging
 import time
@@ -92,25 +92,114 @@ def decorator(target):
         return update_wrapper(decorated, fn)
     return update_wrapper(decorate, target)
 
-def curry(fn, *args, **kwargs):
+
+def _num_required_args(func):
+    """ Number of args for func
+
+        >>> def foo(a, b, c=None):
+        ... return a + b + c
+
+        >>> _num_required_args(foo)
+        2
+
+        >>> def bar(*args):
+        ... return sum(args)
+
+        >>> print(_num_required_args(bar))
+        None
+
+        borrowed from: https://github.com/pytoolz/toolz
     """
-    Decorator that returns a function that keeps returning functions
-    until all arguments are supplied; then the original function is
-    evaluated.
+    try:
+        spec = inspect.getargspec(func)
+        if spec.varargs:
+            return None
+        num_defaults = len(spec.defaults) if spec.defaults else 0
+        return len(spec.args) - num_defaults
+    except TypeError:
+        return None
+
+
+class curry(object):
+    """ Curry a callable function
+
+        Enables partial application of arguments through calling a function with an
+        incomplete set of arguments.
+
+        >>> def mul(x, y):
+        ... return x * y
+        >>> mul = curry(mul)
+
+        >>> double = mul(2)
+        >>> double(10)
+        20
+
+        Also supports keyword arguments
+
+        >>> @curry # Can use curry as a decorator
+        ... def f(x, y, a=10):
+        ... return a * (x + y)
+
+        >>> add = f(a=1)
+        >>> add(2, 3)
+        5
+
+
+        borrowed from: https://github.com/pytoolz/toolz
+
+        See Also:
+        toolz.curried - namespace of curried functions
+        http://toolz.readthedocs.org/en/latest/curry.html
     """
-    argscount = fn.func_code.co_argcount
-    cargs = []
-    def tocall(*args):
-        cargs = tocall.cargs + list(args)
-        tocall.cargs = cargs
-        if len(tocall.cargs) < argscount:
-            return tocall
+    def __init__(self, func, *args, **kwargs):
+        if not callable(func):
+            raise TypeError("Input must be callable")
+
+        self.func = func
+        self.args = args
+        self.keywords = kwargs if kwargs else None
+        self.__doc__ = self.func.__doc__
+        try:
+            self.func_name = self.func.func_name
+        except AttributeError:
+            pass
+
+    def __str__(self):
+        return str(self.func)
+
+    def __repr__(self):
+        return repr(self.func)
+
+    def __call__(self, *args, **_kwargs):
+        args = self.args + args
+        if _kwargs:
+            kwargs = {}
+            if self.keywords:
+                kwargs.update(self.keywords)
+            kwargs.update(_kwargs)
+        elif self.keywords:
+            kwargs = self.keywords
         else:
-            fnargs = tuple(tocall.cargs)
-            tocall.cargs = []
-            return fn(*fnargs)
-    tocall.cargs = cargs
-    return tocall
+            kwargs = {}
+
+        try:
+            return self.func(*args, **kwargs)
+        except TypeError:
+            required_args = _num_required_args(self.func)
+
+            # If there was a genuine TypeError
+            if required_args is not None and len(args) >= required_args:
+                raise
+
+            # If we only need one more argument
+            if (required_args is not None and required_args - len(args) == 1):
+                if kwargs:
+                    return partial(self.func, *args, **kwargs)
+                else:
+                    return partial(self.func, *args)
+
+            return curry(self.func, *args, **kwargs)
+
 
 def deprecate(message):
     """
