@@ -2,7 +2,7 @@ from mock import Mock, patch, call
 from nose.tools import eq_
 
 from blazeutils import curry, decorator
-from blazeutils.decorators import exc_emailer, retry
+from blazeutils.decorators import exc_emailer, retry, hybrid_method
 from blazeutils.testing import raises
 
 
@@ -188,3 +188,20 @@ class TestRetry(object):
             raise TypeError('myfunc error')
 
         myfunc()
+
+
+class MethodClass(object):
+    @hybrid_method
+    def value(self):
+        return 'instance level'
+
+    @value.classmethod
+    def value(self):
+        return 'class level'
+
+
+class TestHybrid(object):
+
+    def test_method(self):
+        eq_(MethodClass.value(), 'class level')
+        eq_(MethodClass().value(), 'instance level')

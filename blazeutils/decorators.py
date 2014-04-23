@@ -293,3 +293,34 @@ class Retry(object):
             raise
         return wrapfn
 retry = Retry
+
+
+class hybrid_method(object):
+    """A decorator which allows definition of a Python object method with both
+    instance-level and class-level behavior::
+
+        class MethodClass(object):
+            @hybrid_method
+            def value(self):
+                return 'instance level'
+
+            @value.classmethod
+            def value(self):
+                return 'class level'
+
+    Credit: SQLAlchemy
+    """
+
+    def __init__(self, func, class_method=None):
+        self.instance_method = func
+        self.class_method = class_method or func
+
+    def __get__(self, instance, owner):
+        if instance is None:
+            return self.class_method.__get__(owner, owner.__class__)
+        else:
+            return self.instance_method.__get__(instance, owner)
+
+    def classmethod(self, func):
+        self.class_method = func
+        return self
