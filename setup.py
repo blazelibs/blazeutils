@@ -14,6 +14,7 @@ develop_requires = [
     'xlwt',
     'xlrd',
     'docutils',
+    'sqlalchemy',
 ]
 
 
@@ -44,4 +45,5 @@ setup(
     extras_require={'develop': develop_requires},
     zip_safe=False,
     include_package_data=True,
+    required_packages=['wrapt'],
 )
