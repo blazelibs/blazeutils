@@ -361,7 +361,6 @@ def memoize(method_to_wrap):
 
         # Retrieve the cache, attaching an empty one if none exists.
         cache = instance.__dict__.setdefault(memoize_key, {})
-        print 'cache: ', cache
 
         # Now see if entry is in the cache and if it isn't then call
         # the wrapped function to generate it.
