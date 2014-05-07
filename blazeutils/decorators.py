@@ -7,6 +7,8 @@ from traceback import format_exc
 import sys
 import warnings
 
+import wrapt
+
 log = logging.getLogger(__name__)
 
 def format_argspec_plus(fn, grouped=True):
@@ -324,3 +326,58 @@ class hybrid_method(object):
     def classmethod(self, func):
         self.class_method = func
         return self
+
+
+def memoize(method_to_wrap):
+    """
+        Currently only works on instance methods.  Designed for use with SQLAlchemy entities.  Could
+        be updated in the future to be more flexible.
+
+        class User(Base):
+            __tablename__ = 'users'
+
+            id = Column(Integer, primary_key=True)
+            addresses = relationship("Address", backref="user")
+
+            @memoize
+            def address_count(self):
+                return len(self.addresses)
+
+
+        sqlalchemy.event.listen(User, 'expire', User.address_count.reset_memoize)
+
+
+    """
+    memoize_key = '_memoize_cache_{0}'.format(id(method_to_wrap))
+
+    @wrapt.decorator
+    def inner_memoize(wrapped, instance, args, kwargs):
+        if instance is None and inspect.isclass(wrapped):
+            # Wrapped function is a class and we are creating an
+            # instance of the class. Don't support this case, just
+            # return straight away.
+
+            return wrapped(*args, **kwargs)
+
+        # Retrieve the cache, attaching an empty one if none exists.
+        cache = instance.__dict__.setdefault(memoize_key, {})
+        print 'cache: ', cache
+
+        # Now see if entry is in the cache and if it isn't then call
+        # the wrapped function to generate it.
+
+        try:
+            key = (args, frozenset(kwargs.items()))
+            return cache[key]
+
+        except KeyError:
+            result = cache[key] = wrapped(*args, **kwargs)
+            return result
+
+    def reset_memoize(target, *args):
+        target.__dict__[memoize_key] = {}
+
+    decorated = inner_memoize(method_to_wrap)
+    decorated.reset_memoize = reset_memoize
+    return decorated
+

@@ -1,12 +1,14 @@
 Changelog
 ---------
 
-0.3.15 released ???
+0.4.0 released ???
 ================================
 
 + testing.raises() gets support for custom exception validators, docstring updated w/ usage
 + decorators.curry() use a different approach so multiple curried functions can be used
 + add decorators.hybrid_method()
++ add decorators.memoize() primarily for SQLAlchemy method caching
++ BC break: .decorators now uses 'wrapt' so that is a new dependency
 
 0.3.14 released 2013-12-17
 ================================
