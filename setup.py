@@ -45,5 +45,5 @@ setup(
     extras_require={'develop': develop_requires},
     zip_safe=False,
     include_package_data=True,
-    required_packages=['wrapt'],
+    install_requires=['wrapt'],
 )
