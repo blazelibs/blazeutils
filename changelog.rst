@@ -1,12 +1,25 @@
 Changelog
 ---------
 
-0.4.1 released 2013-05-17
+0.4.2 released 2014-12-08
 ================================
 
- + fix packaging issue
++ fix wrong dates for 0.4.0 and 0.4.1 releases in changelog
++ add roundsecs argument to dates.trim_mils
++ updates to spreadsheets module including .xlsx file support
 
-0.4.0 released 2013-05-17
+    - xlsx_to_reader(): converts xlsxwriter.Workbook instance to xlrd reader
+    - WriterX: like Writer but for xlsxwriter Worksheets, API is slightly different and won't have
+      any faculties for style management like Writer does.
+    - Reader: gets a .from_xlsx() method
+    - http_headers(): utility function to help when sending files as HTTP response
+
+0.4.1 released 2014-05-17
+================================
+
++ fix packaging issue
+
+0.4.0 released 2014-05-17
 ================================
 
 + testing.raises() gets support for custom exception validators, docstring updated w/ usage
