@@ -6,6 +6,8 @@ except ImportError:
     from StringIO import StringIO
 import datetime as dt
 from decimal import Decimal
+from random import randint
+import os.path as osp
 
 try:
     import xlrd
@@ -16,6 +18,12 @@ try:
     import xlwt
 except ImportError:
     xlwt = None
+
+try:
+    import xlsxwriter
+except ImportError:
+    xlsxwriter = None
+
 
 from .decorators import deprecate
 
@@ -30,6 +38,30 @@ def _xlwt_required():
         raise ImportError('xlwt library is required to use this function or class')
 
 
+def _xlsx_required():
+    if xlsxwriter is None:
+        raise ImportError('xlsxwriter library is required to use this function or class')
+
+
+def http_headers(filename, randomize=True):
+    basename, ext = osp.splitext(filename)
+    if randomize:
+        rand_filename = '{}-{}{}'.format(basename, randint(1000000, 9999999), ext)
+        headers = {'Content-Disposition': 'attachment; filename={}'.format(rand_filename)}
+    else:
+        headers = {'Content-Disposition': 'attachment; filename={}'.format(filename)}
+
+    if ext == '.xlsx':
+        headers['Content-Type'] = 'application/vnd.openxmlformats-officedocument' \
+                                  '.spreadsheetml.sheet'
+    elif ext == '.xls':
+        headers['Content-Type'] = 'application/vnd.ms-excel'
+    else:
+        raise ValueError('filename "{}" does not end with .xls or .xlsx'.format(filename))
+
+    return headers
+
+
 def workbook_to_reader(xlwt_wb):
     """
         convert xlwt Workbook instance to an xlrd instance for reading
@@ -37,6 +69,19 @@ def workbook_to_reader(xlwt_wb):
     _xlrd_required()
     fh = StringIO()
     xlwt_wb.save(fh)
+    # prep for reading
+    fh.seek(0)
+    return xlrd.open_workbook(file_contents=fh.read())
+
+
+def xlsx_to_reader(xlsx_wb):
+    """
+        convert xlwt Workbook instance to an xlrd instance for reading
+    """
+    _xlrd_required()
+    fh = StringIO()
+    xlsx_wb.filename = fh
+    xlsx_wb.close()
     # prep for reading
     fh.seek(0)
     return xlrd.open_workbook(file_contents=fh.read())
@@ -177,6 +222,27 @@ class Writer(object):
         return f
 
 
+class WriterX(object):
+
+    def __init__(self, ws):
+        self.set_sheet(ws)
+
+    def set_sheet(self, ws):
+        self.ws = ws
+        self.rownum = 0
+        self.colnum = 0
+
+    def awrite(self, data, style=None, nextrow=False):
+        self.ws.write(self.rownum, self.colnum, data, style)
+        self.colnum += 1
+        if nextrow:
+            self.nextrow()
+
+    def nextrow(self):
+        self.rownum += 1
+        self.colnum = 0
+
+
 class XlwtHelper(Writer):
 
     @deprecate('XlwtHelper has been renamed to Writer')
@@ -197,6 +263,11 @@ class Reader(object):
     @classmethod
     def from_xlwt(cls, xlwt_wb):
         wb = workbook_to_reader(xlwt_wb)
+        return cls(wb)
+
+    @classmethod
+    def from_xlsx(cls, xlsx_wb):
+        wb = xlsx_to_reader(xlsx_wb)
         return cls(wb)
 
     def cell_value(self, is_date=False):
