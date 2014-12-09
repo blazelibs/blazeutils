@@ -26,8 +26,13 @@ def ensure_date(dobj):
         return dobj.date()
     return dobj
 
-def trim_mils(dobj):
-    return dt.datetime(dobj.year, dobj.month, dobj.day, dobj.hour, dobj.minute, dobj.second)
+
+def trim_mils(dobj, roundsecs=False):
+    newdt = dt.datetime(dobj.year, dobj.month, dobj.day, dobj.hour, dobj.minute, dobj.second)
+    if not roundsecs or dobj.microsecond < 500:
+        return newdt
+    return newdt + dt.timedelta(seconds=1)
+
 
 def trim_seconds(dobj):
     return dt.datetime(dobj.year, dobj.month, dobj.day, dobj.hour, dobj.minute)
