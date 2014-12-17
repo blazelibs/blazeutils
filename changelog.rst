@@ -4,7 +4,7 @@ Changelog
 0.4.3 released 2014-12-16
 ================================
 
-+ add xlsx_to_reader() and WriterX.mwrite()
++ add xlsx_to_strio() and WriterX.mwrite()
 
 0.4.2 released 2014-12-08
 ================================
