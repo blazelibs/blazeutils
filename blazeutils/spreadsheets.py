@@ -74,9 +74,9 @@ def workbook_to_reader(xlwt_wb):
     return xlrd.open_workbook(file_contents=fh.read())
 
 
-def xlsx_to_reader(xlsx_wb):
+def xlsx_to_strio(xlsx_wb):
     """
-        convert xlwt Workbook instance to an xlrd instance for reading
+        convert xlwt Workbook instance to a stringio instance
     """
     _xlrd_required()
     fh = StringIO()
@@ -84,6 +84,14 @@ def xlsx_to_reader(xlsx_wb):
     xlsx_wb.close()
     # prep for reading
     fh.seek(0)
+    return fh
+
+
+def xlsx_to_reader(xlsx_wb):
+    """
+        convert xlwt Workbook instance to an xlrd instance for reading
+    """
+    fh = xlsx_to_strio(xlsx_wb)
     return xlrd.open_workbook(file_contents=fh.read())
 
 
@@ -235,6 +243,14 @@ class WriterX(object):
     def awrite(self, data, style=None, nextrow=False):
         self.ws.write(self.rownum, self.colnum, data, style)
         self.colnum += 1
+        if nextrow:
+            self.nextrow()
+
+    def mwrite(self, *colvals, **kwargs):
+        style = kwargs.pop('style', None)
+        nextrow = kwargs.pop('nextrow', False)
+        for val in colvals:
+            self.awrite(val, style)
         if nextrow:
             self.nextrow()
 
