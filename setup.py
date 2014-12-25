@@ -1,11 +1,10 @@
-import sys, os
-import os.path as osp
+import osp as osp
 try:
-    from setuptools import setup, find_packages
+    from setuptools import setup
 except ImportError:
     from ez_setup import use_setuptools
     use_setuptools()
-    from setuptools import setup, find_packages
+    from setuptools import setup
 
 # pip install -e .[develop]
 develop_requires = [
@@ -18,18 +17,18 @@ develop_requires = [
 ]
 
 
-cdir = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(cdir, 'readme.rst')).read()
-CHANGELOG = open(os.path.join(cdir, 'changelog.rst')).read()
-VERSION = open(os.path.join(cdir, 'blazeutils', 'version.txt')).read().strip()
+cdir = osp.abspath(osp.dirname(__file__))
+README = open(osp.join(cdir, 'readme.rst')).read()
+CHANGELOG = open(osp.join(cdir, 'changelog.rst')).read()
+VERSION = open(osp.join(cdir, 'blazeutils', 'version.txt')).read().strip()
 
 setup(
-    name = "BlazeUtils",
-    version = VERSION,
-    description = "A collection of python utility functions and classes.",
-    long_description= '\n\n'.join((README, CHANGELOG)),
-    author = "Randy Syring",
-    author_email = "randy@thesyrings.us",
+    name="BlazeUtils",
+    version=VERSION,
+    description="A collection of python utility functions and classes.",
+    long_description='\n\n'.join((README, CHANGELOG)),
+    author="Randy Syring",
+    author_email="randy@thesyrings.us",
     url='http://bitbucket.org/blazelibs/blazeutils/',
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -39,7 +38,7 @@ setup(
         'Programming Language :: Python :: 2.5',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-      ],
+    ],
     license='BSD',
     packages=['blazeutils'],
     extras_require={'develop': develop_requires},
