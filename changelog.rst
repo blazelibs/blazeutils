@@ -4,6 +4,12 @@ Recent Changelog
 This is the most recent activity.  See `changelog-archive.rst` in the source distribution
 for older changelog notes.
 
+
+0.4.5 released <in dev>
+===============================
+
+- ...
+
 0.4.4 released 2014-12-25
 ================================
 
