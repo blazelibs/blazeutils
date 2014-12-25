@@ -18,6 +18,4 @@ from spreadsheets import XlwtHelper
 from blazeutils.strings import StringIndenter, simplify_string, case_cw2us, \
     case_mc2us, case_us2cw, case_us2mc, randchars, \
     randhash, randnumerics, reindent, simplify_string
-
-cdir = osp.abspath(osp.dirname(__file__))
-VERSION = open(osp.join(cdir, 'version.txt')).read().strip()
+from blazeutils.version import VERSION
