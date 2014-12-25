@@ -1,4 +1,4 @@
-import osp as osp
+import os.path as osp
 try:
     from setuptools import setup
 except ImportError:
@@ -20,11 +20,13 @@ develop_requires = [
 cdir = osp.abspath(osp.dirname(__file__))
 README = open(osp.join(cdir, 'readme.rst')).read()
 CHANGELOG = open(osp.join(cdir, 'changelog.rst')).read()
-VERSION = open(osp.join(cdir, 'blazeutils', 'version.txt')).read().strip()
+
+version_globals = {}
+execfile(osp.join(cdir, 'blazeutils', 'version.py'), version_globals)
 
 setup(
     name="BlazeUtils",
-    version=VERSION,
+    version=version_globals['VERSION'],
     description="A collection of python utility functions and classes.",
     long_description='\n\n'.join((README, CHANGELOG)),
     author="Randy Syring",
