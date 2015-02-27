@@ -9,7 +9,7 @@ except ImportError:
 # pip install -e .[develop]
 develop_requires = [
     'mock',
-    'nose',
+    'pytest',
     'xlwt',
     'xlrd',
     'docutils',
@@ -21,8 +21,10 @@ cdir = osp.abspath(osp.dirname(__file__))
 README = open(osp.join(cdir, 'readme.rst')).read()
 CHANGELOG = open(osp.join(cdir, 'changelog.rst')).read()
 
+version_fpath = osp.join(cdir, 'blazeutils', 'version.py')
 version_globals = {}
-execfile(osp.join(cdir, 'blazeutils', 'version.py'), version_globals)
+with open(version_fpath) as fo:
+    exec(fo.read(), version_globals)
 
 setup(
     name="BlazeUtils",
