@@ -1,4 +1,3 @@
-from nose.tools import eq_
 import xlwt
 
 from blazeutils.spreadsheets import workbook_to_reader, XlwtHelper, http_headers
@@ -15,7 +14,7 @@ class TestWorkbookToReader(object):
 
         wb = workbook_to_reader(write_wb)
         sh = wb.sheet_by_name('Foo')
-        eq_(sh.cell_value(rowx=0, colx=0), 'bar')
+        assert sh.cell_value(rowx=0, colx=0) == 'bar'
 
 
 class TestWriter(object):
@@ -32,7 +31,7 @@ class TestHttpHeaders(object):
             'Content-Type': 'application/vnd.ms-excel',
             'Content-Disposition': 'attachment; filename=foo.xls'
         }
-        eq_(http_headers('foo.xls', randomize=False), expect)
+        assert http_headers('foo.xls', randomize=False), expect
 
     def test_xlsx_filename(self):
         expect = {
@@ -40,7 +39,7 @@ class TestHttpHeaders(object):
                             '.spreadsheetml.sheet',
             'Content-Disposition': 'attachment; filename=foo.xlsx'
         }
-        eq_(http_headers('foo.xlsx', randomize=False), expect)
+        assert http_headers('foo.xlsx', randomize=False) == expect
 
     def test_randomize(self):
         content_dispo = http_headers('foo.xlsx')['Content-Disposition']

@@ -1,6 +1,5 @@
 import cPickle as pickle
 
-from nose.tools import eq_
 
 from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
     HtmlAttributeHolder, LazyOrderedDict, LazyDict, UniqueList

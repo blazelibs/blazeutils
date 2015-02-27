@@ -10,3 +10,4 @@ syntax: glob
 .coverage
 coverage.xml
 nosetests.xml
+.tox/

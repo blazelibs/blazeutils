@@ -1,7 +1,6 @@
 import sys
 
 import mock
-from nose.tools import eq_
 
 import blazeutils.rst
 from blazeutils.testing import FailLoader, raises
@@ -53,7 +52,7 @@ class TestRST(object):
     def assert_eq(self, rst, html, **kwargs):
         converted = blazeutils.rst.rst2html(rst, **kwargs)
         assert isinstance(converted, unicode)
-        eq_(html, converted)
+        assert html == converted
 
     def test_document_structure(self):
         self.assert_eq(ds_rst, ds_html)
@@ -73,12 +72,12 @@ class TestRST(object):
     def test_docinfo(self):
         pub = blazeutils.rst.rst2pub(docinfo_rst)
         expect = {u'f1': u'field value 1', u'f2': u'2 again', u'f3': u'field\nvalue 3'}
-        eq_(expect, blazeutils.rst.doctree2dict(pub.document))
+        assert expect == blazeutils.rst.doctree2dict(pub.document)
 
     def test_docinfo_no_fields(self):
         pub = blazeutils.rst.rst2pub(ds_rst)
         expect = {}
-        eq_(expect, blazeutils.rst.doctree2dict(pub.document))
+        assert expect == blazeutils.rst.doctree2dict(pub.document)
 
 class TestNoDocutils(object):
 
@@ -174,19 +173,19 @@ class TestCreatToc(object):
     def test_all_headings(self):
         pub = blazeutils.rst.rst2pub(toc_rst)
         pub, _ = blazeutils.rst.create_toc(pub.document, exclude_first_section=False)
-        eq_(all_headings_toc_html, pub.writer.parts['body'])
+        assert all_headings_toc_html == pub.writer.parts['body']
 
     def test_depth(self):
         pub = blazeutils.rst.rst2pub(toc_rst)
         pub, _ = blazeutils.rst.create_toc(pub.document, exclude_first_section=False, depth=1)
-        eq_(depth2_toc_html, pub.writer.parts['body'])
+        assert depth2_toc_html == pub.writer.parts['body']
 
     def test_excluded_section(self):
         pub = blazeutils.rst.rst2pub(toc_rst)
         pub, _ = blazeutils.rst.create_toc(pub.document)
-        eq_(excluded_section_toc_html, pub.writer.parts['body'])
+        assert excluded_section_toc_html == pub.writer.parts['body']
 
     def test_href_prefix(self):
         pub = blazeutils.rst.rst2pub(toc_rst)
         pub, _ = blazeutils.rst.create_toc(pub.document, exclude_first_section=False, depth=1, href_prefix='some-page.html')
-        eq_(href_prefix_toc_html, pub.writer.parts['body'])
+        assert href_prefix_toc_html == pub.writer.parts['body']

@@ -1,4 +1,3 @@
-from nose.tools import assert_equal
 from sqlalchemy import Column, Integer, String, create_engine, ForeignKey, event
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
@@ -67,21 +66,21 @@ class TestSAMemoize(object):
 
     def test_cache_works(self):
         user = User.testing_create()
-        assert_equal(user.address_count(), 2)
-        assert_equal(mk.pop(), 'ac')
+        assert user.address_count() == 2
+        assert mk.pop() == 'ac'
 
-        assert_equal(user.address_count(), 2)
-        assert_equal(len(mk), 0)
+        assert user.address_count() == 2
+        assert len(mk) == 0
 
     def test_cache_resets(self):
         user = User.testing_create()
-        assert_equal(user.address_count(), 2)
-        assert_equal(mk.pop(), 'ac')
+        assert user.address_count() == 2
+        assert mk.pop() == 'ac'
 
         session1.add(Address(email='foo', user=user))
         print 'committing'
         session1.commit()
 
         print 'accessing'
-        assert_equal(user.address_count(), 3)
-        assert_equal(mk.pop(), 'ac')
+        assert user.address_count() == 3
+        assert mk.pop() == 'ac'

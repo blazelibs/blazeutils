@@ -1,4 +1,3 @@
-from nose.tools import eq_
 from blazeutils import tb_depth_in, traceback_depth
 from blazeutils.error_handling import _uie_matches
 from blazeutils.testing import emits_deprecation
@@ -11,19 +10,19 @@ def test_traceback_funcs():
         assert False, 'expected import error'
     except ImportError:
         pass
-    eq_(traceback_depth(), 0, msg='if this test fails, you probably have something wrapping __import__')
+    assert traceback_depth() == 0, 'if this test fails, you probably have something wrapping __import__'
 
     try:
         from _bad_import import foobar
     except ImportError:
         pass
-    eq_(traceback_depth(), 0)
+    assert traceback_depth() == 0
 
     try:
         from _bad_import_deeper import foobar
     except ImportError:
         pass
-    eq_(traceback_depth(), 1)
+    assert traceback_depth() == 1
 
     assert tb_depth_in(1)
     assert tb_depth_in((0,1))
