@@ -1,4 +1,3 @@
-from nose.tools import assert_equal
 import xlwt
 
 from blazeutils.testing import emits_deprecation
@@ -16,4 +15,4 @@ class TestWorkbookToReader(object):
 
         wb = workbook_to_reader(write_wb)
         sh = wb.sheet_by_name('Foo')
-        assert_equal(sh.cell_value(rowx=0, colx=0), 'bar')
+        assert sh.cell_value(rowx=0, colx=0) == 'bar'

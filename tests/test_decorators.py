@@ -1,5 +1,4 @@
 from mock import Mock, patch, call
-from nose.tools import eq_
 
 from blazeutils import curry, decorator
 from blazeutils.decorators import exc_emailer, retry, hybrid_method
@@ -26,8 +25,8 @@ def test_two_currys():
     f1 = add(1)
     f2 = add(2)
 
-    eq_(f1(1), 2)
-    eq_(f2(1), 3)
+    assert f1(1) == 2
+    assert f2(1) == 3
 
 
 def test_decorator():
@@ -90,7 +89,7 @@ class TestExcEmailer(object):
             if str(e) != 'myfunc':
                 raise
 
-        eq_(m_log.exception.call_args_list, [
+        assert(m_log.exception.call_args_list == [
             call('exc_mailer() caught an exception, email will be sent.'),
             call('exc_mailer(): send_mail_func() threw an exception, logging it & then re-raising original exception'),
         ])
@@ -129,7 +128,7 @@ class TestExcEmailer(object):
 
 class TestRetry(object):
 
-    def setUp(self):
+    def setup_method(self, method):
         self.call_count = 0
 
     def test_succesfull_call(self):
@@ -153,7 +152,7 @@ class TestRetry(object):
             return 5
 
         assert myfunc() == 5
-        eq_(logger.debug.call_count, 1)
+        assert logger.debug.call_count == 1
 
     def test_too_many_exceptions(self):
         logger = Mock()
@@ -167,7 +166,7 @@ class TestRetry(object):
         except TypeError, e:
             if 'myfunc error' not in str(e):
                 raise
-            eq_(logger.debug.call_count, 5)
+            assert logger.debug.call_count == 5
 
     @raises(TypeError, 'myfunc error')
     def test_msg_param(self):
@@ -181,7 +180,7 @@ class TestRetry(object):
             return 5
 
         assert myfunc() == 5
-        eq_(logger.debug.call_count, 1)
+        assert logger.debug.call_count == 1
 
         @retry(5, TypeError, delay=0.001, logger=logger, msg='foobar')
         def myfunc():
@@ -203,5 +202,5 @@ class MethodClass(object):
 class TestHybrid(object):
 
     def test_method(self):
-        eq_(MethodClass.value(), 'class level')
-        eq_(MethodClass().value(), 'instance level')
+        assert MethodClass.value() == 'class level'
+        assert MethodClass().value() == 'instance level'

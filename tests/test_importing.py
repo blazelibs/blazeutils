@@ -1,5 +1,4 @@
 from os import path
-from nose.tools import eq_
 from blazeutils import find_path_package, import_split, posargs_limiter
 
 def test_find_path_package():
@@ -24,8 +23,8 @@ def test_import_split():
     assert import_split('path') == ('path', None, None)
     assert import_split('path.part.object') == ('path.part', 'object', None)
     assert import_split('path.part:object') == ('path.part', 'object', None )
-    eq_(import_split('path.part:object.attribute'),
-        ('path.part', 'object', 'attribute') )
+    assert import_split('path.part:object.attribute') == \
+        ('path.part', 'object', 'attribute')
     
 def test_posargs_limiter():
     def take0():

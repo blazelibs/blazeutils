@@ -1,6 +1,5 @@
 import cPickle as pickle
 
-from nose.tools import eq_
 
 from blazeutils.containers import LazyDict, HTMLAttributes
 
@@ -45,7 +44,7 @@ def test_lazy_dict_with_setter_property():
 class TestAttributes(object):
 
     def check_eq(self, expected, **kwargs):
-        eq_(expected, kwargs)
+        assert expected == kwargs
 
     def test_attribute_access(self):
         at = HTMLAttributes()

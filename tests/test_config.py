@@ -1,7 +1,6 @@
 import copy
 
 from blazeutils.config import QuickSettings
-from nose.tools import eq_
 
 class Base(QuickSettings):
 
@@ -239,13 +238,13 @@ class TestQuickSettings(object):
         s.lock()
 
         allmods = mods = ['users', 'apputil', 'inactivemod', 'contentbase', 'lagcontent', 'fatfingeredmod']
-        eq_( mods, s.modules.keys() )
+        assert mods == s.modules.keys( )
 
-        eq_( len(mods), len([v for v in s.modules]))
-        eq_( len(mods), len(s.modules))
+        assert len(mods) == len([v for v in s.modules])
+        assert len(mods) == len(s.modules)
 
-        eq_( len(mods), len(s.modules.todict()))
-        eq_( len(allmods), len(s.modules.todict()))
+        assert len(mods) == len(s.modules.todict())
+        assert len(allmods) == len(s.modules.todict())
 
         assert 'users' in s.modules
 
@@ -254,41 +253,41 @@ class TestQuickSettings(object):
         us = UserSettings()
 
         try:
-            eq_(s.modules.users.var1, 'foo')
+            assert s.modules.users.var1 == 'foo'
         except AttributeError, e:
             assert str(e) == "object has no attribute 'var1' (object is locked)"
         else:
             assert False, "expected AttributeError for 'var1'"
 
-        eq_(s.modules.users.var2, 'not bar')
-        eq_(us.var2, 'bar')
-        eq_(len(us.routes), 2)
-        eq_(us.level2.var1, 'foo')
-        eq_(us.level2.var2, 'bar')
-        eq_(us.level3.var2, 'bar')
-        eq_(us.level4.var2, 'bar')
-        eq_(us.level5.level1.var1, 'foo')
-        eq_(us.level5.level2.var1, 'bar')
-        eq_(us.level5.level2.var2, 'baz')
-        eq_(us.level5.level3.var1, 'bob')
+        assert s.modules.users.var2 == 'not bar'
+        assert us.var2 == 'bar'
+        assert len(us.routes) == 2
+        assert us.level2.var1 == 'foo'
+        assert us.level2.var2 == 'bar'
+        assert us.level3.var2 == 'bar'
+        assert us.level4.var2 == 'bar'
+        assert us.level5.level1.var1 == 'foo'
+        assert us.level5.level2.var1 == 'bar'
+        assert us.level5.level2.var2 == 'baz'
+        assert us.level5.level3.var1 == 'bob'
 
         us.update(s.modules.users)
         s.modules['users'] = us
 
-        eq_(s.modules.users.var2, 'not bar')
-        eq_(s.modules.users.var1, 'foo')
-        eq_(len(s.modules.users.routes), 0)
-        eq_(s.modules.users.level2.var1, 'foo')
-        eq_(s.modules.users.level2.var2, 'not bar')
-        eq_(s.modules.users.level3, 'string value to merge')
-        eq_(s.modules.users.level4.var1, 'foo')
-        eq_(s.modules.users.level4.var2, 'not bar')
-        eq_(s.modules.users.level4.var3, 'baz')
-        eq_(s.modules.users.level5.level1.var1.notlikely, 'foo')
-        eq_(s.modules.users.level5.level2.var1, 'not_bar')
-        eq_(s.modules.users.level5.level2.var2, 'baz')
+        assert s.modules.users.var2 == 'not bar'
+        assert s.modules.users.var1 == 'foo'
+        assert len(s.modules.users.routes) == 0
+        assert s.modules.users.level2.var1 == 'foo'
+        assert s.modules.users.level2.var2 == 'not bar'
+        assert s.modules.users.level3 == 'string value to merge'
+        assert s.modules.users.level4.var1 == 'foo'
+        assert s.modules.users.level4.var2 == 'not bar'
+        assert s.modules.users.level4.var3 == 'baz'
+        assert s.modules.users.level5.level1.var1.notlikely == 'foo'
+        assert s.modules.users.level5.level2.var1 == 'not_bar'
+        assert s.modules.users.level5.level2.var2 == 'baz'
 
-        eq_(s.modules.users.enabled, True)
+        assert s.modules.users.enabled == True
 
 def test_set_dotted():
     qs = QuickSettings()
@@ -308,11 +307,11 @@ def test_get_dotted():
     qs = QuickSettings()
     qs.set_dotted('foo.bar.wow', 'baz')
     qs.lock()
-    eq_(qs.get_dotted('foo.bar.wow'), 'baz')
+    assert qs.get_dotted('foo.bar.wow') == 'baz'
 
-    eq_(qs.get_dotted('foo.bar'), qs.foo.bar)
+    assert qs.get_dotted('foo.bar') == qs.foo.bar
 
-    eq_(qs.get_dotted('foo'), qs.foo)
+    assert qs.get_dotted('foo') == qs.foo
 
     try:
         qs.get_dotted('foo.none')

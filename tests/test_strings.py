@@ -1,4 +1,3 @@
-from nose.tools import eq_
 from blazeutils import StringIndenter, simplify_string, case_cw2us, case_mc2us, \
     case_us2mc, case_us2cw, reindent, randchars, randnumerics, randhash
 
@@ -20,16 +19,16 @@ def test_string_indent_helper():
             2.1
 3.0
     """.strip()
-    eq_(expected, output)
+    assert expected == output
     
 def test_simplify_string():
     assert simplify_string('foo bar') == 'foo-bar'
     
 def test_case_changes():
-    eq_(case_cw2us('FooBar'), 'foo_bar')
-    eq_(case_mc2us('fooBar'), 'foo_bar')
-    eq_(case_us2mc('foo_bar'), 'fooBar')
-    eq_(case_us2cw('foo_bar'), 'FooBar')
+    assert case_cw2us('FooBar') == 'foo_bar'
+    assert case_mc2us('fooBar') == 'foo_bar'
+    assert case_us2mc('foo_bar') == 'fooBar'
+    assert case_us2cw('foo_bar') == 'FooBar'
     
 def test_reindent():
     expected = """    foo
@@ -38,7 +37,7 @@ def test_reindent():
 foo
         bar
     """.strip()
-    eq_(reindent(test, 4), expected)
+    assert reindent(test, 4) == expected
 
 def test_randoms():
     assert len(randchars()) == 12
