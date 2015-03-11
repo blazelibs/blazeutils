@@ -1,20 +1,22 @@
 import os.path as osp
-try:
-    from setuptools import setup
-except ImportError:
-    from ez_setup import use_setuptools
-    use_setuptools()
-    from setuptools import setup
+import sys
+
+from setuptools import setup
+
+
+PY2 = sys.version_info[0] == 2
 
 # pip install -e .[develop]
 develop_requires = [
     'mock',
     'pytest',
-    'xlwt',
     'xlrd',
     'docutils',
     'sqlalchemy',
 ]
+
+if PY2:
+    develop_requires.append('xlwt')
 
 
 cdir = osp.abspath(osp.dirname(__file__))
