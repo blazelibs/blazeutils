@@ -6,8 +6,8 @@ class LazyDict(dict):
     def __getattr__(self, attr):
         if attr in self:
             return self[attr]
-        raise AttributeError, "'%s' object has no attribute '%s'" \
-            % (self.__class__.__name__, attr)
+        raise AttributeError("'%s' object has no attribute '%s'"
+            % (self.__class__.__name__, attr))
 
     def __setattr__(self, item, value):
         # this test allows attributes to be set in the __init__ method
