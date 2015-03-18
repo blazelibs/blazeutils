@@ -11,3 +11,4 @@ syntax: glob
 coverage.xml
 nosetests.xml
 .tox/
+htmlcov/*
