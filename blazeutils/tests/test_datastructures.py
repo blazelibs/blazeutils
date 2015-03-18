@@ -1,8 +1,11 @@
-import cPickle as pickle
+from __future__ import absolute_import
+from __future__ import unicode_literals
+import six.moves.cPickle as pickle
 import random
 
 from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
     LazyOrderedDict, LazyDict, UniqueList
+from six.moves import range
 
 
 # leave this here it ensures that LazyDict is available from .datastructures
