@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 import copy
 
 from blazeutils.config import QuickSettings
@@ -169,7 +171,7 @@ class TestQuickSettings(object):
 
         try:
             foo = s.not_there
-        except AttributeError, e:
+        except AttributeError as e:
             assert str(e) == "object has no attribute 'not_there' (object is locked)"
         else:
             assert False, "lock did not work, expected AttributeError"
@@ -177,7 +179,7 @@ class TestQuickSettings(object):
         # make sure lock went to children
         try:
             foo = s.db.not_there
-        except AttributeError, e:
+        except AttributeError as e:
             assert str(e) == "object has no attribute 'not_there' (object is locked)"
         else:
             assert False, "lock did not work on child, expected AttributeError"
@@ -196,7 +198,7 @@ class TestQuickSettings(object):
 
         try:
             foo = s.not_there
-        except AttributeError, e:
+        except AttributeError as e:
             assert str(e) == "object has no attribute 'not_there' (object is locked)"
         else:
             assert False, "lock did not work, expected AttributeError"
@@ -204,7 +206,7 @@ class TestQuickSettings(object):
         # make sure lock went to children
         try:
             foo = s.db.not_there
-        except AttributeError, e:
+        except AttributeError as e:
             assert str(e) == "object has no attribute 'not_there' (object is locked)"
         else:
             assert False, "lock did not work on child, expected AttributeError"
@@ -254,7 +256,7 @@ class TestQuickSettings(object):
 
         try:
             assert s.modules.users.var1 == 'foo'
-        except AttributeError, e:
+        except AttributeError as e:
             assert str(e) == "object has no attribute 'var1' (object is locked)"
         else:
             assert False, "expected AttributeError for 'var1'"
@@ -315,7 +317,7 @@ def test_get_dotted():
 
     try:
         qs.get_dotted('foo.none')
-    except AttributeError, e:
+    except AttributeError as e:
         if 'none' not in str(e):
             raise
 
