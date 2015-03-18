@@ -1,3 +1,5 @@
+import six
+
 class LazyDict(dict):
     def __init__(self, *args, **kwargs):
         self._ld_initialized = kwargs.pop('_ld_initialize', True)
@@ -27,7 +29,7 @@ class LazyDict(dict):
     def __delattr__(self, name):
         del self[name]
 
-class _Attribute(unicode):
+class _Attribute(six.text_type):
     def __add__(self, other):
         return _Attribute(u'{0} {1}'.format(self, other).lstrip(u' '))
 
