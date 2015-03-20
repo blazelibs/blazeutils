@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import sys
 import warnings
 
-warnings.warn('blazeutils.database is deprecated and will be removed in the future', DeprecationWarning)
+warnings.warn('blazeutils.database is deprecated and will be removed in the future',
+              DeprecationWarning,
+              stacklevel=1)
 
 # Pagination
 from werkzeug import cached_property
+
 
 # from Werkzeug Shorty example
 class Pagination(object):
