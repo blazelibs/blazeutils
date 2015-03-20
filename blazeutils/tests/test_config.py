@@ -4,6 +4,7 @@ import copy
 
 from blazeutils.config import QuickSettings
 
+
 class Base(QuickSettings):
 
     def __init__(self):
@@ -63,6 +64,7 @@ class Base(QuickSettings):
         # no more values can be added
         self.lock()
 
+
 class Default(Base):
 
     def __init__(self):
@@ -80,7 +82,7 @@ class Default(Base):
         #######################################################################
         # ROUTING
         #######################################################################
-        self.routing.routes.extend([3,4])
+        self.routing.routes.extend([3, 4])
 
         #######################################################################
         # DATABASE
@@ -93,6 +95,7 @@ class Default(Base):
         self.logging.levels = ('info', 'debug')
         self.trap_view_exceptions = False
         self.hide_exceptions = False
+
 
 class UserSettings(QuickSettings):
 
@@ -124,6 +127,7 @@ class UserSettings(QuickSettings):
         # no more values can be added
         self.lock()
 
+
 class TestQuickSettings(object):
 
     def test_level1(self):
@@ -151,14 +155,14 @@ class TestQuickSettings(object):
 
         assert s.name.full == 'full'
         assert s.name.short == 'short'
-        assert s.modules.keys() == ['users', 'apputil','inactivemod','contentbase', 'lagcontent'], s.modules.keys()
-        assert s.routing.routes == [1,2,3,4]
+        assert s.modules.keys() == ['users', 'apputil', 'inactivemod', 'contentbase', 'lagcontent']
+        assert s.routing.routes == [1, 2, 3, 4]
 
-        assert s.db.echo == True
+        assert s.db.echo
 
         assert s.logging.levels == ('info', 'debug')
-        assert s.trap_view_exceptions == False
-        assert s.hide_exceptions == False
+        assert not s.trap_view_exceptions
+        assert not s.hide_exceptions
 
         assert s.template.default == 'default.html'
         assert s.template.admin == 'admin.html'
@@ -170,7 +174,7 @@ class TestQuickSettings(object):
         s = Default()
 
         try:
-            foo = s.not_there
+            s.not_there
         except AttributeError as e:
             assert str(e) == "object has no attribute 'not_there' (object is locked)"
         else:
@@ -178,7 +182,7 @@ class TestQuickSettings(object):
 
         # make sure lock went to children
         try:
-            foo = s.db.not_there
+            s.db.not_there
         except AttributeError as e:
             assert str(e) == "object has no attribute 'not_there' (object is locked)"
         else:
@@ -197,7 +201,7 @@ class TestQuickSettings(object):
         s.lock()
 
         try:
-            foo = s.not_there
+            s.not_there
         except AttributeError as e:
             assert str(e) == "object has no attribute 'not_there' (object is locked)"
         else:
@@ -205,7 +209,7 @@ class TestQuickSettings(object):
 
         # make sure lock went to children
         try:
-            foo = s.db.not_there
+            s.db.not_there
         except AttributeError as e:
             assert str(e) == "object has no attribute 'not_there' (object is locked)"
         else:
@@ -216,8 +220,8 @@ class TestQuickSettings(object):
 
         # beaker would need a dictionary, so lets see if it works
         d = {
-            'type' : 'dbm',
-            'data_dir' : 'session_cache'
+            'type': 'dbm',
+            'data_dir': 'session_cache'
         }
 
         assert dict(s.beaker) == d
@@ -226,11 +230,11 @@ class TestQuickSettings(object):
     def test_hasattr(self):
         s = Default()
 
-        assert hasattr(s, 'alajsdf') == False
-        assert hasattr(s, 'alajsdf') == False
+        assert not hasattr(s, 'alajsdf')
+        assert not hasattr(s, 'alajsdf')
 
         s.unlock()
-        assert hasattr(s, 'alajsdf') == True
+        assert hasattr(s, 'alajsdf')
 
     def test_modules(self):
         s = Default()
@@ -239,8 +243,9 @@ class TestQuickSettings(object):
         s.modules.fatfingeredmod.enabledd = True
         s.lock()
 
-        allmods = mods = ['users', 'apputil', 'inactivemod', 'contentbase', 'lagcontent', 'fatfingeredmod']
-        assert mods == s.modules.keys( )
+        allmods = mods = ['users', 'apputil', 'inactivemod', 'contentbase', 'lagcontent',
+                          'fatfingeredmod']
+        assert mods == s.modules.keys()
 
         assert len(mods) == len([v for v in s.modules])
         assert len(mods) == len(s.modules)
@@ -289,7 +294,8 @@ class TestQuickSettings(object):
         assert s.modules.users.level5.level2.var1 == 'not_bar'
         assert s.modules.users.level5.level2.var2 == 'baz'
 
-        assert s.modules.users.enabled == True
+        assert s.modules.users.enabled
+
 
 def test_set_dotted():
     qs = QuickSettings()
@@ -304,6 +310,7 @@ def test_set_dotted():
 
     qs = QuickSettings()
     qs.set_dotted('', 'baz')
+
 
 def test_get_dotted():
     qs = QuickSettings()
@@ -324,6 +331,7 @@ def test_get_dotted():
     qs.unlock()
     assert isinstance(qs.get_dotted('foo.none'), QuickSettings)
 
+
 def test_copy():
     qs = QuickSettings()
     mylist = []
@@ -334,6 +342,7 @@ def test_copy():
     assert qs.foo.bar.baz is mylist
     assert qs.foo is not qs2.foo
     assert qs.foo.bar is not qs2.foo.bar
+
 
 def test_setdefault():
     main = QuickSettings()
