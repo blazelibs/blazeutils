@@ -313,6 +313,9 @@ class UniqueList(list):
             list.append(self, value)
 
     def extend(self, values):
+        # import here to avoid circular dependencies
+        from blazeutils.helpers import unique
+
         for value in unique(values):
             if value not in self.seen:
                 self.seen.add(value)
@@ -321,5 +324,3 @@ class UniqueList(list):
     def insert(self, index, object):
         raise NotImplementedError('UniqueList doesn\'t support insert()')
 
-# import here to avoid circular dependencies
-from blazeutils.helpers import unique
