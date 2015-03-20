@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import re
 import sys
 import traceback
@@ -5,6 +8,7 @@ import warnings
 
 from blazeutils.helpers import tolist
 from blazeutils.decorators import deprecate
+
 
 def tb_depth_in(depths):
     """
@@ -18,6 +22,7 @@ def tb_depth_in(depths):
     return False
 traceback_depth_in = tb_depth_in
 
+
 @deprecate('tb_depth_in(), traceback_depth() deprecated, its a bad idea')
 def traceback_depth(tb=None):
     if tb == None:
@@ -27,6 +32,7 @@ def traceback_depth(tb=None):
         depth += 1
         tb = tb.tb_next
     return depth
+
 
 def raise_unexpected_import_error(our_import, exc):
     """
@@ -38,6 +44,7 @@ def raise_unexpected_import_error(our_import, exc):
 
 _identifier = r'[^\d\W]\w+'
 _dotted_path_rx = re.compile(r'{0}(\.{0})*$'.format(_identifier), re.UNICODE)
+
 
 def _uie_matches(our_import, exc_str):
     match = _dotted_path_rx.search(exc_str)
