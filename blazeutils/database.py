@@ -7,7 +7,7 @@ import warnings
 
 warnings.warn('blazeutils.database is deprecated and will be removed in the future',
               DeprecationWarning,
-              stacklevel=1)
+              stacklevel=2)
 
 # Pagination
 from werkzeug import cached_property
