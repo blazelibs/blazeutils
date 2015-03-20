@@ -1,9 +1,0 @@
-nose
-docutils
-mock
-xlrd
-xlwt
-
-# xml coverage output that jenkins can read through the Cobertura Coverage
-# plugin
-nosexcover
