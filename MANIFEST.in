@@ -1,0 +1,4 @@
+include authors.txt changes.txt license.txt
+global-exclude *.pyc
+include *.rst
+include blazeutils/version.txt

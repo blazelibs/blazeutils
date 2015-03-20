@@ -1,0 +1,21 @@
+pysutils is maintained primarily by:
+
+    Randy Syring <rsyring@gmail.com>
+
+CREDITS:
+
+Some utility functions and classes were taken from SQLAlchemy.  The
+code is MIT licensed and the following copyright and permission notice
+applies:
+
+    Copyright (c) 2005, 2006, 2007, 2008, 2009, 2010 Michael Bayer and contributors.
+    SQLAlchemy is a trademark of Michael Bayer.
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy of this
+    software and associated documentation files (the "Software"), to deal in the Software
+    without restriction, including without limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons
+    to whom the Software is furnished to do so, subject to the following conditions:
+
+OrderedSet implementation is by Raymond Httinger and is MIT licensed.  Original
+can be found at: http://code.activestate.com/recipes/576694/
