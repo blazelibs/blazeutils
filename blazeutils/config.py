@@ -1,5 +1,10 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import copy
+
 from blazeutils.datastructures import OrderedProperties, OrderedDict
+
 
 class QuickSettings(OrderedProperties):
     def __init__(self, initialize=True):
@@ -19,7 +24,7 @@ class QuickSettings(OrderedProperties):
                 child.unlock()
 
     def __getattr__(self, key):
-        if not self._data.has_key(key):
+        if key not in self._data:
             if not self._locked:
                 self._data[key] = QuickSettings()
             else:
@@ -32,7 +37,7 @@ class QuickSettings(OrderedProperties):
                 for key in ____sequence.keys():
                     try:
                         self.get(key).update(____sequence[key])
-                    except (AttributeError, ValueError), e:
+                    except (AttributeError, ValueError) as e:
                         if "object has no attribute 'update'" not in str(e) and "need more than 1 value to unpack" not in str(e):
                             raise
                         self.__setitem__(key, ____sequence[key])

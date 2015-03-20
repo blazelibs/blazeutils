@@ -1,5 +1,9 @@
-from blazeutils.sentinels import NotGiven
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 from blazeutils.containers import LazyDict
+from blazeutils.sentinels import NotGiven
+
 
 # copied form webhelpers
 class BlankObject(object):
@@ -21,6 +25,7 @@ class BlankObject(object):
         self.__dict__.update(kw)
 DumbObject = BlankObject
 
+
 class OrderedProperties(object):
     """An object that maintains the order in which attributes are set upon it.
 
@@ -34,7 +39,7 @@ class OrderedProperties(object):
 
     def __init__(self, initialize=True):
         self._data = OrderedDict()
-        self._initialized=initialize
+        self._initialized = initialize
 
     def __len__(self):
         return len(self._data)
@@ -56,11 +61,11 @@ class OrderedProperties(object):
 
     def __setattr__(self, item, value):
         # this test allows attributes to be set in the __init__ method
-        if self.__dict__.has_key('_initialized') == False or self.__dict__['_initialized'] == False:
+        if '_initialized' not in self.__dict__ or not self.__dict__['_initialized']:
             self.__dict__[item] = value
         # any normal attributes are handled normally when they already exist
         # this would happen if they are given different values after initilization
-        elif self.__dict__.has_key(item):
+        elif item in self.__dict__:
             self.__dict__[item] = value
         # attributes added after initialization are stored in _data
         else:
@@ -82,7 +87,7 @@ class OrderedProperties(object):
             raise AttributeError(key)
 
     def __delattr__(self, key):
-        if self.__dict__.has_key(key):
+        if key in self.__dict__:
             del self.__dict__[key]
         else:
             try:
@@ -106,13 +111,14 @@ class OrderedProperties(object):
         return self._data.keys()
 
     def has_key(self, key):
-        return self._data.has_key(key)
+        return key in self._data
 
     def clear(self):
         self._data.clear()
 
     def todict(self):
         return self._data
+
 
 class OrderedDict(dict):
     """A dict that returns keys/values/items in the order they were added."""
@@ -203,13 +209,14 @@ class OrderedDict(dict):
         self._list.remove(item[0])
         return item
 
+
 class HtmlAttributeHolder(object):
     def __init__(self, **kwargs):
         self._cleankeys(kwargs)
         #: a dictionary that represents html attributes
         self.attributes = kwargs
 
-    def setm(self, **kwargs ):
+    def setm(self, **kwargs):
         self._cleankeys(kwargs)
         self.attributes.update(kwargs)
 
@@ -230,7 +237,7 @@ class HtmlAttributeHolder(object):
         """
         if key.endswith('_'):
             key = key[:-1]
-        if self.attributes.has_key(key):
+        if key in self.attributes:
             self.attributes[key] = self.attributes[key] + ' ' + value
         else:
             self.attributes[key] = value
@@ -240,7 +247,7 @@ class HtmlAttributeHolder(object):
             key = key[:-1]
         del self.attributes[key]
 
-    def get(self, key, defaultval = NotGiven):
+    def get(self, key, defaultval=NotGiven):
         try:
             if key.endswith('_'):
                 key = key[:-1]
@@ -262,30 +269,31 @@ class HtmlAttributeHolder(object):
                 del dict[key]
                 dict[key[:-1]] = val
 
+
 class LazyOrderedDict(OrderedDict):
     def __init__(self, ____sequence=None, **kwargs):
         OrderedDict.__init__(self, ____sequence, **kwargs)
-        self._lod_initialized=kwargs.pop('lod_initialize', True)
+        self._lod_initialized = kwargs.pop('lod_initialize', True)
 
     def __getattr__(self, attr):
         if attr in self.keys():
             return self[attr]
-        raise AttributeError("'%s' object has no attribute '%s'"
-            % (self.__class__.__name__, attr))
+        raise AttributeError(
+            "'%s' object has no attribute '%s'" % (self.__class__.__name__, attr))
 
     def __setattr__(self, item, value):
         # this test allows attributes to be set in the __init__ method
-        if self.__dict__.has_key('_lod_initialized') == False or self.__dict__['_lod_initialized'] == False:
+        if '_lod_initialized' not in self.__dict__ or not self.__dict__['_lod_initialized']:
             self.__dict__[item] = value
         # any normal attributes are handled normally when they already exist
         # this would happen if they are given different values after initilization
-        elif self.__dict__.has_key(item):
+        elif item in self.__dict__:
             self.__dict__[item] = value
         # attributes added after initialization are stored in _data
         else:
             self[item] = value
 
-from blazeutils.helpers import unique
+
 class UniqueList(list):
     """
         A special list that prevents append() and extend() from adding duplicate
@@ -312,3 +320,6 @@ class UniqueList(list):
 
     def insert(self, index, object):
         raise NotImplementedError('UniqueList doesn\'t support insert()')
+
+# import here to avoid circular dependencies
+from blazeutils.helpers import unique
