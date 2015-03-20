@@ -296,65 +296,91 @@ class TestQuickSettings(object):
 
         assert s.modules.users.enabled
 
+    def test_set_dotted(self):
+        qs = QuickSettings()
+        qs.set_dotted('foo.bar.wow', 'baz')
+        qs.lock()
+        assert qs.foo.bar.wow == 'baz'
 
-def test_set_dotted():
-    qs = QuickSettings()
-    qs.set_dotted('foo.bar.wow', 'baz')
-    qs.lock()
-    assert qs.foo.bar.wow == 'baz'
+        qs = QuickSettings()
+        qs.set_dotted('foo', 'baz')
+        qs.lock()
+        assert qs.foo == 'baz'
 
-    qs = QuickSettings()
-    qs.set_dotted('foo', 'baz')
-    qs.lock()
-    assert qs.foo == 'baz'
+        qs = QuickSettings()
+        qs.set_dotted('', 'baz')
 
-    qs = QuickSettings()
-    qs.set_dotted('', 'baz')
+    def test_get_dotted(self):
+        qs = QuickSettings()
+        qs.set_dotted('foo.bar.wow', 'baz')
+        qs.lock()
+        assert qs.get_dotted('foo.bar.wow') == 'baz'
+
+        assert qs.get_dotted('foo.bar') == qs.foo.bar
+
+        assert qs.get_dotted('foo') == qs.foo
+
+        try:
+            qs.get_dotted('foo.none')
+        except AttributeError as e:
+            if 'none' not in str(e):
+                raise
+
+        qs.unlock()
+        assert isinstance(qs.get_dotted('foo.none'), QuickSettings)
+
+    def test_copy(self):
+        qs = QuickSettings()
+        mylist = []
+        qs.foo.bar.baz = mylist
+
+        qs2 = copy.copy(qs)
+        assert qs2.foo.bar.baz is mylist
+        assert qs.foo.bar.baz is mylist
+        assert qs.foo is not qs2.foo
+        assert qs.foo.bar is not qs2.foo.bar
+
+    def test_setdefault(self):
+        main = QuickSettings()
+        mylist = []
+        main.foo.bar.baz = mylist
+
+        qs = QuickSettings()
+        qs.one = 1
+        qs.foo.bar.baz = 2
+        qs.foo.bar.three = 3
+
+        main.setdefaults(qs)
+        assert main.foo.bar.baz is mylist
+        assert main.foo.bar.three == 3
+        assert main.one == 1
+
+    def test_update(self):
+        qs = QuickSettings()
+        qs.lock()
+
+        assert 'foo' not in qs
+        assert 'bar' not in qs
+        assert 'baz' not in qs
+
+        qs.update({'foo': 1})
+        assert qs.foo == 1
+
+        qs.update(bar=2)
+        assert qs.bar == 2
+
+        qs.update([('baz', 3)])
+        assert qs.baz == 3
+
+    def test_expand_keys(self):
+        qs = QuickSettings()
+        qs.foo.bar.baz = 3
+        expanded = qs.expandkeys()
+        assert expanded == {'foo.bar.baz': 3}
+
+    def test_pformat(self):
+        qs = QuickSettings()
+        qs.foo.bar.baz = 3
+        assert qs.pformat == 'foo.bar.baz = 3'
 
 
-def test_get_dotted():
-    qs = QuickSettings()
-    qs.set_dotted('foo.bar.wow', 'baz')
-    qs.lock()
-    assert qs.get_dotted('foo.bar.wow') == 'baz'
-
-    assert qs.get_dotted('foo.bar') == qs.foo.bar
-
-    assert qs.get_dotted('foo') == qs.foo
-
-    try:
-        qs.get_dotted('foo.none')
-    except AttributeError as e:
-        if 'none' not in str(e):
-            raise
-
-    qs.unlock()
-    assert isinstance(qs.get_dotted('foo.none'), QuickSettings)
-
-
-def test_copy():
-    qs = QuickSettings()
-    mylist = []
-    qs.foo.bar.baz = mylist
-
-    qs2 = copy.copy(qs)
-    assert qs2.foo.bar.baz is mylist
-    assert qs.foo.bar.baz is mylist
-    assert qs.foo is not qs2.foo
-    assert qs.foo.bar is not qs2.foo.bar
-
-
-def test_setdefault():
-    main = QuickSettings()
-    mylist = []
-    main.foo.bar.baz = mylist
-
-    qs = QuickSettings()
-    qs.one = 1
-    qs.foo.bar.baz = 2
-    qs.foo.bar.three = 3
-
-    main.setdefaults(qs)
-    assert main.foo.bar.baz is mylist
-    assert main.foo.bar.three == 3
-    assert main.one == 1
