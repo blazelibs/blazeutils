@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
 import datetime as dt
 import sys
 
@@ -51,7 +53,7 @@ class TestRaisesDecorator(object):
                 assert sys.foo
             wrapper()
             assert False, '@raises hid the exception but shouldn\'t have'
-        except AttributeError, e:
+        except AttributeError as e:
             if "'module' object has no attribute 'foo'" != str(e):
                 raise
 
@@ -62,7 +64,7 @@ class TestRaisesDecorator(object):
                 assert sys.foo
             wrapper()
             assert False, '@raises hid the exception but shouldn\'t have'
-        except AttributeError, e:
+        except AttributeError as e:
             if "'module' object has no attribute 'foo'" != str(e):
                 raise
 
@@ -73,7 +75,7 @@ class TestRaisesDecorator(object):
                 raise ValueError('test ve')
             wrapper()
             assert False, '@raises hid the exception but shouldn\'t have'
-        except ValueError, e:
+        except ValueError as e:
             if "test ve" != str(e):
                 raise
 
@@ -84,7 +86,7 @@ class TestRaisesDecorator(object):
                 pass
             wrapper()
             assert False, '@raises should have complained that an exception was not raised'
-        except AssertionError, e:
+        except AssertionError as e:
             if "@raises: no exception raised in wrapper()" != str(e):
                 raise
 
@@ -103,7 +105,7 @@ class TestRaisesDecorator(object):
                 raise Exception('baz')
             wrapper()
             assert False, '@raises should have complained that the exception was missing the description attribute'
-        except Exception, e:
+        except Exception as e:
             if "baz" != str(e):
                 raise
 
@@ -114,7 +116,7 @@ class TestRaisesDecorator(object):
                 raise LikeWerkzeugExc('baz')
             wrapper()
             assert False, '@raises should have complained that the description attribute did not match'
-        except LikeWerkzeugExc, e:
+        except LikeWerkzeugExc as e:
             pass
 
 def test_assert_equal_sql():
@@ -148,26 +150,27 @@ def test_assert_equal_txt():
     try:
         assert_equal_txt(s1, s2)
         assert False, 'expected exception'
-    except AssertionError, e:
+    except AssertionError as e:
         assert '-    line 25' in str(e)
         assert '+    line 2' in str(e)
 
+
 class TestMockDateTime(object):
 
-    @mock.patch('blazeutils_mock_date.dt_date')
+    @mock.patch('blazeutils.tests.date_imports.dt_date')
     def test_mock_today(self, m_date):
-        import blazeutils_mock_date
+        from . import date_imports
         mock_date_today(m_date, 2012)
-        assert dt.date(2012, 1, 1) == blazeutils_mock_date.dt_date.today()
+        assert dt.date(2012, 1, 1) == date_imports.dt_date.today()
 
-    @mock.patch('blazeutils_mock_date.dt_datetime')
+    @mock.patch('blazeutils.tests.date_imports.dt_datetime')
     def test_mock_now(self, m_datetime):
-        import blazeutils_mock_date
+        from . import date_imports
         mock_datetime_now(m_datetime, 2012)
-        assert dt.datetime(2012, 1, 1, 0, 0, 0) == blazeutils_mock_date.dt_datetime.now()
+        assert dt.datetime(2012, 1, 1, 0, 0, 0) == date_imports.dt_datetime.now()
 
-    @mock.patch('blazeutils_mock_date.dt_datetime')
+    @mock.patch('blazeutils.tests.date_imports.dt_datetime')
     def test_mock_utcnow(self, m_datetime):
-        import blazeutils_mock_date
+        from . import date_imports
         mock_datetime_utcnow(m_datetime, 2012)
-        assert dt.datetime(2012, 1, 1, 0, 0, 0), blazeutils_mock_date.dt_datetime.utcnow()
+        assert dt.datetime(2012, 1, 1, 0, 0, 0), date_imports.dt_datetime.utcnow()

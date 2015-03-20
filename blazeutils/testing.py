@@ -1,8 +1,11 @@
 from __future__ import absolute_import
-from cStringIO import StringIO
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import datetime as dt
 import difflib
 import inspect
+from io import StringIO
 import itertools
 import logging
 import re
@@ -12,6 +15,8 @@ import warnings
 from blazeutils.decorators import decorator
 from blazeutils.log import clear_handlers_by_attr
 from blazeutils.helpers import Tee, prettifysql
+import six
+
 
 class LoggingHandler(logging.Handler):
     """ logging handler to check for expected logs when testing"""
@@ -68,9 +73,11 @@ def logging_handler(name=None, level=1):
 def clear_test_handlers():
     clear_handlers_by_attr('__blazeutils_testing__')
 
+
 class StdCapture(object):
 
     def __init__(self):
+        raise Exception('StdCapture wasn\'t easily converted to Python 3.  See comments in source.')
         self.orig_stdout = sys.stdout
         self.orig_stderr = sys.stderr
         self.clear()
@@ -178,10 +185,10 @@ def raises(arg1, arg2=None, re_esc=True, **kwargs):
         exc_validator = arg1
         msgregex = None
         etype = None
-    elif isinstance(arg1, basestring):
+    elif isinstance(arg1, six.string_types):
         msgregex = arg1
         etype = arg2
-    elif isinstance(arg2, basestring):
+    elif isinstance(arg2, six.string_types):
         etype = arg1
         msgregex = arg2
     else:
@@ -196,16 +203,16 @@ def raises(arg1, arg2=None, re_esc=True, **kwargs):
         try:
             fn(*args, **kw)
             assert False, '@raises: no exception raised in %s()' % fn.__name__
-        except Exception, e:
+        except Exception as e:
             if exc_validator is not None and not exc_validator(e):
                 raise
             if etype is not None and not isinstance(e, etype):
                 raise
             if msgregex is not None and not re.search(msgregex, str(e)):
                 raise
-            for attrname, msg in kwargs.iteritems():
+            for attrname, msg in six.iteritems(kwargs):
                 if not hasattr(e, attrname):
-                    print '@raises: exception missing "{0}" attribute'.format(attrname)
+                    print('@raises: exception missing "{0}" attribute'.format(attrname))
                     raise
                 if getattr(e, attrname) != msg:
                     raise
