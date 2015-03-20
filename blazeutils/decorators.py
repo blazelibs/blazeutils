@@ -1,6 +1,11 @@
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import functools
 from functools import update_wrapper, partial
-import inspect, itertools
+import inspect
+import itertools
 import logging
 import time
 from traceback import format_exc
@@ -8,8 +13,11 @@ import sys
 import warnings
 
 import wrapt
+import six
+from six.moves import range, map
 
 log = logging.getLogger(__name__)
+
 
 def format_argspec_plus(fn, grouped=True):
     """Returns a dictionary of formatted, introspected function arguments.
@@ -66,8 +74,8 @@ def unique_symbols(used, *bases):
     used = set(used)
     for base in bases:
         pool = itertools.chain((base,),
-                               itertools.imap(lambda i: base + str(i),
-                                              xrange(1000)))
+                               map(lambda i: base + str(i),
+                                              range(1000)))
         for sym in pool:
             if sym not in used:
                 used.add(sym)
@@ -81,7 +89,7 @@ def decorator(target):
 
     def decorate(fn):
         spec = inspect.getargspec(fn)
-        names = tuple(spec[0]) + spec[1:3] + (fn.func_name,)
+        names = tuple(spec[0]) + spec[1:3] + (fn.__name__,)
         targ_name, fn_name = unique_symbols(names, 'target', 'fn')
 
         metadata = dict(target=targ_name, fn=fn_name)
@@ -90,7 +98,7 @@ def decorator(target):
         code = 'lambda %(args)s: %(target)s(%(fn)s, %(apply_kw)s)' % (
                 metadata)
         decorated = eval(code, {targ_name:target, fn_name:fn})
-        decorated.func_defaults = getattr(fn, 'im_func', fn).func_defaults
+        decorated.__defaults__ = getattr(fn, 'im_func', fn).__defaults__
         return update_wrapper(decorated, fn)
     return update_wrapper(decorate, target)
 
@@ -162,7 +170,7 @@ class curry(object):
         self.keywords = kwargs if kwargs else None
         self.__doc__ = self.func.__doc__
         try:
-            self.func_name = self.func.func_name
+            self.__name__ = self.func.__name__
         except AttributeError:
             pass
 
@@ -214,6 +222,7 @@ def deprecate(message):
         return fn(*args, **kw)
     return decorate
 
+
 def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=True):
     """
         Catch exceptions and email them using `send_mail_func` which should
@@ -237,24 +246,25 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=Tr
         exc_info = None
         try:
             return fn(*args, **kwargs)
-        except catch, e:
+        except catch as e:
             body = format_exc()
             exc_info = sys.exc_info()
             error_msg = 'exc_mailer() caught an exception, email will be sent.'
             logger.exception(error_msg)
             if print_to_stderr:
-                print >> sys.stderr, error_msg + '  ' + str(e)
+                print(error_msg + '  ' + str(e), file=sys.stderr)
             try:
                 send_mail_func(body)
             except Exception:
                 logger.exception('exc_mailer(): send_mail_func() threw an exception, logging it & then re-raising original exception')
-                raise exc_info[0], exc_info[1], exc_info[2]
+                six.reraise(exc_info[0], exc_info[1], exc_info[2])
         finally:
             # delete the traceback so we don't have garbage collection issues.
             # see warning at: http://docs.python.org/library/sys.html#sys.exc_info
             if exc_info is not None:
                 del exc_info
     return decorate
+
 
 class Retry(object):
     def __init__(self, tries, exceptions, delay=0.1, logger=None, msg=None):
@@ -282,17 +292,21 @@ class Retry(object):
     def __call__(self, fn):
         @functools.wraps(fn)
         def wrapfn(*args, **kwargs):
-            for _ in xrange(self.tries):
+            for try_count in range(self.tries):
                 try:
                     return fn(*args, **kwargs)
-                except self.exceptions, e:
+                except self.exceptions as e:
                     if self.msg is not None and self.msg not in str(e):
                         raise
+
                     self.log.debug("Retry, exception: %s", e)
+
+                    if try_count == self.tries - 1:
+                        # no tries left, reraise
+                        raise
+
                     time.sleep(self.delay)
-            # should only get to this point of we have an
-            # exception and have run out of tries
-            raise
+
         return wrapfn
 retry = Retry
 

@@ -1,6 +1,9 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 from mock import Mock, patch, call
 
-from blazeutils import curry, decorator
+from blazeutils.decorators import curry, decorator
 from blazeutils.decorators import exc_emailer, retry, hybrid_method
 from blazeutils.testing import raises
 
@@ -85,7 +88,7 @@ class TestExcEmailer(object):
         try:
             myfunc()
             assert False, 'expected exception'
-        except ValueError, e:
+        except ValueError as e:
             if str(e) != 'myfunc':
                 raise
 
@@ -118,7 +121,7 @@ class TestExcEmailer(object):
         try:
             myfunc()
             assert False, 'expected exception'
-        except ValueError, e:
+        except ValueError as e:
             if str(e) != 'myfunc':
                 raise
 
@@ -163,7 +166,7 @@ class TestRetry(object):
 
         try:
             myfunc()
-        except TypeError, e:
+        except TypeError as e:
             if 'myfunc error' not in str(e):
                 raise
             assert logger.debug.call_count == 5
