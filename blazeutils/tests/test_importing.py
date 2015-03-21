@@ -1,5 +1,12 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 from os import path
-from blazeutils import find_path_package, import_split, posargs_limiter
+
+from blazeutils.importing import find_path_package, import_split, import_string
+
+src_dirname = path.dirname(path.dirname(path.dirname(__file__)))
+
 
 def test_find_path_package():
     import email
@@ -10,8 +17,8 @@ def test_find_path_package():
     assert email is find_path_package(path.dirname(email.__file__))
     assert email is find_path_package(email.mime.__file__)
     assert email is find_path_package(email.mime.base.__file__)
-    assert None is find_path_package(path.join(path.dirname(__file__), 'notthere.py'))
-    assert None is find_path_package(path.dirname(__file__))
+    assert None is find_path_package(path.join(src_dirname, 'notthere.py'))
+    assert None is find_path_package(src_dirname)
     assert test is find_path_package(path.join(path.dirname(test.__file__), 'output', 'test_cgi'))
 
     drive, casepath = path.splitdrive(path.dirname(email.__file__))
@@ -19,38 +26,17 @@ def test_find_path_package():
         assert email is find_path_package(drive.upper() + casepath)
         assert email is find_path_package(drive.lower() + casepath)
 
+
 def test_import_split():
     assert import_split('path') == ('path', None, None)
     assert import_split('path.part.object') == ('path.part', 'object', None)
-    assert import_split('path.part:object') == ('path.part', 'object', None )
+    assert import_split('path.part:object') == ('path.part', 'object', None)
     assert import_split('path.part:object.attribute') == \
         ('path.part', 'object', 'attribute')
-    
-def test_posargs_limiter():
-    def take0():
-        return 0
-    def take1(first):
-        return first
-    def take2(first, second):
-        return first + second
-    def take3(first, second, third):
-        return first + second + third
-    assert posargs_limiter(take0, 1, 2, 3) == 0
-    assert posargs_limiter(take1, 1, 2, 3) == 1
-    assert posargs_limiter(take2, 1, 2, 3) == 3
-    assert posargs_limiter(take3, 1, 2, 3) == 6
-    
-    class TheClass(object):
-        def take0(self):
-            return 0
-        def take1(self, first):
-            return first
-        def take2(self, first, second):
-            return first + second
-        def take3(self, first, second, third):
-            return first + second + third
-    tc = TheClass()
-    assert posargs_limiter(tc.take0, 1, 2, 3) == 0
-    assert posargs_limiter(tc.take1, 1, 2, 3) == 1
-    assert posargs_limiter(tc.take2, 1, 2, 3) == 3
-    assert posargs_limiter(tc.take3, 1, 2, 3) == 6
+
+
+class TestImportString(object):
+
+    def test_string_import(self):
+        assert import_string('blazeutils.importing.import_split') is import_split
+

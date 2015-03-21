@@ -1,7 +1,13 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
+import imp
 import sys
 import site
 from os import path
-import imp
+
+import six
+
 
 def prependsitedir(projdir, *args):
     """
@@ -77,7 +83,8 @@ def find_path_package(thepath):
     pname = find_path_package_name(thepath)
     if not pname:
         return None
-    return __import__(pname, globals(), locals(), [''])
+    fromlist = b'' if six.PY2 else ''
+    return __import__(pname, globals(), locals(), [fromlist])
 
 _py_suffixes = [suffix for suffix, _, _ in imp.get_suffixes()]
 
@@ -125,6 +132,7 @@ def is_path_python_module(thepath):
                 return True
     return False
 
+
 # from werkzeug
 def import_string(import_name, silent=False):
     """Imports an object based on a string.  This is useful if you want to
@@ -139,21 +147,16 @@ def import_string(import_name, silent=False):
                    `None` is returned instead.
     :return: imported object
     """
-    # force the import name to automatically convert to strings
-    if isinstance(import_name, unicode):
-        import_name = str(import_name)
+
     try:
         if ':' in import_name:
-            module, obj = import_name.split(':', 1)
+            module, obj_name = import_name.split(':', 1)
         elif '.' in import_name:
-            module, obj = import_name.rsplit('.', 1)
+            module, obj_name = import_name.rsplit('.', 1)
         else:
             return __import__(import_name)
-        # __import__ is not able to handle unicode strings in the fromlist
-        # if the module is a package
-        if isinstance(obj, unicode):
-            obj = obj.encode('utf-8')
-        return getattr(__import__(module, None, None, [obj]), obj)
+
+        return getattr(__import__(module, None, None, [obj_name]), obj_name)
     except (ImportError, AttributeError):
         if not silent:
             raise
