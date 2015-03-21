@@ -1,4 +1,11 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 from decimal import Decimal
+
+from six.moves import map
+from six.moves import range
+
 
 # from http://docs.python.org/library/decimal.html#recipes
 def moneyfmt(value, places=2, curr='', sep=',', dp='.',
@@ -34,7 +41,7 @@ def moneyfmt(value, places=2, curr='', sep=',', dp='.',
     q = Decimal(10) ** -places      # 2 places --> '0.01'
     sign, digits, exp = value.quantize(q).as_tuple()
     result = []
-    digits = map(str, digits)
+    digits = list(map(str, digits))
     build, next = result.append, digits.pop
     if sign:
         build(trailneg)
@@ -56,19 +63,22 @@ def moneyfmt(value, places=2, curr='', sep=',', dp='.',
     return ''.join(reversed(result))
 decimalfmt = moneyfmt
 
-def round_down_to_n(x, rounder = 5):
+
+def round_down_to_n(x, rounder=5):
     return (x // rounder) * rounder
+
 
 def convert_int(value):
     try:
         return int(value)
-    except ValueError, e:
+    except ValueError as e:
         if 'invalid literal for int()' not in str(e):
             raise
-    except TypeError, e:
+    except TypeError as e:
         if 'int() argument must be a string or a number' not in str(e):
             raise
     return None
+
 
 def ensure_int(value):
     retval = convert_int(value)
