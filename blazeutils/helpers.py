@@ -1,9 +1,14 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import csv
 import difflib
 from pprint import PrettyPrinter
+import six
 import time
 
 from blazeutils.datastructures import OrderedDict
+
 
 def tolist(x, default=[]):
     if x is None:
@@ -47,7 +52,7 @@ def pformat(stuff, indent = 4):
     return pp.pformat(stuff)
 
 def is_iterable(possible_iterable):
-    if isinstance(possible_iterable, basestring):
+    if isinstance(possible_iterable, six.string_types):
         return False
     try:
         iter(possible_iterable)
@@ -65,7 +70,7 @@ def multi_pop(d, *args):
     """ pops multiple keys off a dict like object """
     retval = {}
     for key in args:
-        if d.has_key(key):
+        if key in d:
             retval[key] = d.pop(key)
     return retval
 
@@ -83,11 +88,11 @@ def grouper(records, *fields):
         final_kpos = len(location)-1
         for kpos, key in enumerate(location):
             if kpos != final_kpos:
-                if not at.has_key(key):
+                if key not in at:
                     at[key] = OrderedDict()
                 at = at[key]
             else:
-                if not at.has_key(key):
+                if key not in at:
                     at[key] = []
                 at[key].append(record)
 
@@ -140,7 +145,7 @@ def unique(seq, preserve_order=True):
         return [x for x in seq if x not in seen and not seen.add(x)]
     # f9
     # Not order preserving
-    return {}.fromkeys(seq).keys()
+    return list({}.fromkeys(seq).keys())
 
 def prettifysql(sql):
     """Returns a prettified version of the SQL as a list of lines to help
