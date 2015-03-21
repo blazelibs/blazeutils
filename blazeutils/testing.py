@@ -16,6 +16,7 @@ from blazeutils.decorators import decorator
 from blazeutils.log import clear_handlers_by_attr
 from blazeutils.helpers import Tee, prettifysql
 import six
+from six.moves import zip as izip
 
 
 class LoggingHandler(logging.Handler):
@@ -133,7 +134,7 @@ def emits_deprecation(*messages):
         with warnings.catch_warnings(record=True) as wcm:
             retval = fn(*args, **kw)
             count = 0
-            for w, m in itertools.izip_longest(wcm, messages):
+            for w, m in izip(wcm, messages):
                 count += 1
                 assert m is not None, 'No message to match warning: %s' % w.message
                 assert w is not None, 'No warning to match message #%s: %s' % (count, m)
