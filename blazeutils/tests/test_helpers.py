@@ -1,13 +1,18 @@
-from blazeutils import multi_pop, is_iterable, grouper, is_empty, pformat, \
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
+from blazeutils.helpers import multi_pop, is_iterable, grouper, is_empty, pformat, \
     pprint, tolist, toset
 from blazeutils.helpers import unique, prettifysql, diff, ensure_tuple, \
     ensure_list
 from blazeutils.strings import normalizews
 
+
 def test_multi_pop():
-    start = {'a':1, 'b':2, 'c':3}
-    assert {'a':1, 'c':3} == multi_pop(start, 'a', 'c')
-    assert start == {'b':2}
+    start = {'a': 1, 'b': 2, 'c': 3}
+    assert {'a': 1, 'c': 3} == multi_pop(start, 'a', 'c')
+    assert start == {'b': 2}
+
 
 def test_is_iterable():
     assert is_iterable([])
