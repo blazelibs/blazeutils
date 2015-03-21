@@ -1,5 +1,9 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 from os import path
 from blazeutils.strings import randchars
+
 
 def randfile(fdir, ext=None, length=12, fullpath=False):
     if not ext:
