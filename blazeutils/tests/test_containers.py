@@ -1,7 +1,10 @@
-import cPickle as pickle
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
+import six.moves.cPickle as pickle
 
 from blazeutils.containers import LazyDict, HTMLAttributes
+
 
 def test_lazy_dict():
 
@@ -64,7 +67,7 @@ class TestAttributes(object):
 
     def test_add_attribute_access_staring_with_unicode(self):
         at = HTMLAttributes()
-        at.class_ = u'foo'
+        at.class_ = 'foo'
         at.class_ += 'bar'
         self.check_eq({'class': 'foo bar'}, **at)
 
