@@ -1,13 +1,12 @@
 from __future__ import absolute_import
+from __future__ import unicode_literals
 
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from StringIO import StringIO
 import datetime as dt
 from decimal import Decimal
 from random import randint
 import os.path as osp
+
+from six.moves import cStringIO as StringIO
 
 try:
     import xlrd
