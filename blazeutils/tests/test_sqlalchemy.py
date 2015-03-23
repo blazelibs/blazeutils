@@ -1,3 +1,8 @@
+from __future__ import absolute_import
+from __future__ import print_function
+from __future__ import unicode_literals
+
+from six.moves import range
 from sqlalchemy import Column, Integer, String, create_engine, ForeignKey, event
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
@@ -78,9 +83,9 @@ class TestSAMemoize(object):
         assert mk.pop() == 'ac'
 
         session1.add(Address(email='foo', user=user))
-        print 'committing'
+        print('committing')
         session1.commit()
 
-        print 'accessing'
+        print('accessing')
         assert user.address_count() == 3
         assert mk.pop() == 'ac'

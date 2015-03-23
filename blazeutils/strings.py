@@ -1,7 +1,14 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import hashlib
 import random
 import re
 import time
+
+import six
+from six.moves import range
+
 
 class StringIndenter(object):
 
@@ -22,10 +29,10 @@ class StringIndenter(object):
         self.render(value, level=level)
 
     def render(self, value, level=None):
-        self.output.append('%s%s' % (self.indent(level), value) )
+        self.output.append('%s%s' % (self.indent(level), value))
 
-    def indent(self, level = None):
-        if level == None:
+    def indent(self, level=None):
+        if level is None:
             return self.indent_with * self.level
         else:
             return self.indent_with * level
@@ -35,10 +42,11 @@ class StringIndenter(object):
         self.output = []
         return retval
 
+
 def simplify_string(s, length=None, replace_with='-'):
     #$slug = str_replace("&", "and", $string);
     # only keep alphanumeric characters, underscores, dashes, and spaces
-    s = re.compile( r'[^\/a-zA-Z0-9_ \\-]').sub('', s)
+    s = re.compile(r'[^\/a-zA-Z0-9_ \\-]').sub('', s)
     # replace forward slash, back slash, underscores, and spaces with dashes
     s = re.compile(r'[\/ \\_]+').sub(replace_with, s)
     # make it lowercase
@@ -49,40 +57,47 @@ def simplify_string(s, length=None, replace_with='-'):
         return s
 simplify = simplify_string
 
+
 # next four functions from: http://code.activestate.com/recipes/66009/
 def case_cw2us(x):
     """ capwords to underscore notation """
     return re.sub(r'(?<=[a-z])[A-Z]|(?<!^)[A-Z](?=[a-z])', r"_\g<0>", x).lower()
 
+
 def case_mc2us(x):
     """ mixed case to underscore notation """
     return case_cw2us(x)
 
+
 def case_us2mc(x):
     """ underscore to mixed case notation """
     return re.sub(r'_([a-z])', lambda m: (m.group(1).upper()), x)
+
 
 def case_us2cw(x):
     """ underscore to capwords notation """
     s = case_us2mc(x)
     return s[0].upper()+s[1:]
 
+
 def case_cw2dash(x):
     """ capwords to dash notation """
     return re.sub(r'(?<=[a-z])[A-Z]|(?<!^)[A-Z](?=[a-z])', r"-\g<0>", x).lower()
+
 
 def case_mc2dash(x):
     """ mixed case to underscore notation """
     return case_cw2dash(x)
 
+
 def reindent(s, numspaces):
     """ reinidents a string (s) by the given number of spaces (numspaces) """
     leading_space = numspaces * ' '
-    lines = [ leading_space + line.strip()
-                for line in s.splitlines()]
+    lines = [leading_space + line.strip()for line in s.splitlines()]
     return '\n'.join(lines)
 
-def randchars(n = 12, chartype='alphanumeric', alphacase='both', unique=False):
+
+def randchars(n=12, chartype='alphanumeric', alphacase='both', unique=False):
     if alphacase == 'both':
         alphalist = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
     elif alphacase == 'upper':
@@ -109,14 +124,18 @@ def randchars(n = 12, chartype='alphanumeric', alphacase='both', unique=False):
         if unique:
             charlist = charlist.replace(chosen, '')
         retval.append(chosen)
-    return u''.join(retval)
+    return ''.join(retval)
 
-def randnumerics(n = 12):
+
+def randnumerics(n=12):
     charlist = '0123456789'
-    return u''.join(random.choice(charlist) for _ in range(n))
+    return ''.join(random.choice(charlist) for _ in range(n))
+
 
 def randhash():
-    return hashlib.md5(str(random.random()) + str(time.clock())).hexdigest()
+    random_str = six.text_type(random.random()) + six.text_type(time.clock())
+    return hashlib.md5(random_str.encode('utf-8')).hexdigest()
+
 
 def normalizews(string):
-    return ' '.join(string.replace('\r','').split())
+    return ' '.join(string.replace('\r', '').split())
