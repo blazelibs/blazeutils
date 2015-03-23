@@ -1,9 +1,13 @@
-from blazeutils import StringIndenter, simplify_string, case_cw2us, case_mc2us, \
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
+from blazeutils.strings import StringIndenter, simplify_string, case_cw2us, case_mc2us, \
     case_us2mc, case_us2cw, reindent, randchars, randnumerics, randhash
+
 
 def test_string_indent_helper():
     s = StringIndenter()
-    
+
     s.inc('1.0')
     s('1.1')
     s('1.2')
@@ -20,16 +24,19 @@ def test_string_indent_helper():
 3.0
     """.strip()
     assert expected == output
-    
+
+
 def test_simplify_string():
     assert simplify_string('foo bar') == 'foo-bar'
-    
+
+
 def test_case_changes():
     assert case_cw2us('FooBar') == 'foo_bar'
     assert case_mc2us('fooBar') == 'foo_bar'
     assert case_us2mc('foo_bar') == 'fooBar'
     assert case_us2cw('foo_bar') == 'FooBar'
-    
+
+
 def test_reindent():
     expected = """    foo
     bar"""
@@ -38,6 +45,7 @@ foo
         bar
     """.strip()
     assert reindent(test, 4) == expected
+
 
 def test_randoms():
     assert len(randchars()) == 12
@@ -48,4 +56,3 @@ def test_randoms():
     assert randnumerics() != randnumerics()
     assert len(randhash()) == 32
     assert randhash() != randhash()
-    
