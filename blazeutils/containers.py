@@ -1,4 +1,8 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import six
+
 
 class LazyDict(dict):
     def __init__(self, *args, **kwargs):
@@ -9,18 +13,19 @@ class LazyDict(dict):
         if attr in self:
             return self[attr]
         raise AttributeError("'%s' object has no attribute '%s'"
-            % (self.__class__.__name__, attr))
+                             % (self.__class__.__name__, attr))
 
     def __setattr__(self, item, value):
         # this test allows attributes to be set in the __init__ method
-        if self.__dict__.has_key('_ld_initialized') == False or self.__dict__['_ld_initialized'] == False:
+        if '_ld_initialized' not in self.__dict__ or not self.__dict__['_ld_initialized']:
             self.__dict__[item] = value
         # any normal attributes are handled normally when they already exist
         # this would happen if they are given different values after initilization
-        elif self.__dict__.has_key(item):
+        elif item in self.__dict__:
             self.__dict__[item] = value
         # if there is a property, then set use it
-        elif self.__class__.__dict__.has_key(item) and isinstance(self.__class__.__dict__[item], property):
+        elif item in self.__class__.__dict__ and isinstance(self.__class__.__dict__[item],
+                                                            property):
             self.__class__.__dict__[item].__set__(self, value)
         # attributes added after initialization are stored in _data
         else:
@@ -29,9 +34,11 @@ class LazyDict(dict):
     def __delattr__(self, name):
         del self[name]
 
+
 class _Attribute(six.text_type):
     def __add__(self, other):
-        return _Attribute(u'{0} {1}'.format(self, other).lstrip(u' '))
+        return _Attribute('{0} {1}'.format(self, other).lstrip(' '))
+
 
 class HTMLAttributes(LazyDict):
     def __init__(self, *args, **kwargs):
