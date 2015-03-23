@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 class NotGivenBase(object):
     """ an empty sentinel object that acts like None """
     
@@ -5,10 +7,13 @@ class NotGivenBase(object):
         return 'None'
     
     def __unicode__(self):
-        return u'None'
+        return 'None'
     
-    def __nonzero__(self):
+    def __bool__(self):
         return False
+
+    def __nonzero__(self):
+        return self.__bool__()
     
     def __ne__(self, other):
         if other is None or isinstance(other, NotGivenBase):
@@ -27,7 +32,7 @@ class NotGivenIterBase(NotGivenBase):
         return '[]'
     
     def __unicode__(self):
-        return u'[]'
+        return '[]'
     
     def __nonzero__(self):
         return False
@@ -47,6 +52,9 @@ class NotGivenIterBase(NotGivenBase):
         return self
     
     def next(self):
+        return self.__next__()
+
+    def __next__(self):
         raise StopIteration
     
     def __len__(self):
