@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from os import path as osp
 
 ## legacy imports, future imports should use the full import path
@@ -14,7 +15,7 @@ from blazeutils.importing import find_path_package, find_path_package_name,\
     import_split, is_path_python_module, prependsitedir, setup_virtual_env
 from blazeutils.numbers import moneyfmt, round_down_to_n
 from blazeutils.sentinels import *
-from spreadsheets import XlwtHelper
+from .spreadsheets import XlwtHelper
 from blazeutils.strings import StringIndenter, simplify_string, case_cw2us, \
     case_mc2us, case_us2cw, case_us2mc, randchars, \
     randhash, randnumerics, reindent, simplify_string
