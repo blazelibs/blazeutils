@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 import sys
 
 try:
@@ -7,8 +10,8 @@ try:
     from docutils.transforms.parts import Contents
     import docutils.io as io
     from docutils.utils import new_document
-    have_docutils =  True
-except ImportError, e:
+    have_docutils = True
+except ImportError as e:
     have_docutils = False
 
 from blazeutils.datastructures import BlankObject
@@ -99,7 +102,8 @@ def docinfo2dict(doctree):
 # deprecate eventually
 doctree2dict = docinfo2dict
 
-def create_toc(doctree, depth=sys.maxint, writer_name='html',\
+
+def create_toc(doctree, depth=9223372036854775807, writer_name='html',\
             exclude_first_section=True, href_prefix=None, id_prefix='toc-ref-'):
     """
     Create a Table of Contents (TOC) from the given doctree
@@ -174,6 +178,7 @@ def create_toc(doctree, depth=sys.maxint, writer_name='html',\
     output = pub.publish()
     return pub, output
 
+
 def rst2html(rst_src, **kwargs):
     """
         Convert a reStructuredText string into a unicode HTML fragment.
@@ -183,6 +188,7 @@ def rst2html(rst_src, **kwargs):
     """
     pub = rst2pub(rst_src, settings_overrides=kwargs, writer_name='html')
     return pub.writer.parts['body']
+
 
 def prefix_refids(document, href_prefix):
     # The href comes out as just a fragment, but its possible that the HTML

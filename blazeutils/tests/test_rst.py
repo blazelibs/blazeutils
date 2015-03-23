@@ -1,6 +1,8 @@
-import sys
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
-import mock
+from imp import reload
+import sys
 
 import blazeutils.rst
 from blazeutils.testing import FailLoader, raises
@@ -47,11 +49,11 @@ sometext
 some more text
 """
 
+
 class TestRST(object):
 
     def assert_eq(self, rst, html, **kwargs):
         converted = blazeutils.rst.rst2html(rst, **kwargs)
-        assert isinstance(converted, unicode)
         assert html == converted
 
     def test_document_structure(self):
@@ -60,7 +62,7 @@ class TestRST(object):
     def test_simple_inline(self):
         self.assert_eq(
             'This is *important*.',
-            u'<p>This is <em>important</em>.</p>\n'
+            '<p>This is <em>important</em>.</p>\n'
         )
 
     def test_settings(self):
@@ -71,7 +73,7 @@ class TestRST(object):
 
     def test_docinfo(self):
         pub = blazeutils.rst.rst2pub(docinfo_rst)
-        expect = {u'f1': u'field value 1', u'f2': u'2 again', u'f3': u'field\nvalue 3'}
+        expect = {'f1': 'field value 1', 'f2': '2 again', 'f3': 'field\nvalue 3'}
         assert expect == blazeutils.rst.doctree2dict(pub.document)
 
     def test_docinfo_no_fields(self):
@@ -79,13 +81,14 @@ class TestRST(object):
         expect = {}
         assert expect == blazeutils.rst.doctree2dict(pub.document)
 
+
 class TestNoDocutils(object):
 
     @classmethod
     def setup_class(cls):
         cls.fl = fl = FailLoader()
         fl.modules_from_package('docutils')
-        sys.meta_path.append(fl)
+        sys.meta_path.insert(0, fl)
         fl.delete_from_sys_modules()
         reload(blazeutils.rst)
 
@@ -168,6 +171,7 @@ href_prefix_toc_html = """
 </ul>
 """.lstrip()
 
+
 class TestCreatToc(object):
 
     def test_all_headings(self):
@@ -187,5 +191,6 @@ class TestCreatToc(object):
 
     def test_href_prefix(self):
         pub = blazeutils.rst.rst2pub(toc_rst)
-        pub, _ = blazeutils.rst.create_toc(pub.document, exclude_first_section=False, depth=1, href_prefix='some-page.html')
+        pub, _ = blazeutils.rst.create_toc(pub.document, exclude_first_section=False, depth=1,
+                                           href_prefix='some-page.html')
         assert href_prefix_toc_html == pub.writer.parts['body']
