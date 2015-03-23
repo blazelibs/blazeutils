@@ -27,14 +27,17 @@ def test_lazy_dict():
     del o.c
     assert not hasattr(o, 'c')
 
+
 def test_lazy_dict_with_setter_property():
 
     class CustomLD(LazyDict):
         def __init__(self):
             self._x = True
             LazyDict.__init__(self)
+
         def getx(self):
             return self._x
+
         def setx(self, value):
             self._x = value
         x = property(getx, setx)
@@ -43,6 +46,7 @@ def test_lazy_dict_with_setter_property():
     assert o.x
     o.x = False
     assert not o.x
+
 
 class TestAttributes(object):
 
@@ -95,8 +99,8 @@ class TestAttributes(object):
 
     def test_init_from_dict(self):
         at = HTMLAttributes({'name': 'foo', 'class_': 'bar baz'})
-        self.check_eq({'class': 'bar baz', 'name':'foo'}, **at)
+        self.check_eq({'class': 'bar baz', 'name': 'foo'}, **at)
 
     def test_init_from_kwargs(self):
         at = HTMLAttributes(name='foo', class_='bar baz')
-        self.check_eq({'class': 'bar baz', 'name':'foo'}, **at)
+        self.check_eq({'class': 'bar baz', 'name': 'foo'}, **at)
