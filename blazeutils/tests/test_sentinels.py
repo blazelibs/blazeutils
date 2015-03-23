@@ -1,11 +1,14 @@
-from blazeutils import NotGiven, NotGivenIter, is_notgiven
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
+from blazeutils.sentinels import NotGiven, NotGivenIter, is_notgiven
 from blazeutils.helpers import is_iterable
+
 
 def test_notgiven():
     assert not None
     assert not NotGiven
     assert NotGiven != False
-    assert None != False
     assert NotGiven is NotGiven
     assert NotGiven == NotGiven
     assert None is not NotGiven
@@ -13,7 +16,8 @@ def test_notgiven():
     assert not None != NotGiven
     assert NotGiven == None
     assert str(NotGiven) == 'None'
-    assert unicode(NotGiven) == u'None'
+    assert str(NotGiven) == 'None'
+
 
 def test_notgiveniter():
     assert not NotGivenIter
@@ -25,15 +29,15 @@ def test_notgiveniter():
     assert not [] != NotGivenIter
     assert NotGivenIter == []
     assert str(NotGivenIter) == '[]'
-    assert unicode(NotGivenIter) == u'[]'
     assert is_iterable(NotGivenIter)
     assert len(NotGivenIter) == 0
 
     for v in NotGivenIter:
-        self.fail('should emulate empty')
+        assert False, 'should emulate empty'
     else:
         assert True, 'should emulate empty'
-    
+
+
 def test_is_notgiven():
     assert is_notgiven(NotGiven)
     assert is_notgiven(NotGivenIter)
