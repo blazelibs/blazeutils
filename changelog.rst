@@ -5,7 +5,7 @@ This is the most recent activity.  See `changelog-archive.rst` in the source dis
 for older changelog notes.
 
 
-0.5.0 released <in dev>
+0.5.0 released 2015-03-24
 ===============================
 
 - Added Python 3.4 compatibility.
