@@ -1,11 +1,11 @@
 Introduction
 ---------------
 
-BlazeUtils is a library to hold common tools for the Blaze library family:
+BlazeUtils was originally developed as a library to hold common tools for the
+`Blaze library family <https://bitbucket.org/blazelibs/>`_.
 
-- `BlazeWeb <http://pypi.python.org/pypi/BlazeWeb/>`_
-- `BaseBWA <http://pypi.python.org/pypi/BaseBWA/>`_
-- `BlazeForm <http://pypi.python.org/pypi/BlazeForm/>`_
+Over the years it has been expanded to be somewhat of a catch-all for tools commonly used by
+the `Level 12 <https://level12.io/>`_ development team.
 
 Questions & Comments
 ---------------------
@@ -17,5 +17,19 @@ Current Status
 
 The code and API stay pretty stable.
 
-The `blazeutils tip <http://bitbucket.org/blazelibs/blazeutils/get/tip.zip#egg=BlazeUtils-dev>`_
-is installable via `easy_install` with ``easy_install BlazeUtils==dev``
+Development
+-----------
+
+Source code and issue tracker are `on bitbucket <https://bitbucket.org/blazelibs/blazeutils/src>`_.
+
+Testing::
+
+    $ hg clone https://bitbucket.org/blazelibs/blazeutils/src blazeutils-src
+    $ cd blazeutils-src
+    $ tox
+    ...<snip>...
+      clean: commands succeeded
+      py27: commands succeeded
+      py34: commands succeeded
+      stats: commands succeeded
+      congratulations :)
