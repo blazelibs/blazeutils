@@ -4,6 +4,10 @@ Recent Changelog
 This is the most recent activity.  See `changelog-archive.rst` in the source distribution
 for older changelog notes.
 
+0.5.1 released <in development>
+===============================
+
+- Fixed spreadsheets.xlsx_to_reader Python 3.4 compatibility
 
 0.5.0 released 2015-03-24
 ===============================

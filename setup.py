@@ -12,6 +12,7 @@ develop_requires = [
     'pytest',
     'pytest-cov',
     'xlrd',
+    'xlsxwriter',
     'docutils',
     'sqlalchemy',
 ]

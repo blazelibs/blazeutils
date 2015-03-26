@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 import pytest
 import six
 
-from blazeutils.spreadsheets import workbook_to_reader, XlwtHelper, http_headers
+from blazeutils.spreadsheets import workbook_to_reader, XlwtHelper, http_headers, xlsx_to_reader
 from blazeutils.testing import emits_deprecation
 
 
@@ -18,6 +18,19 @@ class TestWorkbookToReader(object):
         ws.write(0, 0, 'bar')
 
         wb = workbook_to_reader(write_wb)
+        sh = wb.sheet_by_name('Foo')
+        assert sh.cell_value(rowx=0, colx=0) == 'bar'
+
+
+class TestXlsxToReader(object):
+
+    def test_xlsx_to_reader(self):
+        import xlsxwriter
+        write_wb = xlsxwriter.Workbook()
+        ws = write_wb.add_worksheet('Foo')
+        ws.write(0, 0, 'bar')
+
+        wb = xlsx_to_reader(write_wb)
         sh = wb.sheet_by_name('Foo')
         assert sh.cell_value(rowx=0, colx=0) == 'bar'
 
