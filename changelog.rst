@@ -8,6 +8,7 @@ for older changelog notes.
 ===============================
 
 - Fixed spreadsheets.xlsx_to_reader Python 3.4 compatibility
+- Fixed numbers.convert_int exception test for Python 3.4 compatibility
 
 0.5.0 released 2015-03-24
 ===============================
