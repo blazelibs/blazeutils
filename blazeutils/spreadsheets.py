@@ -3,10 +3,9 @@ from __future__ import unicode_literals
 
 import datetime as dt
 from decimal import Decimal
+from io import BytesIO
 from random import randint
 import os.path as osp
-
-from six.moves import cStringIO as StringIO
 
 try:
     import xlrd
@@ -66,7 +65,7 @@ def workbook_to_reader(xlwt_wb):
         convert xlwt Workbook instance to an xlrd instance for reading
     """
     _xlrd_required()
-    fh = StringIO()
+    fh = BytesIO()
     xlwt_wb.save(fh)
     # prep for reading
     fh.seek(0)
@@ -75,10 +74,10 @@ def workbook_to_reader(xlwt_wb):
 
 def xlsx_to_strio(xlsx_wb):
     """
-        convert xlwt Workbook instance to a stringio instance
+        convert xlwt Workbook instance to a BytesIO instance
     """
     _xlrd_required()
-    fh = StringIO()
+    fh = BytesIO()
     xlsx_wb.filename = fh
     xlsx_wb.close()
     # prep for reading
