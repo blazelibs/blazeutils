@@ -43,3 +43,7 @@ class TestRaiseUIE(object):
     def test_end_matches_but_not_beginning(self):
         assert not _uie_matches('tcsdata.components.rem.model.orm',
                                 'No module named tcdata.components.tcssite.model.orm')
+
+    def test_completely_different_exception(self):
+        assert not _uie_matches('minimal2.components.internalonly.events',
+                                'DLL load failed: The specified module could not be found.')
