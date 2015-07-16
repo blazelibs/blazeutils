@@ -10,7 +10,7 @@ install:
 build: false  # Not a C# project, build stuff at the test step instead.
 
 test_script:
-  - tox
+  - c:\python27\scripts\tox.exe
 
 after_test:
   # If tests are successful, create a whl package for the project.
