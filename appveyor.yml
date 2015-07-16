@@ -1,0 +1,23 @@
+install:
+  # Check that we have the expected version and architecture for Python
+  - python --version
+  - python -c "import struct; print(struct.calcsize('P') * 8)"
+  - pip --version
+
+  # Install tox from the wheelhouse
+  - pip install --use-wheel --no-index --find-links=requirements/wheelhouse tox
+
+build: false  # Not a C# project, build stuff at the test step instead.
+
+test_script:
+  - tox
+
+after_test:
+  # If tests are successful, create a whl package for the project.
+  - python setup.py bdist_wheel
+  - C:\Python34\python.exe setup.py bdist_wheel
+  - ps: "ls dist"
+
+artifacts:
+  # Archive the generated wheel package in the ci.appveyor.com build report.
+  - path: dist\*
