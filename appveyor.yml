@@ -5,7 +5,7 @@ install:
   - pip --version
 
   # Install tox from the wheelhouse
-  - pip install --use-wheel --no-index --find-links=requirements/wheelhouse tox
+  - c:\python27\scripts\pip.exe install --use-wheel --no-index --find-links=requirements/wheelhouse tox
 
 build: false  # Not a C# project, build stuff at the test step instead.
 
