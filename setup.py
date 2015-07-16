@@ -6,21 +6,6 @@ from setuptools import setup
 
 PY2 = sys.version_info[0] == 2
 
-# pip install -e .[develop]
-develop_requires = [
-    'mock',
-    'pytest',
-    'pytest-cov',
-    'xlrd',
-    'xlsxwriter',
-    'docutils',
-    'sqlalchemy',
-]
-
-if PY2:
-    develop_requires.append('xlwt')
-
-
 cdir = osp.abspath(osp.dirname(__file__))
 README = open(osp.join(cdir, 'readme.rst')).read()
 CHANGELOG = open(osp.join(cdir, 'changelog.rst')).read()
@@ -50,7 +35,6 @@ setup(
     ],
     license='BSD',
     packages=['blazeutils'],
-    extras_require={'develop': develop_requires},
     zip_safe=False,
     include_package_data=True,
     install_requires=['six', 'wrapt'],
