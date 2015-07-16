@@ -9,3 +9,6 @@ xlsxwriter
 docutils
 sqlalchemy
 tox
+
+# pytest dep on windows
+colorama
