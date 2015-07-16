@@ -8,3 +8,4 @@ xlrd
 xlsxwriter
 docutils
 sqlalchemy
+tox
