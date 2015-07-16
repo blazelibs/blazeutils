@@ -1,0 +1,10 @@
+-r common.txt
+
+mock
+pytest
+pytest-cov
+xlwt
+xlrd
+xlsxwriter
+docutils
+sqlalchemy
