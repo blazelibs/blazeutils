@@ -2,7 +2,7 @@ install:
   # Check that we have the expected version and architecture for Python
   - python --version
   - python -c "import struct; print(struct.calcsize('P') * 8)"
-  - pip --version
+  - c:\python27\scripts\pip.exe --version
 
   # Install tox from the wheelhouse
   - c:\python27\scripts\pip.exe install --use-wheel --no-index --find-links=requirements/wheelhouse tox
