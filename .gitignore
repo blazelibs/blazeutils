@@ -1,0 +1,15 @@
+MANIFEST
+build/
+dist/
+.cache/
+*.egg-info/
+*.pyc
+*.pyo
+*.DS_Store
+env/
+docs/_build
+*.coverage
+coverage.xml
+nosetests.xml
+*.tox/
+htmlcov/*
