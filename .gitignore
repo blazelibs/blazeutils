@@ -1,1 +1,12 @@
+MANIFEST
+*.egg-info
 *.pyc
+*.pyo
+docs/_build
+*.komodo*
+.coverage
+coverage.xml
+nosetests.xml
+.tox/
+htmlcov/*
+.cache/
