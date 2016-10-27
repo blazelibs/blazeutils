@@ -32,15 +32,15 @@ class TestRaisesDecorator(object):
 
     @raises("object has no attribute 'foo'")
     def test_arg2(self):
-        assert sys.foo
+        raise Exception("object has no attribute 'foo'")
 
     @raises(AttributeError, "object has no attribute 'foo'")
     def test_arg3(self):
-        assert sys.foo
+        raise AttributeError("object has no attribute 'foo'")
 
     @raises("object has no attribute 'foo'", AttributeError)
     def test_arg4(self):
-        assert sys.foo
+        raise AttributeError("object has no attribute 'foo'")
 
     @raises(_is_attribute_exception)
     def test_callable_validator(self):
@@ -54,7 +54,8 @@ class TestRaisesDecorator(object):
             wrapper()
             assert False, '@raises hid the exception but shouldn\'t have'
         except AttributeError as e:
-            if "'module' object has no attribute 'foo'" != str(e):
+            if "module object has no attribute foo" != str(e).replace("'", '') and \
+                    "module sys has no attribute foo" != str(e).replace("'", ''):
                 raise
 
     def test_non_matching_type(self):
@@ -65,7 +66,8 @@ class TestRaisesDecorator(object):
             wrapper()
             assert False, '@raises hid the exception but shouldn\'t have'
         except AttributeError as e:
-            if "'module' object has no attribute 'foo'" != str(e):
+            if "module object has no attribute foo" != str(e).replace("'", '') and \
+                    "module sys has no attribute foo" != str(e).replace("'", ''):
                 raise
 
     def test_callable_validator_returns_false(self):
