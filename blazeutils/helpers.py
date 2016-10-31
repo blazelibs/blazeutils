@@ -142,7 +142,8 @@ def unique(seq, preserve_order=True):
         # f8 by Dave Kirby
         # Order preserving
         seen = set()
-        return [x for x in seq if x not in seen and not seen.add(x)]
+        seen_add = seen.add  # lookup method only once
+        return [x for x in seq if x not in seen and not seen_add(x)]
     # f9
     # Not order preserving
     return list({}.fromkeys(seq).keys())
