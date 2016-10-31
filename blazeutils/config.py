@@ -38,7 +38,9 @@ class QuickSettings(OrderedProperties):
                     try:
                         self.get(key).update(____sequence[key])
                     except (AttributeError, ValueError) as e:
-                        if "object has no attribute 'update'" not in str(e) and "need more than 1 value to unpack" not in str(e):
+                        if "object has no attribute 'update'" not in str(e) and \
+                                "need more than 1 value to unpack" not in str(e) and \
+                                'not enough values to unpack (expected 2, got 1)' not in str(e):
                             raise
                         self.__setitem__(key, ____sequence[key])
             else:
