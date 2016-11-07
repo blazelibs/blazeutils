@@ -30,7 +30,6 @@ class TestOrderedProps(object):
             else:
                 assert attr == 2
 
-
     def test_list(self):
         o = OrderedProperties()
         o.a = 1
@@ -117,7 +116,7 @@ class TestOrderedProps(object):
     def test_has_key(self):
         o = OrderedProperties()
         o.a = 1
-        assert o.has_key('a')
+        assert 'a' in o
 
     def test_clear(self):
         o = OrderedProperties()

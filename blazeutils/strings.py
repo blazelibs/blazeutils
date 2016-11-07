@@ -44,7 +44,7 @@ class StringIndenter(object):
 
 
 def simplify_string(s, length=None, replace_with='-'):
-    #$slug = str_replace("&", "and", $string);
+    # $slug = str_replace("&", "and", $string);
     # only keep alphanumeric characters, underscores, dashes, and spaces
     s = re.compile(r'[^\/a-zA-Z0-9_ \\-]').sub('', s)
     # replace forward slash, back slash, underscores, and spaces with dashes

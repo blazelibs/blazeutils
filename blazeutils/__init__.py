@@ -1,3 +1,5 @@
+# flake8: noqa
+
 from __future__ import absolute_import
 from os import path as osp
 
@@ -14,7 +16,8 @@ from blazeutils.helpers import tolist, toset, grouper, is_empty, is_iterable, \
 from blazeutils.importing import find_path_package, find_path_package_name,\
     import_split, is_path_python_module, prependsitedir, setup_virtual_env
 from blazeutils.numbers import moneyfmt, round_down_to_n
-from blazeutils.sentinels import *
+from blazeutils.sentinels import NotGiven, NotGivenBase, NotGivenIter, NotGivenIterBase, \
+    is_notgiven
 from .spreadsheets import XlwtHelper
 from blazeutils.strings import StringIndenter, simplify_string, case_cw2us, \
     case_mc2us, case_us2cw, case_us2mc, randchars, \

@@ -8,6 +8,7 @@ import mock
 from blazeutils.testing import raises, assert_equal_sql, assert_equal_txt, \
     mock_date_today, mock_datetime_now, mock_datetime_utcnow
 
+
 class LikeWerkzeugExc(Exception):
     description = None
 
@@ -106,7 +107,8 @@ class TestRaisesDecorator(object):
             def wrapper():
                 raise Exception('baz')
             wrapper()
-            assert False, '@raises should have complained that the exception was missing the description attribute'
+            assert False, '@raises should have complained that the exception was ' \
+                'missing the description attribute'
         except Exception as e:
             if "baz" != str(e):
                 raise
@@ -117,9 +119,11 @@ class TestRaisesDecorator(object):
             def wrapper():
                 raise LikeWerkzeugExc('baz')
             wrapper()
-            assert False, '@raises should have complained that the description attribute did not match'
-        except LikeWerkzeugExc as e:
+            assert False, '@raises should have complained that the description ' \
+                'attribute did not match'
+        except LikeWerkzeugExc:
             pass
+
 
 def test_assert_equal_sql():
     s2 = s1 = """
@@ -128,14 +132,16 @@ def test_assert_equal_sql():
     baz from bill"""
     assert_equal_sql(s1, s2)
 
+
 @raises(AssertionError, ".+!=", re_esc=False)
-def test_assert_equal_sql():
+def test_assert_equal_sql_diff():
     s2 = s1 = """
     select foo,
     bar,
     baz from bill"""
     s2 = s2[5:]
     assert_equal_sql(s1, s2)
+
 
 def test_assert_equal_txt():
     s1 = """

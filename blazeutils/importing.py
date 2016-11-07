@@ -21,8 +21,6 @@ def prependsitedir(projdir, *args):
         *args: additional directories relative to the projdir to add
             to sys.path.
     """
-    libpath = None
-
     # let the user be lazy and send a file, we will convert to parent directory
     # of file
     if path.isfile(projdir):
@@ -46,13 +44,15 @@ def prependsitedir(projdir, *args):
     new_paths = list(syspath_after.difference(syspath_orig))
     sys.path = new_paths + sys.path
 
+
 def setup_virtual_env(pysmvt_libs_module, lib_path, *args):
     # load the system library that corresponds with the version requested
     libs_mod = __import__(pysmvt_libs_module)
     prependsitedir(libs_mod.__file__)
-    
+
     # load the local 'libs' directory
     prependsitedir(lib_path, *args)
+
 
 def import_split(import_name):
     """ takes a dotted string path and returns the components:
@@ -74,6 +74,7 @@ def import_split(import_name):
         module = import_name
     return module, obj, attr
 
+
 def find_path_package(thepath):
     """
         Takes a file system path and returns the module object of the python
@@ -87,6 +88,7 @@ def find_path_package(thepath):
     return __import__(pname, globals(), locals(), [fromlist])
 
 _py_suffixes = [suffix for suffix, _, _ in imp.get_suffixes()]
+
 
 def find_path_package_name(thepath):
     """
@@ -112,6 +114,7 @@ def find_path_package_name(thepath):
             continue_ = False
         thepath = next_path
     return last_module_found
+
 
 def is_path_python_module(thepath):
     """

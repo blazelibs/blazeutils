@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 
 import re
 import sys
-import traceback
-import warnings
 
 from blazeutils.helpers import tolist
 from blazeutils.decorators import deprecate
@@ -25,7 +23,7 @@ traceback_depth_in = tb_depth_in
 
 @deprecate('tb_depth_in(), traceback_depth() deprecated, its a bad idea')
 def traceback_depth(tb=None):
-    if tb == None:
+    if tb is None:
         _, _, tb = sys.exc_info()
     depth = 0
     while tb.tb_next is not None:

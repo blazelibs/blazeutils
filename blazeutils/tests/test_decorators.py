@@ -44,6 +44,7 @@ def test_decorator():
 
     assert myfunc(5) == 9
 
+
 class TestExcEmailer(object):
 
     @patch('blazeutils.decorators.log')
@@ -73,7 +74,8 @@ class TestExcEmailer(object):
         traceback = send_mail.call_args[0][0]
         assert 'Traceback' in traceback
         assert 'raise ValueError(\'test\')' in traceback
-        m_log.exception.assert_called_once_with('exc_mailer() caught an exception, email will be sent.')
+        m_log.exception.assert_called_once_with('exc_mailer() caught an exception, '
+                                                'email will be sent.')
 
     @patch('blazeutils.decorators.log')
     def test_send_mail_func_exception(self, m_log):
@@ -94,7 +96,8 @@ class TestExcEmailer(object):
 
         assert(m_log.exception.call_args_list == [
             call('exc_mailer() caught an exception, email will be sent.'),
-            call('exc_mailer(): send_mail_func() threw an exception, logging it & then re-raising original exception'),
+            call('exc_mailer(): send_mail_func() threw an exception, logging it & '
+                 'then re-raising original exception'),
         ])
 
     @raises(ValueError)
@@ -147,7 +150,7 @@ class TestRetry(object):
     def test_error_then_success(self):
         logger = Mock()
 
-        @retry(5, (ValueError,TypeError), delay=0.001, logger=logger)
+        @retry(5, (ValueError, TypeError), delay=0.001, logger=logger)
         def myfunc():
             if self.call_count == 0:
                 self.call_count += 1

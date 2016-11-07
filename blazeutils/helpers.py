@@ -18,6 +18,7 @@ def tolist(x, default=[]):
     else:
         return x
 
+
 def ensure_list(x, default=[]):
     if x is None:
         return default
@@ -28,12 +29,14 @@ def ensure_list(x, default=[]):
     else:
         return x
 
+
 def ensure_tuple(x):
     if x is None:
         return ()
     if isinstance(x, tuple):
         return x
     return (x,)
+
 
 def toset(x):
     if x is None:
@@ -43,13 +46,16 @@ def toset(x):
     else:
         return x
 
-def pprint( stuff, indent = 4):
+
+def pprint(stuff, indent=4):
     pp = PrettyPrinter(indent=indent)
     pp.pprint(stuff)
 
-def pformat(stuff, indent = 4):
+
+def pformat(stuff, indent=4):
     pp = PrettyPrinter(indent=indent)
     return pp.pformat(stuff)
+
 
 def is_iterable(possible_iterable):
     if isinstance(possible_iterable, six.string_types):
@@ -60,11 +66,13 @@ def is_iterable(possible_iterable):
     except TypeError:
         return False
 
+
 def is_empty(value):
     """ a boolean test except 0 and False are considered True """
     if not value and value is not 0 and value is not False:
         return True
     return False
+
 
 def multi_pop(d, *args):
     """ pops multiple keys off a dict like object """
@@ -73,6 +81,7 @@ def multi_pop(d, *args):
         if key in d:
             retval[key] = d.pop(key)
     return retval
+
 
 def grouper(records, *fields):
     grouped_records = OrderedDict()
@@ -100,25 +109,28 @@ def grouper(records, *fields):
         setup_grouping(record, *fields)
     return grouped_records
 
+
 class Tee(object):
-     """A file-like that writes to all the file-likes it has."""
+    """A file-like that writes to all the file-likes it has."""
 
-     def __init__(self, *files):
-         """Make a Tee that writes to all the files in `files.`"""
-         self.files = files
+    def __init__(self, *files):
+        """Make a Tee that writes to all the files in `files.`"""
+        self.files = files
 
-     def write(self, data):
-         """Write `data` to all the files."""
-         for f in self.files:
-             f.write(data)
+    def write(self, data):
+        """Write `data` to all the files."""
+        for f in self.files:
+            f.write(data)
+
 
 def csvtolist(inputstr):
     """ converts a csv string into a list """
     reader = csv.reader([inputstr], skipinitialspace=True)
     output = []
     for r in reader:
-      output += r
+        output += r
     return output
+
 
 class Timer(object):
 
@@ -130,6 +142,7 @@ class Timer(object):
 
     def elapsed(self, name='default'):
         return time.time() - self.timers[name]
+
 
 def unique(seq, preserve_order=True):
     """
@@ -148,13 +161,15 @@ def unique(seq, preserve_order=True):
     # Not order preserving
     return list({}.fromkeys(seq).keys())
 
+
 def prettifysql(sql):
     """Returns a prettified version of the SQL as a list of lines to help
     in creating a useful diff between two SQL statements."""
     pretty = []
     for line in sql.split('\n'):
-        pretty.extend([ "%s,\n" % x for x in line.split(',')])
+        pretty.extend(["%s,\n" % x for x in line.split(',')])
     return pretty
+
 
 def diff(actual, expected):
     """
