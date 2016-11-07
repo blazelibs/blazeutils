@@ -94,10 +94,6 @@ def xlsx_to_reader(xlsx_wb):
 
 
 class Writer(object):
-    """
-        code from : http://panela.blog-city.com/pyexcelerator_xlwt_cheatsheet_create_native_excel_from_pu.htm
-    """
-
     STYLE_FACTORY = {}
     FONT_FACTORY = {}
 
@@ -174,7 +170,7 @@ class Writer(object):
             self.newrow()
 
     def newrow(self):
-        self.rownum +=1
+        self.rownum += 1
         self.colnum = 0
 
     def get_style(self, style):
@@ -185,7 +181,6 @@ class Writer(object):
         The values for keys are lists of tuples containing (attribute,
         value) pairs to set on model instances...
         """
-        #print "KEY", style
         style_key = tuple(style.items())
         s = self.STYLE_FACTORY.get(style_key, None)
         if s is None:
@@ -307,4 +302,3 @@ class Reader(object):
     def next_row(self):
         self.rownum += 1
         self.colnum = 0
-

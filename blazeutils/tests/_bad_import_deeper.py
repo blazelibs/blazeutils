@@ -1,3 +1,3 @@
-from blazeutils import ireallyhopewenevernameanythinglikethis
+from blazeutils import ireallyhopewenevernameanythinglikethis  # noqa
 
 foobar = 1

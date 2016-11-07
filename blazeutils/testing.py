@@ -6,7 +6,6 @@ import datetime as dt
 import difflib
 import inspect
 from io import StringIO
-import itertools
 import logging
 import re
 import sys
@@ -53,6 +52,7 @@ class LoggingHandler(logging.Handler):
     def current(self):
         return self.messages['all'][self.all_index]
 
+
 def logging_handler(name=None, level=1):
     lh = LoggingHandler()
     lh.__blazeutils_testing__ = True
@@ -70,6 +70,7 @@ def logging_handler(name=None, level=1):
     logging.root.addHandler(lh)
     logging.root.setLevel(level)
     return lh
+
 
 def clear_test_handlers():
     clear_handlers_by_attr('__blazeutils_testing__')
@@ -92,6 +93,7 @@ class StdCapture(object):
     def restore(self):
         sys.stdout = self.orig_stdout
         sys.stderr = self.orig_stderr
+
 
 class ListIO(object):
     def __init__(self):
@@ -116,6 +118,7 @@ class ListIO(object):
     def current(self):
         return self.contents[self.index]
 
+
 def emits_deprecation(*messages):
     """
         Decorate a test enforcing it emits the given DeprecationWarnings with
@@ -130,7 +133,8 @@ def emits_deprecation(*messages):
     @decorator
     def decorate(fn, *args, **kw):
         if sys.version_info < (2, 6):
-            raise NotImplementedError('warnings.catch_warnings() is needed, but not available in Python versions < 2.6')
+            raise NotImplementedError('warnings.catch_warnings() is needed, but not available '
+                                      'in Python versions < 2.6')
         with warnings.catch_warnings(record=True) as wcm:
             retval = fn(*args, **kw)
             count = 0
@@ -138,12 +142,15 @@ def emits_deprecation(*messages):
                 count += 1
                 assert m is not None, 'No message to match warning: %s' % w.message
                 assert w is not None, 'No warning to match message #%s: %s' % (count, m)
-                assert issubclass(w.category, DeprecationWarning), 'DeprecationWarning not emitted, got %s type instead' % w.category
-                assert re.search(m, str(w.message)), 'Message regex "%s" did not match "%s"' % (m, w.message)
+                assert issubclass(w.category, DeprecationWarning), \
+                    'DeprecationWarning not emitted, got %s type instead' % w.category
+                assert re.search(m, str(w.message)), \
+                    'Message regex "%s" did not match "%s"' % (m, w.message)
             return retval
     return decorate
 
-def raises(arg1, arg2=None, re_esc=True, **kwargs):
+
+def raises(arg1, arg2=None, re_esc=True, **kwargs):  # noqa
     """
         Decorate a test encorcing it emits the given Exception and message
         regex.
@@ -220,6 +227,7 @@ def raises(arg1, arg2=None, re_esc=True, **kwargs):
 
     return decorate
 
+
 def assert_equal_sql(sql, correct_sql):
     sql_split = prettifysql(sql)
     correct_sql_split = prettifysql(correct_sql)
@@ -229,6 +237,7 @@ def assert_equal_sql(sql, correct_sql):
     failure_message = "%r != %r\n" % (sql, correct_sql) + sql_diff
     assert sql == correct_sql, failure_message
 
+
 def assert_equal_txt(txtblock, correct_txtblock):
     tb_split = txtblock.splitlines()
     ctb_split = correct_txtblock.splitlines()
@@ -237,6 +246,7 @@ def assert_equal_txt(txtblock, correct_txtblock):
             difflib.unified_diff(ctb_split, tb_split)
         ))
         assert False, 'txt blocks not equal, diff follows: \n' + diff
+
 
 class FailLoader(object):
     """
@@ -259,13 +269,16 @@ class FailLoader(object):
         for mod_name in self.modules:
             del sys.modules[mod_name]
 
+
 def mock_date_today(mock_obj, year, month=1, day=1):
     mock_obj.today.return_value = dt.date(year, month, day)
     mock_obj.side_effect = lambda *args, **kw: dt.date(*args, **kw)
 
+
 def mock_datetime_now(mock_obj, year, month=1, day=1, hour=0, min=0, sec=0):
     mock_obj.now.return_value = dt.datetime(year, month, day, hour, min, sec)
     mock_obj.side_effect = lambda *args, **kw: dt.datetime(*args, **kw)
+
 
 def mock_datetime_utcnow(mock_obj, year, month=1, day=1, hour=0, min=0, sec=0):
     mock_obj.utcnow.return_value = dt.datetime(year, month, day, hour, min, sec)

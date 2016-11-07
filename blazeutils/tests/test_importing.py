@@ -39,4 +39,3 @@ class TestImportString(object):
 
     def test_string_import(self):
         assert import_string('blazeutils.importing.import_split') is import_split
-

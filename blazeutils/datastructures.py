@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from blazeutils.containers import LazyDict
+from blazeutils.containers import LazyDict  # noqa
 from blazeutils.sentinels import NotGiven
 
 
@@ -323,4 +323,3 @@ class UniqueList(list):
 
     def insert(self, index, object):
         raise NotImplementedError('UniqueList doesn\'t support insert()')
-

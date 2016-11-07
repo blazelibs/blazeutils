@@ -1,12 +1,9 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import sys
-
 try:
     import docutils
-    from docutils.core import publish_programmatically, publish_from_doctree, \
-        Publisher
+    from docutils.core import publish_programmatically, Publisher
     from docutils.transforms.parts import Contents
     import docutils.io as io
     from docutils.utils import new_document
@@ -29,14 +26,15 @@ default_rst_opts = {
     'file_insertion_enabled': False,
 }
 
+
 def rst2pub(source, source_path=None, source_class=None,
-                  destination_path=None,
-                  reader=None, reader_name='standalone',
-                  parser=None, parser_name='restructuredtext',
-                  writer=None, writer_name='pseudoxml',
-                  settings=None, settings_spec=None,
-                  settings_overrides=None, config_section=None,
-                  enable_exit_status=None):
+            destination_path=None,
+            reader=None, reader_name='standalone',
+            parser=None, parser_name='restructuredtext',
+            writer=None, writer_name='pseudoxml',
+            settings=None, settings_spec=None,
+            settings_overrides=None, config_section=None,
+            enable_exit_status=None):
     """
     Like docutils.core.publish_parts, but returns the publisher and sets
     some default settings, see `default_rst_opts`.
@@ -71,6 +69,7 @@ def rst2pub(source, source_path=None, source_class=None,
         enable_exit_status=enable_exit_status)
     return pub
 
+
 def docinfo2dict(doctree):
     """
     Return the docinfo field list from a doctree as a dictionary
@@ -92,7 +91,7 @@ def docinfo2dict(doctree):
         # I figured it can't hurt
         if isinstance(node, docutils.nodes.authors):
             md['authors'] = [author.astext() for author in node]
-        elif isinstance(node, docutils.nodes.TextElement): # e.g. author
+        elif isinstance(node, docutils.nodes.TextElement):  # e.g. author
             md[node.__class__.__name__] = node.astext()
         else:
             name, body = node
@@ -103,8 +102,8 @@ def docinfo2dict(doctree):
 doctree2dict = docinfo2dict
 
 
-def create_toc(doctree, depth=9223372036854775807, writer_name='html',\
-            exclude_first_section=True, href_prefix=None, id_prefix='toc-ref-'):
+def create_toc(doctree, depth=9223372036854775807, writer_name='html',
+               exclude_first_section=True, href_prefix=None, id_prefix='toc-ref-'):
     """
     Create a Table of Contents (TOC) from the given doctree
 
@@ -165,7 +164,8 @@ def create_toc(doctree, depth=9223372036854775807, writer_name='html',\
 
     # setup a publisher and publish from the TOC document
     reader = docutils.readers.doctree.Reader(parser_name='null')
-    pub = Publisher(reader, None, None,
+    pub = Publisher(
+        reader, None, None,
         source=io.DocTreeInput(toc_doc),
         destination_class=io.StringOutput
     )

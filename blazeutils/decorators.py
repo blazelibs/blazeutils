@@ -70,12 +70,11 @@ def format_argspec_plus(fn, grouped=True):
         return dict(args=args[1:-1], self_arg=self_arg,
                     apply_pos=apply_pos[1:-1], apply_kw=apply_kw[1:-1])
 
+
 def unique_symbols(used, *bases):
     used = set(used)
     for base in bases:
-        pool = itertools.chain((base,),
-                               map(lambda i: base + str(i),
-                                              range(1000)))
+        pool = itertools.chain((base,), map(lambda i: base + str(i), range(1000)))
         for sym in pool:
             if sym not in used:
                 used.add(sym)
@@ -83,6 +82,7 @@ def unique_symbols(used, *bases):
                 break
         else:
             raise NameError("exhausted namespace for symbol base %s" % base)
+
 
 def decorator(target):
     """A signature-matching decorator factory."""
@@ -97,7 +97,7 @@ def decorator(target):
 
         code = 'lambda %(args)s: %(target)s(%(fn)s, %(apply_kw)s)' % (
                 metadata)
-        decorated = eval(code, {targ_name:target, fn_name:fn})
+        decorated = eval(code, {targ_name: target, fn_name: fn})
         decorated.__defaults__ = getattr(fn, 'im_func', fn).__defaults__
         return update_wrapper(decorated, fn)
     return update_wrapper(decorate, target)
@@ -256,7 +256,8 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=Tr
             try:
                 send_mail_func(body)
             except Exception:
-                logger.exception('exc_mailer(): send_mail_func() threw an exception, logging it & then re-raising original exception')
+                logger.exception('exc_mailer(): send_mail_func() threw an exception, '
+                                 'logging it & then re-raising original exception')
                 six.reraise(exc_info[0], exc_info[1], exc_info[2])
         finally:
             # delete the traceback so we don't have garbage collection issues.
@@ -393,4 +394,3 @@ def memoize(method_to_wrap):
     decorated = inner_memoize(method_to_wrap)
     decorated.reset_memoize = reset_memoize
     return decorated
-

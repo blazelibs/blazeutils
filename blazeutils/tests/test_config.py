@@ -43,8 +43,8 @@ class Base(QuickSettings):
         #######################################################################
         # SESSIONS
         #######################################################################
-        #beaker session options
-        #http://wiki.pylonshq.com/display/beaker/Configuration+Options
+        # beaker session options
+        # http://wiki.pylonshq.com/display/beaker/Configuration+Options
         self.beaker.type = 'dbm'
         self.beaker.data_dir = 'session_cache'
 
@@ -382,5 +382,3 @@ class TestQuickSettings(object):
         qs = QuickSettings()
         qs.foo.bar.baz = 3
         assert qs.pformat == 'foo.bar.baz = 3'
-
-

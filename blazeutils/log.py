@@ -1,5 +1,6 @@
 import logging
 
+
 def clear_handlers_by_attr(attr, logger=logging.root):
     new_handlers = []
     for h in logger.handlers:
