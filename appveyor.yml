@@ -35,7 +35,7 @@ install:
   - pip --version
 
   # Install tox from the wheelhouse
-  - pip install --use-wheel --no-index --find-links=requirements/wheelhouse tox wheel
+  - pip install --use-wheel --no-index --find-links=requirements/wheelhouse tox wheel codecov
 
 # Not a C# project, build stuff at the test step instead.
 build: false  
@@ -47,6 +47,9 @@ after_test:
   # If tests are successful, create a whl package for the project.
   - python setup.py bdist_wheel
   - ps: "ls dist"
+
+on_success:
+  - codecov --token=77585556-1d58-4c8f-b748-e32463fcf5b4
 
 artifacts:
   # Archive the generated wheel package in the ci.appveyor.com build report.
