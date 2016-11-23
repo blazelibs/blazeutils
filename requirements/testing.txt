@@ -1,14 +1,16 @@
 -r common.txt
 
+codecov
+docutils
 mock
 pytest
 pytest-cov
+sqlalchemy
+tox
+wheel
 xlwt
 xlrd
 xlsxwriter
-docutils
-sqlalchemy
-tox
 
 # pytest dep on windows
 colorama
