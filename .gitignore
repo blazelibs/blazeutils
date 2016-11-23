@@ -11,3 +11,4 @@ nosetests.xml
 htmlcov/*
 .cache/
 .ci/test-reports/*.xml
+dist
