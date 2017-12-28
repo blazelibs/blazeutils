@@ -7,7 +7,8 @@ for older changelog notes.
 0.5.3 released <in development>
 ===============================
 
-- ?
+- Create setup.cfg to build universal wheel
+- Create set of functional programming tools
 
 0.5.2 released 2016-11-23
 ===============================
