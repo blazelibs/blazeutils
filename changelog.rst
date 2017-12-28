@@ -4,7 +4,12 @@ Recent Changelog
 This is the most recent activity.  See `changelog-archive.rst` in the source distribution
 for older changelog notes.
 
-0.5.3 released <in development>
+0.5.4 released <in development>
+===============================
+
+- ?
+
+0.5.3 released 2017-12-28
 ===============================
 
 - Create setup.cfg to build universal wheel
