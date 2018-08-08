@@ -1,2 +1,4 @@
+Babel
 six
 wrapt
+speaklater
