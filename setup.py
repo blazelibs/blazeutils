@@ -39,4 +39,15 @@ setup(
     zip_safe=False,
     include_package_data=True,
     install_requires=['six', 'wrapt'],
+    setup_requires=[
+        'Babel'
+    ],
+    entry_points = """
+    [distutils.commands]
+    compile_catalog = babel.messages.frontend:compile_catalog
+    extract_messages = babel.messages.frontend:extract_messages
+    init_catalog = babel.messages.frontend:init_catalog
+    update_catalog = babel.messages.frontend:update_catalog
+    compile_json = blazeutils.translations:CompileJson
+    """
 )
