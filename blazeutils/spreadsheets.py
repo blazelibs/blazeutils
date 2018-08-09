@@ -22,6 +22,8 @@ try:
 except ImportError:
     xlsxwriter = None
 
+import six
+from speaklater import is_lazy_string
 
 from .decorators import deprecate
 
@@ -121,6 +123,9 @@ class Writer(object):
         if not ws:
             raise Exception('you must use set_sheet() before write()')
 
+        if is_lazy_string(data):
+            data = six.text_type(data)
+
         if style:
             if isinstance(style, xlwt.Style.XFStyle):
                 s = style
@@ -142,6 +147,9 @@ class Writer(object):
         ws = self.ws
         if not ws:
             raise Exception('you must use set_sheet() before write()')
+
+        if is_lazy_string(data):
+            data = six.text_type(data)
 
         if style:
             if isinstance(style, xlwt.Style.XFStyle):
@@ -234,6 +242,9 @@ class WriterX(object):
         self.colnum = 0
 
     def awrite(self, data, style=None, nextrow=False):
+        if is_lazy_string(data):
+            data = six.text_type(data)
+
         self.ws.write(self.rownum, self.colnum, data, style)
         self.colnum += 1
         if nextrow:

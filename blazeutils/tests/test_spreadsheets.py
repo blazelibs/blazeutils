@@ -1,10 +1,16 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import mock
 import pytest
 import six
 
-from blazeutils.spreadsheets import workbook_to_reader, XlwtHelper, http_headers, xlsx_to_reader
+from speaklater import make_lazy_string
+
+from blazeutils.spreadsheets import (
+    workbook_to_reader, XlwtHelper, http_headers, xlsx_to_reader,
+    Writer, WriterX
+)
 from blazeutils.testing import emits_deprecation
 
 
@@ -41,6 +47,33 @@ class TestWriter(object):
     @pytest.mark.skipif(not six.PY2, reason="xlwt only works on Python 2")
     def test_xlwt_helper_deprecation(self):
         XlwtHelper()
+
+    def test_write_lazy_string(self):
+        worksheet = mock.Mock()
+        writer = Writer(worksheet)
+        lazy = make_lazy_string(lambda: 'hello')
+
+        writer.write(1, 1, lazy)
+        assert isinstance(worksheet.write.call_args[0][2], six.string_types)
+
+    def test_write_merge_lazy_string(self):
+        worksheet = mock.Mock()
+        writer = Writer(worksheet)
+        lazy = make_lazy_string(lambda: 'hello')
+
+        writer.write_merge(1, 2, 3, 4, lazy)
+        assert isinstance(worksheet.write_merge.call_args[0][4], six.string_types)
+
+
+class TestWriterX(object):
+
+    def test_awrite_lazy_string(self):
+        worksheet = mock.Mock()
+        writer = WriterX(worksheet)
+        lazy = make_lazy_string(lambda: 'hello')
+
+        writer.awrite(lazy)
+        assert isinstance(worksheet.write.call_args[0][2], six.string_types)
 
 
 class TestHttpHeaders(object):
