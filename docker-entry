@@ -19,7 +19,7 @@ ls -la
 # b/c it gives me control over what version of tox I'm using without having to rebuild the
 # docker image.
 python3.5 -m pip install --upgrade --force-reinstall \
-    --quiet --use-wheel --no-index --find-links=requirements/wheelhouse tox
+    --quiet --no-index --find-links=requirements/wheelhouse tox
 
 # run the tests using our target python version
 python3.5 -m tox
