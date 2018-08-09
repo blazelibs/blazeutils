@@ -171,7 +171,7 @@ def load_translations(dirname=None, locales=None, domain=None, package_name=None
     if mo_data is None:
         return babel.support.NullTranslations()
 
-    with six.BytesIO(mo_data) as fp:
+    with contextlib.closing(six.BytesIO(mo_data)) as fp:
         translations = babel.support.Translations(fp=fp,
                                                   domain=domain or package_name)
 
@@ -190,11 +190,11 @@ def package_open(package_name, filename):
     """
     provider = pkg_resources.get_provider(package_name)
     if not provider.has_resource(filename):
-        raise FileNotFoundError('No such file or directory [{}]: {}'.format(package_name, filename))
+        raise IOError('No such file or directory [{}]: {}'.format(package_name, filename))
 
     manager = pkg_resources.ResourceManager()
 
-    with six.BytesIO(provider.get_resource_string(manager, filename)) as f:
+    with contextlib.closing(six.BytesIO(provider.get_resource_string(manager, filename))) as f:
         yield f
 
 
@@ -319,7 +319,7 @@ class CompileJson(babel.messages.frontend.compile_catalog):
                 write_json(outfile, catalog, use_fuzzy=self.use_fuzzy)
 
 
-class LocalizationRegistry:
+class LocalizationRegistry(object):
     """Handles updating registered translators when the active locale needs to change"""
 
     def __init__(self):
@@ -354,7 +354,7 @@ class LocalizationRegistry:
         self.translators.remove(translator)
 
 
-class Manager:
+class Manager(object):
     """Manages translations"""
 
     def __init__(self, dirname=None, locales=None, domain=None, package_name=None):
@@ -389,7 +389,7 @@ class Manager:
 
             # now that we've updated the locale, we need to load the new translations
             self.translations = self._translations_loader(self.dirname, self.locales,
-                                                         self.domain, self.package_name)
+                                                          self.domain, self.package_name)
 
     def configure_jinja_environment(self, jinja_environment):
         jinja_environment.add_extension('jinja2.ext.i18n')

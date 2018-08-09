@@ -1,3 +1,4 @@
+import contextlib
 import json
 import mock
 
@@ -104,7 +105,7 @@ class TestWriteJson:
         ])
 
     def test_write_fuzzy(self, catalog):
-        with six.StringIO() as f:
+        with contextlib.closing(six.StringIO()) as f:
             translations.write_json(f, catalog, use_fuzzy=True)
             data = json.loads(f.getvalue())
 
@@ -118,7 +119,7 @@ class TestWriteJson:
         } == data
 
     def test_elide_fuzzy(self, catalog):
-        with six.StringIO() as f:
+        with contextlib.closing(six.StringIO()) as f:
             translations.write_json(f, catalog, use_fuzzy=False)
             data = json.loads(f.getvalue())
 
@@ -251,7 +252,7 @@ class TestPackageOpen:
         provider = get_provider.return_value
         provider.has_resource.return_value = False
 
-        with pytest.raises(FileNotFoundError):
+        with pytest.raises(IOError):
             with translations.package_open('foobar', '/foo'):
                 pass
 
