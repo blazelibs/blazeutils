@@ -87,6 +87,7 @@ def find_path_package(thepath):
     fromlist = b'' if six.PY2 else ''
     return __import__(pname, globals(), locals(), [fromlist])
 
+
 _py_suffixes = [suffix for suffix, _, _ in imp.get_suffixes()]
 
 

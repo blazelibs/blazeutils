@@ -98,6 +98,7 @@ def docinfo2dict(doctree):
             md[name.astext()] = body.astext()
     return md
 
+
 # deprecate eventually
 doctree2dict = docinfo2dict
 

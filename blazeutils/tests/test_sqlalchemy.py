@@ -22,6 +22,7 @@ class MessageKeeper(list):
         for i in range(len(self)):
             self.pop()
 
+
 mk = MessageKeeper()
 
 

@@ -18,7 +18,7 @@ def tb_depth_in(depths):
     if traceback_depth() in depths:
         return True
     return False
-traceback_depth_in = tb_depth_in
+traceback_depth_in = tb_depth_in  # noqa: E305
 
 
 @deprecate('tb_depth_in(), traceback_depth() deprecated, its a bad idea')
@@ -39,6 +39,7 @@ def raise_unexpected_import_error(our_import, exc):
     """
     if not _uie_matches(our_import, str(exc)):
         raise
+
 
 _identifier = r'[^\d\W]\w+'
 _dotted_path_rx = re.compile(r'\'?({0}(\.{0})*)\'?$'.format(_identifier), re.UNICODE)

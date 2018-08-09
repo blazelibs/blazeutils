@@ -25,7 +25,7 @@ class NotGivenBase(object):
         if other is None or isinstance(other, NotGivenBase):
             return True
         return False
-NotGiven = NotGivenBase()
+NotGiven = NotGivenBase()  # noqa: E305
 
 
 class NotGivenIterBase(NotGivenBase):
@@ -61,7 +61,7 @@ class NotGivenIterBase(NotGivenBase):
 
     def __len__(self):
         return 0
-NotGivenIter = NotGivenIterBase()
+NotGivenIter = NotGivenIterBase()  # noqa: E305
 
 
 def is_notgiven(object):

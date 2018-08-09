@@ -46,7 +46,9 @@ class TestLocalizationRegistry:
 
 class TestManager:
     class NullManager(translations.Manager):
-        translations_loader = lambda *args, **kwargs: babel.support.NullTranslations()
+        @staticmethod
+        def translations_loader(*args, **kwargs):
+            return babel.support.NullTranslations()
 
     @pytest.fixture(scope='function')
     def manager(self):
@@ -102,7 +104,6 @@ class TestWriteJson:
             self.MockMessage(id='bar', string='BAR', fuzzy=True),
         ])
 
-
     def test_write_fuzzy(self, catalog):
         with six.StringIO() as f:
             translations.write_json(f, catalog, use_fuzzy=True)
@@ -140,10 +141,12 @@ def test_enclose_package_path_exists(get_provider):
     assert path_exists('bar/baz') is True
 
 
-@mock.patch('blazeutils.translations.enclose_package_path_exists', autospec=True, spec_set=True, return_value=lambda path: False)
+@mock.patch('blazeutils.translations.enclose_package_path_exists', autospec=True,
+            spec_set=True, return_value=lambda path: False)
 @mock.patch('blazeutils.translations.gettext_find', autospec=True, spec_set=True, return_value=None)
 def test_find_mo_filename(gettext_find, enclose_package_path_exists):
-    translations.find_mo_filename(domain='domain', localedir='localedir', languages=['es'], package_name='package_name', extension='ext')
+    translations.find_mo_filename(domain='domain', localedir='localedir', languages=['es'],
+                                  package_name='package_name', extension='ext')
     DEFAULT_DOMAIN = babel.support.Translations.DEFAULT_DOMAIN
     path_exists = enclose_package_path_exists.return_value
 
@@ -152,8 +155,10 @@ def test_find_mo_filename(gettext_find, enclose_package_path_exists):
         mock.call(DEFAULT_DOMAIN, 'localedir', ['es'], False, path_exists=None, extension='ext'),
         mock.call(DEFAULT_DOMAIN, 'locale', ['es'], False, path_exists=None, extension='ext'),
         mock.call(DEFAULT_DOMAIN, 'i18n', ['es'], False, path_exists=None, extension='ext'),
-        mock.call(DEFAULT_DOMAIN, 'localedir', ['es'], False, path_exists=path_exists, extension='ext'),
-        mock.call(DEFAULT_DOMAIN, 'locale', ['es'], False, path_exists=path_exists, extension='ext'),
+        mock.call(DEFAULT_DOMAIN, 'localedir', ['es'], False,
+                  path_exists=path_exists, extension='ext'),
+        mock.call(DEFAULT_DOMAIN, 'locale', ['es'], False,
+                  path_exists=path_exists, extension='ext'),
         mock.call(DEFAULT_DOMAIN, 'i18n', ['es'], False, path_exists=path_exists, extension='ext'),
 
         mock.call('domain', 'localedir', ['es'], False, path_exists=None, extension='ext'),
@@ -166,15 +171,18 @@ def test_find_mo_filename(gettext_find, enclose_package_path_exists):
         mock.call('package_name', 'localedir', ['es'], False, path_exists=None, extension='ext'),
         mock.call('package_name', 'locale', ['es'], False, path_exists=None, extension='ext'),
         mock.call('package_name', 'i18n', ['es'], False, path_exists=None, extension='ext'),
-        mock.call('package_name', 'localedir', ['es'], False, path_exists=path_exists, extension='ext'),
-        mock.call('package_name', 'locale', ['es'], False, path_exists=path_exists, extension='ext'),
+        mock.call('package_name', 'localedir', ['es'], False,
+                  path_exists=path_exists, extension='ext'),
+        mock.call('package_name', 'locale', ['es'], False,
+                  path_exists=path_exists, extension='ext'),
         mock.call('package_name', 'i18n', ['es'], False, path_exists=path_exists, extension='ext'),
     ] == gettext_find.call_args_list
 
 
 @mock.patch('blazeutils.translations.open', new_callable=mock.mock_open, read_data='asdf')
 @mock.patch('blazeutils.translations.package_open', new_callable=mock.mock_open, read_data='ASDF')
-@mock.patch('blazeutils.translations.find_mo_filename', autospec=True, spec_set=True, return_value='asdf.mo')
+@mock.patch('blazeutils.translations.find_mo_filename',
+            autospec=True, spec_set=True, return_value='asdf.mo')
 class TestGetMoData:
     def test_no_filename_found(self, find_mo_filename, *args):
         find_mo_filename.return_value = None
@@ -182,8 +190,10 @@ class TestGetMoData:
 
     def test_parameters(self, find_mo_filename, *args):
         find_mo_filename.return_value = None
-        translations.get_mo_data(dirname='dirname', locales='locales', domain='domain', package_name='package_name')
-        find_mo_filename.assert_called_with(localedir='dirname', languages='locales', domain='domain', package_name='package_name')
+        translations.get_mo_data(dirname='dirname', locales='locales', domain='domain',
+                                 package_name='package_name')
+        find_mo_filename.assert_called_with(localedir='dirname', languages='locales',
+                                            domain='domain', package_name='package_name')
 
     def test_filesystem_opener(self, find_mo_filename, package_open, open):
         mo_data = translations.get_mo_data()
@@ -224,8 +234,10 @@ class TestLoadTranslations:
     def test_load_parameters(self, get_mo_data):
         get_mo_data.return_value = None
 
-        translations.get_mo_data(dirname='dirname', locales='locales', domain='domain', package_name='package_name')
-        get_mo_data.assert_called_with(dirname='dirname', locales='locales', domain='domain', package_name='package_name')
+        translations.get_mo_data(dirname='dirname', locales='locales', domain='domain',
+                                 package_name='package_name')
+        get_mo_data.assert_called_with(dirname='dirname', locales='locales',
+                                       domain='domain', package_name='package_name')
 
     @mock.patch('babel.support.Translations', autospec=True, spec_set=True)
     def test_load(self, Translations, get_mo_data):

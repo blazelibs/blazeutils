@@ -46,7 +46,7 @@ def test_grouper():
 
 def test_tolist():
     assert [1] == tolist(1)
-    l = [1, 2]
+    l = [1, 2]  # noqa: E741
     assert l is tolist(l)
     t = (1, 2)
     # TODO: this is wrong I think as we could actually be wanting a mutable list
@@ -55,7 +55,7 @@ def test_tolist():
 
 def test_ensure_list():
     assert [1] == ensure_list(1)
-    l = [1, 2]
+    l = [1, 2]  # noqa: E741
     assert l is ensure_list(l)
     t = (1, 2)
     assert [1, 2] == ensure_list(t)

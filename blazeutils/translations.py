@@ -23,7 +23,8 @@ def enclose_package_path_exists(package_name):
     return provider.has_resource
 
 
-def find_mo_filename(domain=None, localedir=None, languages=None, all=False, package_name=None, extension='mo'):
+def find_mo_filename(domain=None, localedir=None, languages=None, all=False,  # noqa: C901
+                     package_name=None, extension='mo'):
     """
     Search the filesystem and package for an appropriate .mo file, and return the path
     (or `None`, if not found)
@@ -33,7 +34,6 @@ def find_mo_filename(domain=None, localedir=None, languages=None, all=False, pac
             languages = [languages]
 
         languages = [str(language) for language in languages]
-
 
     for attempted_domain in (None, domain, package_name):
         if not attempted_domain:
@@ -58,7 +58,8 @@ def find_mo_filename(domain=None, localedir=None, languages=None, all=False, pac
                     if attempted_package_name is not None
                     else None
                 )
-                filename = gettext_find(attempted_domain, attempted_dirname, languages, all, path_exists=path_exists, extension=extension)
+                filename = gettext_find(attempted_domain, attempted_dirname, languages,
+                                        all, path_exists=path_exists, extension=extension)
                 if filename:
                     break
 
@@ -80,7 +81,8 @@ def get_mo_data(dirname=None, locales=None, domain=None, package_name=None):
     Finds the .mo data for the specified parameters, and returns the binary data.
     If the .mo file cannot be found or read, returns `None`
     """
-    mo_filename = find_mo_filename(localedir=dirname, languages=locales, domain=domain, package_name=package_name)
+    mo_filename = find_mo_filename(localedir=dirname, languages=locales,
+                                   domain=domain, package_name=package_name)
 
     if mo_filename is None:
         return None
@@ -99,7 +101,8 @@ def get_mo_data(dirname=None, locales=None, domain=None, package_name=None):
     return resource_data
 
 
-def gettext_find(domain, localedir=None, languages=None, all=False, path_exists=None, extension='mo'):
+def gettext_find(domain, localedir=None, languages=None, all=False,  # noqa: C901
+                 path_exists=None, extension='mo'):
     """
     Locate a file using the `gettext` strategy.
 
@@ -241,7 +244,7 @@ class CompileJson(babel.messages.frontend.compile_catalog):
         if not self.output_dir:
             self.output_dir = self.directory
 
-    def _run_domain(self, domain):
+    def _run_domain(self, domain):  # noqa: C901
         # copied from `babel.messages.frontend.compile_catalog._run_domain`,
         #  * switched out 'mo' for 'json'
         #  * added `output_dir` option
@@ -340,7 +343,7 @@ class LocalizationRegistry:
         if value != self._locales:
             self._locales = value
 
-            # now that we've updated the locale, we need to load the new translations (if they're available)
+            # now that we've updated the locale, we need to update the translators
             for translator in self.translators:
                 translator.locales = self._locales
 
@@ -355,7 +358,6 @@ class Manager:
     """Manages translations"""
 
     mo_finder = find_mo_filename
-    translations_loader = load_translations
 
     def __init__(self, dirname=None, locales=None, domain=None, package_name=None):
         self._locales = None
@@ -387,8 +389,41 @@ class Manager:
         ):
             self._locales = value
 
-            # now that we've updated the locale, we need to load the new translations (if they're available)
-            self.translations = self.translations_loader(self.dirname, self.locales, self.domain, self.package_name)
+            # now that we've updated the locale, we need to load the new translations
+            self.translations = self._translations_loader(self.dirname, self.locales,
+                                                         self.domain, self.package_name)
+
+    def configure_jinja_environment(self, jinja_environment):
+        jinja_environment.add_extension('jinja2.ext.i18n')
+
+        install_gettext_translations = getattr(
+            jinja_environment,
+            'install_gettext_translations',
+            lambda *args: None
+        )
+        install_gettext_translations(self.translations)
+
+        def fmf(domain=None, localedir=None, languages=None, all=False,
+                package_name=None, extension='mo'):
+            if domain is None:
+                domain = self.domain
+
+            if languages is None:
+                languages = self.locales
+
+            if package_name is None:
+                package_name = self.package_name
+
+            return self.mo_finder(
+                domain=domain,
+                localedir=localedir,
+                languages=languages,
+                all=all,
+                package_name=package_name,
+                extension=extension
+            )
+
+        jinja_environment.globals.update(find_mo_filename=fmf)
 
     def gettext(self, string, **variables):
         translations = self.translations
@@ -412,6 +447,9 @@ class Manager:
     def lazy_ngettext(self, singular, plural, num, **variables):
         return speaklater.make_lazy_string(self.ngettext, singular, plural, num, **variables)
 
+    def _mo_finder(self, *args, **kwargs):
+        return find_mo_filename(*args, **kwargs)
+
     def ngettext(self, singular, plural, num, **variables):
         variables.setdefault('num', num)
 
@@ -422,36 +460,8 @@ class Manager:
         )
         return self.gettext(string_to_translate, **variables)
 
-    def configure_jinja_environment(self, jinja_environment):
-        jinja_environment.add_extension('jinja2.ext.i18n')
-
-        install_gettext_translations = getattr(
-            jinja_environment,
-            'install_gettext_translations',
-            lambda *args: None
-        )
-        install_gettext_translations(self.translations)
-
-        def fmf(domain=None, localedir=None, languages=None, all=False, package_name=None, extension='mo'):
-            if domain is None:
-                domain = self.domain
-
-            if languages is None:
-                languages = self.locales
-
-            if package_name is None:
-                package_name = self.package_name
-
-            return self.mo_finder(
-                domain=domain,
-                localedir=localedir,
-                languages=languages,
-                all=all,
-                package_name=package_name,
-                extension=extension
-            )
-
-        jinja_environment.globals.update(find_mo_filename=fmf)
+    def _translations_loader(self, *args, **kwargs):
+        return load_translations(*args, **kwargs)
 
 
 # Create a default registry singleton
