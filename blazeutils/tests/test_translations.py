@@ -46,8 +46,7 @@ class TestLocalizationRegistry:
 
 class TestManager:
     class NullManager(translations.Manager):
-        @staticmethod
-        def translations_loader(*args, **kwargs):
+        def _translations_loader(self, *args, **kwargs):
             return babel.support.NullTranslations()
 
     @pytest.fixture(scope='function')

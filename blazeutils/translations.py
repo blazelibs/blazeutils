@@ -357,8 +357,6 @@ class LocalizationRegistry:
 class Manager:
     """Manages translations"""
 
-    mo_finder = find_mo_filename
-
     def __init__(self, dirname=None, locales=None, domain=None, package_name=None):
         self._locales = None
         self.translations = None
@@ -414,7 +412,7 @@ class Manager:
             if package_name is None:
                 package_name = self.package_name
 
-            return self.mo_finder(
+            return self._mo_finder(
                 domain=domain,
                 localedir=localedir,
                 languages=languages,
