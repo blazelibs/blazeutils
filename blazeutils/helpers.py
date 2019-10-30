@@ -69,7 +69,7 @@ def is_iterable(possible_iterable):
 
 def is_empty(value):
     """ a boolean test except 0 and False are considered True """
-    if not value and value is not 0 and value is not False:
+    if not value and value != 0 and value is not False:
         return True
     return False
 

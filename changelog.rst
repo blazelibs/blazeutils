@@ -4,7 +4,7 @@ Recent Changelog
 This is the most recent activity.  See `changelog-archive.rst` in the source distribution
 for older changelog notes.
 
-0.6.0 released <in development>
+0.6.0 released 2019-10-30
 ===============================
 
 - Resolve some python deprecations

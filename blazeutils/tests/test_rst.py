@@ -101,6 +101,7 @@ class TestNoDocutils(object):
     def test_no_docutils(self):
         blazeutils.rst.rst2html('foo')
 
+
 toc_rst = """
 Heading 1
 =========

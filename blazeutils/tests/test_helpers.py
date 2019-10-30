@@ -46,27 +46,27 @@ def test_grouper():
 
 def test_tolist():
     assert [1] == tolist(1)
-    l = [1, 2]
-    assert l is tolist(l)
-    t = (1, 2)
+    lst = [1, 2]
+    assert lst is tolist(lst)
+    tpl = (1, 2)
     # TODO: this is wrong I think as we could actually be wanting a mutable list
-    assert t == tolist(t)
+    assert tpl == tolist(tpl)
 
 
 def test_ensure_list():
     assert [1] == ensure_list(1)
-    l = [1, 2]
-    assert l is ensure_list(l)
-    t = (1, 2)
-    assert [1, 2] == ensure_list(t)
+    lst = [1, 2]
+    assert lst is ensure_list(lst)
+    tpl = (1, 2)
+    assert [1, 2] == ensure_list(tpl)
     assert [] == ensure_list(None)
 
 
 def test_ensure_tuple():
     assert ensure_tuple(1) == (1,)
-    t = (1, 2)
-    assert t is ensure_tuple(t)
-    t = (1, 2)
+    tpl = (1, 2)
+    assert tpl is ensure_tuple(tpl)
+    tpl = (1, 2)
     assert () == ensure_tuple(None)
 
 

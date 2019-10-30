@@ -23,7 +23,7 @@ class BlankObject(object):
     """
     def __init__(self, **kw):
         self.__dict__.update(kw)
-DumbObject = BlankObject
+DumbObject = BlankObject  # noqa: E305
 
 
 class OrderedProperties(object):

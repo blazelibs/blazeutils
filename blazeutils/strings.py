@@ -55,7 +55,7 @@ def simplify_string(s, length=None, replace_with='-'):
         return s[:length-1].rstrip(replace_with)
     else:
         return s
-simplify = simplify_string
+simplify = simplify_string  # noqa: E305
 
 
 # next four functions from: http://code.activestate.com/recipes/66009/

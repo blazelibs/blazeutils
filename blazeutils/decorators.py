@@ -309,7 +309,7 @@ class Retry(object):
                     time.sleep(self.delay)
 
         return wrapfn
-retry = Retry
+retry = Retry  # noqa: E305
 
 
 class hybrid_method(object):

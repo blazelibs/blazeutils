@@ -8,7 +8,7 @@ try:
     import docutils.io as io
     from docutils.utils import new_document
     have_docutils = True
-except ImportError as e:
+except ImportError:
     have_docutils = False
 
 from blazeutils.datastructures import BlankObject
@@ -99,7 +99,7 @@ def docinfo2dict(doctree):
     return md
 
 # deprecate eventually
-doctree2dict = docinfo2dict
+doctree2dict = docinfo2dict  # noqa: E305
 
 
 def create_toc(doctree, depth=9223372036854775807, writer_name='html',

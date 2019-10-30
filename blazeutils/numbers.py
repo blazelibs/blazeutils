@@ -61,7 +61,7 @@ def moneyfmt(value, places=2, curr='', sep=',', dp='.',
     build(curr)
     build(neg if sign else pos)
     return ''.join(reversed(result))
-decimalfmt = moneyfmt
+decimalfmt = moneyfmt  # noqa: E305
 
 
 def round_down_to_n(x, rounder=5):
