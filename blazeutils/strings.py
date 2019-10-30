@@ -133,7 +133,8 @@ def randnumerics(n=12):
 
 
 def randhash():
-    random_str = six.text_type(random.random()) + six.text_type(time.clock())
+    random_str = six.text_type(random.random()) + six.text_type(
+        time.clock() if six.PY2 else time.process_time())
     return hashlib.md5(random_str.encode('utf-8')).hexdigest()
 
 
