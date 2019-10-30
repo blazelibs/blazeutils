@@ -114,7 +114,7 @@ def randchars(n=12, chartype='alphanumeric', alphacase='both', unique=False):
     elif chartype == 'numeric':
         charlist = '0123456789'
     elif chartype == 'all':
-        charlist = alphalist + '0123456789' + """`~!@#$%^&*()_-+={}|[]\:";'<>?,./"""
+        charlist = alphalist + '0123456789' + r"""`~!@#$%^&*()_-+={}|[]\:";'<>?,./"""
     else:
         raise ValueError('chartype "%s" not recognized' % chartype)
 
@@ -133,7 +133,7 @@ def randnumerics(n=12):
 
 
 def randhash():
-    random_str = six.text_type(random.random()) + six.text_type(time.clock())
+    random_str = six.text_type(random.random()) + six.text_type(time.perf_counter())
     return hashlib.md5(random_str.encode('utf-8')).hexdigest()
 
 

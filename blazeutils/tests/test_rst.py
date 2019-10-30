@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from imp import reload
+from importlib import reload
 import sys
 
 import blazeutils.rst

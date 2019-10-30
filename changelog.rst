@@ -4,10 +4,12 @@ Recent Changelog
 This is the most recent activity.  See `changelog-archive.rst` in the source distribution
 for older changelog notes.
 
-0.5.4 released <in development>
+0.6.0 released <in development>
 ===============================
 
-- ?
+- Resolve some python deprecations
+- Support python 3.8
+- Python 2.7 no longer fully supported
 
 0.5.3 released 2017-12-28
 ===============================

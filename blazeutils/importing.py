@@ -1,7 +1,4 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import imp
+import importlib
 import sys
 import site
 from os import path
@@ -87,7 +84,8 @@ def find_path_package(thepath):
     fromlist = b'' if six.PY2 else ''
     return __import__(pname, globals(), locals(), [fromlist])
 
-_py_suffixes = [suffix for suffix, _, _ in imp.get_suffixes()]
+
+_py_suffixes = importlib.machinery.all_suffixes()
 
 
 def find_path_package_name(thepath):
