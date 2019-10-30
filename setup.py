@@ -4,11 +4,11 @@ import sys
 from setuptools import setup
 
 
-PY2 = sys.version_info[0] == 2
-
 cdir = osp.abspath(osp.dirname(__file__))
-README = open(osp.join(cdir, 'readme.rst')).read()
-CHANGELOG = open(osp.join(cdir, 'changelog.rst')).read()
+with open(osp.join(cdir, 'readme.rst')) as fp:
+    README = fp.read()
+with open(osp.join(cdir, 'changelog.rst')) as fp:
+    CHANGELOG = fp.read()
 
 version_fpath = osp.join(cdir, 'blazeutils', 'version.py')
 version_globals = {}
@@ -33,6 +33,7 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
     ],
+    python_requires='>=3',
     license='BSD',
     packages=['blazeutils'],
     zip_safe=False,
