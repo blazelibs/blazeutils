@@ -69,11 +69,12 @@ class HTMLAttributes(LazyDict):
 
     def _clean_key(self, key):
         if key.endswith('_'):
-            key = key[:-1]
+            return key[:-1]
         return key
 
     def _clean_keys(self):
-        for key in self.keys():
+        old_keys = list(self.keys())
+        for key in old_keys:
             new_key = self._clean_key(key)
             if new_key != key:
                 # have to use LazyDict b/c our __getitem__ will clean `key` and
