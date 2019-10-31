@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
+import warnings
 
 from mock import Mock, patch, call
 
@@ -33,6 +34,7 @@ def test_two_currys():
 
 
 def test_decorator():
+    warnings.filterwarnings('ignore', category=DeprecationWarning)
 
     @decorator
     def mydec(fn, toadd):

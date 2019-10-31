@@ -3,7 +3,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import functools
-from functools import update_wrapper, partial
+from functools import partial
 import inspect
 import itertools
 import logging
@@ -51,6 +51,7 @@ def format_argspec_plus(fn, grouped=True):
        'apply_pos': '(self, a, b, c, **d)'}
 
     """
+    warnings.warn('format_argspec_plus is deprecated and will be removed.', DeprecationWarning, 2)
     spec = callable(fn) and inspect.getargspec(fn) or fn
     args = inspect.formatargspec(*spec)
     if spec[0]:
@@ -85,22 +86,11 @@ def unique_symbols(used, *bases):
 
 
 def decorator(target):
-    """A signature-matching decorator factory."""
-
-    def decorate(fn):
-        spec = inspect.getargspec(fn)
-        names = tuple(spec[0]) + spec[1:3] + (fn.__name__,)
-        targ_name, fn_name = unique_symbols(names, 'target', 'fn')
-
-        metadata = dict(target=targ_name, fn=fn_name)
-        metadata.update(format_argspec_plus(spec, grouped=False))
-
-        code = 'lambda %(args)s: %(target)s(%(fn)s, %(apply_kw)s)' % (
-                metadata)
-        decorated = eval(code, {targ_name: target, fn_name: fn})
-        decorated.__defaults__ = getattr(fn, 'im_func', fn).__defaults__
-        return update_wrapper(decorated, fn)
-    return update_wrapper(decorate, target)
+    warnings.warn('decorator is deprecated and will be removed. Use wrapt.', DeprecationWarning, 2)
+    @wrapt.decorator
+    def wrapper(wrapped, instance, args, kwargs):
+        return target(wrapped, *args, **kwargs)
+    return wrapper
 
 
 def _num_required_args(func):
@@ -121,7 +111,7 @@ def _num_required_args(func):
         borrowed from: https://github.com/pytoolz/toolz
     """
     try:
-        spec = inspect.getargspec(func)
+        spec = inspect.getfullargspec(func)
         if spec.varargs:
             return None
         num_defaults = len(spec.defaults) if spec.defaults else 0
@@ -216,11 +206,11 @@ def deprecate(message):
         Decorate a function to emit a deprecation warning with the given
         message.
     """
-    @decorator
-    def decorate(fn, *args, **kw):
+    @wrapt.decorator
+    def wrapper(wrapped, instance, args, kwargs):
         warnings.warn(message, DeprecationWarning, 2)
-        return fn(*args, **kw)
-    return decorate
+        return wrapped(*args, **kwargs)
+    return wrapper
 
 
 def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=True):
@@ -241,11 +231,11 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=Tr
     if logger is None:
         logger = log
 
-    @decorator
-    def decorate(fn, *args, **kwargs):
+    @wrapt.decorator
+    def wrapper(wrapped, instance, args, kwargs):
         exc_info = None
         try:
-            return fn(*args, **kwargs)
+            return wrapped(*args, **kwargs)
         except catch as e:
             body = format_exc()
             exc_info = sys.exc_info()
@@ -264,7 +254,7 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=Tr
             # see warning at: http://docs.python.org/library/sys.html#sys.exc_info
             if exc_info is not None:
                 del exc_info
-    return decorate
+    return wrapper
 
 
 class Retry(object):
