@@ -1,5 +1,4 @@
 import os.path as osp
-import sys
 
 from setuptools import setup
 

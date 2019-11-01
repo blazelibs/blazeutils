@@ -11,11 +11,11 @@ import re
 import sys
 import warnings
 
-from blazeutils.decorators import decorator
 from blazeutils.log import clear_handlers_by_attr
 from blazeutils.helpers import Tee, prettifysql
 import six
 from six.moves import zip as izip
+import wrapt
 
 
 class LoggingHandler(logging.Handler):
@@ -130,8 +130,8 @@ def emits_deprecation(*messages):
     # we need to make it loud for @emits_deprecation below
     warnings.filterwarnings("default", category=DeprecationWarning)
 
-    @decorator
-    def decorate(fn, *args, **kw):
+    @wrapt.decorator
+    def decorate(fn, instance, args, kw):
         if sys.version_info < (2, 6):
             raise NotImplementedError('warnings.catch_warnings() is needed, but not available '
                                       'in Python versions < 2.6')
@@ -206,8 +206,8 @@ def raises(arg1, arg2=None, re_esc=True, **kwargs):  # noqa
     if re_esc and msgregex:
         msgregex = re.escape(msgregex)
 
-    @decorator
-    def decorate(fn, *args, **kw):
+    @wrapt.decorator
+    def decorate(fn, instance, args, kw):
         try:
             fn(*args, **kw)
             assert False, '@raises: no exception raised in %s()' % fn.__name__
