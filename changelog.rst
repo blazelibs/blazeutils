@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.6.1 released 2019-11-01
+-------------------------
+
+- prepare for release with pyp (e71f222_)
+- clean up obsolete decorator usage in favor of wrapt (c1cfb61_)
+
+.. _e71f222: https://github.com/blazelibs/blazeutils/commit/e71f222
+.. _c1cfb61: https://github.com/blazelibs/blazeutils/commit/c1cfb61
+
+
 0.6.0 released 2019-10-30
 -------------------------------
 
