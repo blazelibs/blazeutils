@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 import warnings
 
+import logging
 from mock import Mock, patch, call
 
 from blazeutils.decorators import curry, decorator
@@ -149,10 +150,10 @@ class TestRetry(object):
         assert myfunc() == 5
         assert logger.debug.call_count == 0
 
-    def test_error_then_success(self):
-        logger = Mock()
+    def test_error_then_success(self, caplog):
+        caplog.set_level(logging.INFO)
 
-        @retry(5, (ValueError, TypeError), delay=0.001, logger=logger)
+        @retry(5, (ValueError, TypeError), delay=0.001, level=logging.INFO)
         def myfunc():
             if self.call_count == 0:
                 self.call_count += 1
@@ -160,7 +161,8 @@ class TestRetry(object):
             return 5
 
         assert myfunc() == 5
-        assert logger.debug.call_count == 1
+        assert len(caplog.records) == 1
+        assert caplog.records[0].message == 'Retry, exception: test error'
 
     def test_too_many_exceptions(self):
         logger = Mock()
@@ -174,7 +176,8 @@ class TestRetry(object):
         except TypeError as e:
             if 'myfunc error' not in str(e):
                 raise
-            assert logger.debug.call_count == 5
+            assert logger.log.call_count == 5
+            assert logger.log.call_args.args[0] == 10
 
     @raises(TypeError, 'myfunc error')
     def test_msg_param(self):
@@ -188,7 +191,7 @@ class TestRetry(object):
             return 5
 
         assert myfunc() == 5
-        assert logger.debug.call_count == 1
+        assert logger.log.call_count == 1
 
         @retry(5, TypeError, delay=0.001, logger=logger, msg='foobar')
         def myfunc():

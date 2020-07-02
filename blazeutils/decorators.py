@@ -87,6 +87,7 @@ def unique_symbols(used, *bases):
 
 def decorator(target):
     warnings.warn('decorator is deprecated and will be removed. Use wrapt.', DeprecationWarning, 2)
+
     @wrapt.decorator
     def wrapper(wrapped, instance, args, kwargs):
         return target(wrapped, *args, **kwargs)
@@ -258,7 +259,7 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=Tr
 
 
 class Retry(object):
-    def __init__(self, tries, exceptions, delay=0.1, logger=None, msg=None):
+    def __init__(self, tries, exceptions, delay=0.1, logger=None, msg=None, level=logging.DEBUG):
         """
         Decorator for retrying a function if exception occurs
 
@@ -278,6 +279,8 @@ class Retry(object):
             self.log = logger
         else:
             self.log = log
+
+        self.log_level = level
         self.msg = msg
 
     def __call__(self, fn):
@@ -290,7 +293,8 @@ class Retry(object):
                     if self.msg is not None and self.msg not in str(e):
                         raise
 
-                    self.log.debug("Retry, exception: %s", e)
+                    message = "Retry, exception: {}".format(e)
+                    self.log.log(self.log_level, message)
 
                     if try_count == self.tries - 1:
                         # no tries left, reraise
