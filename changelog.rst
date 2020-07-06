@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.6.2 released 2020-07-06
+-------------------------
+
+- Add Log Level to Retry Decorator (5ee8d1d_)
+
+.. _5ee8d1d: https://github.com/blazelibs/blazeutils/commit/5ee8d1d
+
+
 0.6.1 released 2019-11-01
 -------------------------
 
