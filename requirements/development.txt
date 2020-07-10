@@ -1,4 +1,5 @@
 -r testing.txt
 
+flake8
 restview
 wheel
