@@ -3,6 +3,7 @@
 codecov
 docutils
 mock
+openpyxl
 pytest
 pytest-cov
 sqlalchemy
