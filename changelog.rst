@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.6.3 released 2020-09-11
+-------------------------
+
+- Support openpyxl in spreadsheet helpers (44448df_)
+- Deprecate xlrd usage
+
+.. _44448df: https://github.com/blazelibs/blazeutils/commit/44448df
+
+
 0.6.2 released 2020-07-06
 -------------------------
 
