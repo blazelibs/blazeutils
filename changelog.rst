@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.6.4 released 2020-10-23
+-------------------------
+
+- Fix mutable default arguments in tolist and ensure_list (3bd7095_)
+
+.. _3bd7095: https://github.com/blazelibs/blazeutils/commit/3bd7095
+
+
 0.6.3 released 2020-09-11
 -------------------------
 
