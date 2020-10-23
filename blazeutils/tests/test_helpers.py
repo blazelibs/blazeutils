@@ -53,6 +53,13 @@ def test_tolist():
     assert tpl == tolist(tpl)
 
 
+def test_tolist_nonmutable_default():
+    x = tolist(None)
+    assert x == []
+    x.append(1)
+    assert tolist(None) == []
+
+
 def test_ensure_list():
     assert [1] == ensure_list(1)
     lst = [1, 2]
@@ -60,6 +67,13 @@ def test_ensure_list():
     tpl = (1, 2)
     assert [1, 2] == ensure_list(tpl)
     assert [] == ensure_list(None)
+
+
+def test_ensure_list_nonmutable_default():
+    x = ensure_list(None)
+    assert x == []
+    x.append(1)
+    assert ensure_list(None) == []
 
 
 def test_ensure_tuple():

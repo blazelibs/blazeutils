@@ -8,9 +8,12 @@ import six
 import time
 
 from blazeutils.datastructures import OrderedDict
+from blazeutils.sentinels import NotGivenIter
 
 
-def tolist(x, default=[]):
+def tolist(x, default=NotGivenIter):
+    if default is NotGivenIter:
+        default = []
     if x is None:
         return default
     if not isinstance(x, (list, tuple)):
@@ -19,7 +22,9 @@ def tolist(x, default=[]):
         return x
 
 
-def ensure_list(x, default=[]):
+def ensure_list(x, default=NotGivenIter):
+    if default is NotGivenIter:
+        default = []
     if x is None:
         return default
     if isinstance(x, tuple):
