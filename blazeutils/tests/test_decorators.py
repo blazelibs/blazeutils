@@ -3,11 +3,12 @@ from __future__ import unicode_literals
 import warnings
 
 import logging
+
+import pytest
 from mock import Mock, patch, call
 
 from blazeutils.decorators import curry, decorator
 from blazeutils.decorators import exc_emailer, retry, hybrid_method
-from blazeutils.testing import raises
 
 
 def test_curry():
@@ -103,7 +104,6 @@ class TestExcEmailer(object):
                  'then re-raising original exception'),
         ])
 
-    @raises(ValueError)
     def test_catch_arg_usage(self):
         send_mail = Mock()
 
@@ -111,7 +111,8 @@ class TestExcEmailer(object):
         def myfunc():
             raise ValueError('myfunc')
 
-        myfunc()
+        with pytest.raises(ValueError):
+            myfunc()
 
     @patch('blazeutils.decorators.log')
     def test_custom_logger(self, m_log):
@@ -179,7 +180,6 @@ class TestRetry(object):
             assert logger.log.call_count == 5
             assert logger.log.call_args.args[0] == 10
 
-    @raises(TypeError, 'myfunc error')
     def test_msg_param(self):
         logger = Mock()
 
@@ -197,7 +197,8 @@ class TestRetry(object):
         def myfunc():
             raise TypeError('myfunc error')
 
-        myfunc()
+        with pytest.raises(TypeError, match='myfunc error'):
+            myfunc()
 
 
 class MethodClass(object):

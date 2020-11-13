@@ -3,12 +3,12 @@ from __future__ import unicode_literals
 
 import random
 
+import pytest
 from six.moves import range
 import six.moves.cPickle as pickle
 
 from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
     LazyOrderedDict, LazyDict, UniqueList
-from blazeutils.testing import raises
 
 # leave this here it ensures that LazyDict is available from .datastructures
 # even though the code was moved to .containers.
@@ -78,15 +78,15 @@ class TestOrderedProps(object):
         assert po.b == 2
         assert list(po) == [1, 2]
 
-    @raises(AttributeError, 'foo')
     def test_attribute_error(self):
         o = OrderedProperties()
-        o.foo
+        with pytest.raises(AttributeError, match='foo'):
+            o.foo
 
-    @raises(AttributeError, 'foo')
     def test_del_attribute_error(self):
         o = OrderedProperties()
-        del o.foo
+        with pytest.raises(AttributeError, match='foo'):
+            del o.foo
 
     def test_initilization(self):
         o = OrderedProperties(initialize=False)

@@ -4,6 +4,7 @@ import datetime as dt
 import sys
 
 import mock
+import pytest
 
 from blazeutils.testing import raises, assert_equal_sql, assert_equal_txt, \
     mock_date_today, mock_datetime_now, mock_datetime_utcnow
@@ -133,14 +134,14 @@ def test_assert_equal_sql():
     assert_equal_sql(s1, s2)
 
 
-@raises(AssertionError, ".+!=", re_esc=False)
 def test_assert_equal_sql_diff():
     s2 = s1 = """
     select foo,
     bar,
     baz from bill"""
     s2 = s2[5:]
-    assert_equal_sql(s1, s2)
+    with pytest.raises(AssertionError, match=r'.+!='):
+        assert_equal_sql(s1, s2)
 
 
 def test_assert_equal_txt():
