@@ -14,6 +14,33 @@ version_globals = {}
 with open(version_fpath) as fo:
     exec(fo.read(), version_globals)
 
+
+test_requires = [
+    'codecov',
+    'docutils',
+    'mock',
+    'openpyxl',
+    'pytest',
+    'pytest-cov',
+    'sqlalchemy',
+    'tox',
+    'wheel',
+    'xlwt',
+    'xlrd',
+    'xlsxwriter',
+
+    # pytest dep on windows
+    'colorama'
+]
+
+
+dev_requires = [
+    *test_requires,
+    'flake8',
+    'restview',
+    'wheel',
+]
+
 setup(
     name="BlazeUtils",
     version=version_globals['VERSION'],
@@ -38,4 +65,8 @@ setup(
     zip_safe=False,
     include_package_data=True,
     install_requires=['six', 'wrapt'],
+    extras_require={
+        'dev': dev_requires,
+        'test': test_requires,
+    }
 )
