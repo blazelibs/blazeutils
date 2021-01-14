@@ -26,7 +26,7 @@ test_requires = [
     'tox',
     'wheel',
     'xlwt',
-    'xlrd',
+    'xlrd<2.0.0',
     'xlsxwriter',
 
     # pytest dep on windows
