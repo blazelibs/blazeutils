@@ -11,6 +11,7 @@ import re
 import sys
 import warnings
 
+from blazeutils.decorators import deprecate
 from blazeutils.log import clear_handlers_by_attr
 from blazeutils.helpers import Tee, prettifysql
 import six
@@ -150,6 +151,7 @@ def emits_deprecation(*messages):
     return decorate
 
 
+@deprecate('The @raises decorator is deprecated. Use pytest.raises instead.')
 def raises(arg1, arg2=None, re_esc=True, **kwargs):  # noqa
     """
         Decorate a test encorcing it emits the given Exception and message

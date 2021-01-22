@@ -4,8 +4,9 @@ from __future__ import unicode_literals
 from importlib import reload
 import sys
 
+import pytest
 import blazeutils.rst
-from blazeutils.testing import FailLoader, raises
+from blazeutils.testing import FailLoader
 
 ds_rst = """
 Heading 1
@@ -97,9 +98,9 @@ class TestNoDocutils(object):
         sys.meta_path.remove(cls.fl)
         reload(blazeutils.rst)
 
-    @raises(ImportError, 'docutils library is required')
     def test_no_docutils(self):
-        blazeutils.rst.rst2html('foo')
+        with pytest.raises(ImportError, match='docutils library is required'):
+            blazeutils.rst.rst2html('foo')
 
 
 toc_rst = """
