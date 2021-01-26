@@ -1,6 +1,16 @@
 Changelog
 =========
 
+0.6.5 released 2021-01-26
+-------------------------
+
+- Fix xlrd dependency check and deprecate remaining xlrd related functions (9e29b7b_)
+- Deprecate raises decorator in favor of pytest.raises (19c0efe_)
+
+.. _9e29b7b: https://github.com/blazelibs/blazeutils/commit/9e29b7b
+.. _19c0efe: https://github.com/blazelibs/blazeutils/commit/19c0efe
+
+
 0.6.4 released 2020-10-23
 -------------------------
 
