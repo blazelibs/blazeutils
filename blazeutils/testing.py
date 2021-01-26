@@ -120,6 +120,7 @@ class ListIO(object):
         return self.contents[self.index]
 
 
+@deprecate('The @emits_deprecation is deprecated. Use pytest.warns instead.')
 def emits_deprecation(*messages):
     """
         Decorate a test enforcing it emits the given DeprecationWarnings with

@@ -14,7 +14,6 @@ from blazeutils.spreadsheets import (
     xlsx_to_reader,
     xlsx_to_strio,
 )
-from blazeutils.testing import emits_deprecation
 
 
 class TestWorkbookToReader(object):
@@ -26,13 +25,14 @@ class TestWorkbookToReader(object):
         ws = write_wb.add_sheet('Foo')
         ws.write(0, 0, 'bar')
 
-        wb = workbook_to_reader(write_wb)
+        with pytest.warns(DeprecationWarning,
+                          match='xlrd is no longer maintained, recommend switching to openpyxl'):
+            wb = workbook_to_reader(write_wb)
         sh = wb.sheet_by_name('Foo')
         assert sh.cell_value(rowx=0, colx=0) == 'bar'
 
 
 class TestXlsxToReader(object):
-
     def test_xlsx_to_reader(self):
         import xlsxwriter
 
@@ -40,16 +40,18 @@ class TestXlsxToReader(object):
         ws = write_wb.add_worksheet('Foo')
         ws.write(0, 0, 'bar')
 
-        wb = xlsx_to_reader(write_wb)
+        with pytest.warns(DeprecationWarning,
+                          match='xlrd is no longer maintained, recommend switching to openpyxl'):
+            wb = xlsx_to_reader(write_wb)
         sh = wb.sheet_by_name('Foo')
         assert sh.cell_value(rowx=0, colx=0) == 'bar'
 
 
 class TestWriter(object):
 
-    @emits_deprecation('XlwtHelper has been renamed to Writer')
     def test_xlwt_helper_deprecation(self):
-        XlwtHelper()
+        with pytest.warns(DeprecationWarning, match='XlwtHelper has been renamed to Writer'):
+            XlwtHelper()
 
 
 class TestWriterX:

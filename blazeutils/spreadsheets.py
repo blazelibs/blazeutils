@@ -60,6 +60,7 @@ def http_headers(filename, randomize=True):
     return headers
 
 
+@deprecate('xlrd is no longer maintained, recommend switching to openpyxl')
 def workbook_to_reader(xlwt_wb):
     """
         convert xlwt Workbook instance to an xlrd instance for reading
@@ -76,7 +77,6 @@ def xlsx_to_strio(xlsx_wb):
     """
         convert xlwt Workbook instance to a BytesIO instance
     """
-    _xlrd_required()
     fh = BytesIO()
     xlsx_wb.filename = fh
     xlsx_wb.close()
@@ -85,10 +85,12 @@ def xlsx_to_strio(xlsx_wb):
     return fh
 
 
+@deprecate('xlrd is no longer maintained, recommend switching to openpyxl')
 def xlsx_to_reader(xlsx_wb):
     """
         convert xlsxwriter Workbook instance to an xlrd instance for reading
     """
+    _xlrd_required()
     fh = xlsx_to_strio(xlsx_wb)
     return xlrd.open_workbook(file_contents=fh.read())
 

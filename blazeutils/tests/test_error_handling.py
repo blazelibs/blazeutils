@@ -1,30 +1,33 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import pytest
+
 from blazeutils.error_handling import tb_depth_in, traceback_depth, _uie_matches
-from blazeutils.testing import emits_deprecation
 
 
-@emits_deprecation('.+its a bad idea')
 def test_traceback_funcs():
     try:
         import somethingthatwontbethereihope  # noqa
         assert False, 'expected import error'
     except ImportError:
-        assert traceback_depth() == 0, 'if this test fails, you probably have something wrapping' \
-            '__import__'
+        with pytest.warns(DeprecationWarning, match='.+its a bad idea'):
+            assert traceback_depth() == 0, 'if this test fails, you probably have something ' \
+                'wrapping __import__'
 
     try:
         from ._bad_import import foobar  # noqa
         assert False, 'expected Import Error'
     except ImportError:
-        assert traceback_depth() == 0
+        with pytest.warns(DeprecationWarning, match='.+its a bad idea'):
+            assert traceback_depth() == 0
 
     try:
         from ._bad_import_deeper import foobar2  # noqa
         assert False, 'expected import error'
     except ImportError:
-        assert traceback_depth() == 1
+        with pytest.warns(DeprecationWarning, match='.+its a bad idea'):
+            assert traceback_depth() == 1
 
         assert tb_depth_in(1)
         assert tb_depth_in((0, 1))
