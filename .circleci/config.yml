@@ -3,6 +3,7 @@ jobs:
     build:
         docker:
             - image: level12/python-test-multi
+            - image: rabbitmq
         steps:
             - checkout
 
