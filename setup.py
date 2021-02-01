@@ -16,6 +16,7 @@ with open(version_fpath) as fo:
 
 
 test_requires = [
+    'celery',
     'codecov',
     'docutils',
     'mock',
