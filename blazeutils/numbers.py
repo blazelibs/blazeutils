@@ -70,10 +70,8 @@ def convert_int(value):
             raise
     except TypeError as e:
         # TypeError message is slightly different in Python 3
-        msg = 'int() argument must be a string{0} or a number'
-        msg2 = msg.format('')
-        msg3 = msg.format(', a bytes-like object')
-        if msg2 not in str(e) and msg3 not in str(e):
+        msg = 'int() argument must be a string'
+        if msg not in str(e):
             raise
     return None
 

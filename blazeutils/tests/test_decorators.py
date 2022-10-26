@@ -1,4 +1,5 @@
 import logging
+import sys
 from unittest.mock import Mock, patch, call
 import warnings
 
@@ -162,6 +163,7 @@ class TestRetry(object):
         assert len(caplog.records) == 1
         assert caplog.records[0].message == 'Retry, exception: test error'
 
+    @pytest.mark.skipif(sys.version_info < (3, 8), reason='mock interface different in 3.7')
     def test_too_many_exceptions(self):
         logger = Mock()
 
