@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from blazeutils.helpers import multi_pop, is_iterable, grouper, is_empty, pformat, \
     pprint, tolist, toset
 from blazeutils.helpers import unique, prettifysql, diff, ensure_tuple, \

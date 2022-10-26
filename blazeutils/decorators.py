@@ -1,7 +1,3 @@
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import functools
 from functools import partial
 import inspect
@@ -13,8 +9,6 @@ import sys
 import warnings
 
 import wrapt
-import six
-from six.moves import range, map
 
 log = logging.getLogger(__name__)
 
@@ -242,6 +236,7 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=Tr
             exc_info = sys.exc_info()
             error_msg = 'exc_mailer() caught an exception, email will be sent.'
             logger.exception(error_msg)
+            reraise = False
             if print_to_stderr:
                 print(error_msg + '  ' + str(e), file=sys.stderr)
             try:
@@ -249,7 +244,9 @@ def exc_emailer(send_mail_func, logger=None, catch=Exception, print_to_stderr=Tr
             except Exception:
                 logger.exception('exc_mailer(): send_mail_func() threw an exception, '
                                  'logging it & then re-raising original exception')
-                six.reraise(exc_info[0], exc_info[1], exc_info[2])
+                reraise = True
+            if reraise:
+                raise
         finally:
             # delete the traceback so we don't have garbage collection issues.
             # see warning at: http://docs.python.org/library/sys.html#sys.exc_info

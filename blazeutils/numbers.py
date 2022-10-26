@@ -1,10 +1,4 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from decimal import Decimal
-
-from six.moves import map
-from six.moves import range
 
 
 # from http://docs.python.org/library/decimal.html#recipes

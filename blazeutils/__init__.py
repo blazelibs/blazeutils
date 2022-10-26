@@ -1,6 +1,5 @@
 # flake8: noqa
 
-from __future__ import absolute_import
 from os import path as osp
 
 ## legacy imports, future imports should use the full import path
@@ -8,7 +7,6 @@ from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict
     HtmlAttributeHolder
 from blazeutils.dates import safe_strftime
 from blazeutils.decorators import decorator, curry
-from blazeutils.error_handling import tb_depth_in, traceback_depth
 from blazeutils.filesystem import randfile
 from blazeutils.functional import posargs_limiter
 from blazeutils.helpers import tolist, toset, grouper, is_empty, is_iterable, \

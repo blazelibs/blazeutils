@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from blazeutils.sentinels import NotGiven, NotGivenIter, is_notgiven
 from blazeutils.helpers import is_iterable
 

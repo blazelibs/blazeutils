@@ -1,7 +1,4 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six.moves.cPickle as pickle
+import pickle
 
 from blazeutils.containers import LazyDict, HTMLAttributes
 

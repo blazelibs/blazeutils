@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import datetime as dt
 
 from blazeutils.dates import safe_strftime, ensure_datetime, ensure_date, trim_mils

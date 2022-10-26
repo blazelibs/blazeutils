@@ -1,9 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import six
-
-
 class LazyDict(dict):
     def __init__(self, *args, **kwargs):
         self._ld_initialized = kwargs.pop('_ld_initialize', True)
@@ -35,7 +29,7 @@ class LazyDict(dict):
         del self[name]
 
 
-class _Attribute(six.text_type):
+class _Attribute(str):
     def __add__(self, other):
         return _Attribute('{0} {1}'.format(self, other).lstrip(' '))
 

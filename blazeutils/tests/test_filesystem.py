@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from os import path
 from tempfile import gettempdir
 from blazeutils.filesystem import randfile

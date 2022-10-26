@@ -1,6 +1,3 @@
-from __future__ import unicode_literals
-
-
 class NotGivenBase(object):
     """ an empty sentinel object that acts like None """
 

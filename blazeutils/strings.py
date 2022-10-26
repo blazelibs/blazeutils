@@ -1,13 +1,7 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import hashlib
 import random
 import re
 import time
-
-import six
-from six.moves import range
 
 
 class StringIndenter(object):
@@ -133,7 +127,7 @@ def randnumerics(n=12):
 
 
 def randhash():
-    random_str = six.text_type(random.random()) + six.text_type(time.perf_counter())
+    random_str = str(random.random()) + str(time.perf_counter())
     return hashlib.md5(random_str.encode('utf-8')).hexdigest()
 
 

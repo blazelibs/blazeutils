@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from blazeutils.numbers import moneyfmt, decimalfmt, ensure_int, convert_int
 
 

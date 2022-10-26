@@ -1,11 +1,7 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
+import pickle
 import random
 
 import pytest
-from six.moves import range
-import six.moves.cPickle as pickle
 
 from blazeutils.datastructures import DumbObject, OrderedProperties, OrderedDict, \
     LazyOrderedDict, LazyDict, UniqueList

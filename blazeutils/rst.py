@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 try:
     import docutils
     from docutils.core import publish_programmatically, Publisher
@@ -82,7 +79,7 @@ def docinfo2dict(doctree):
         pub = rst2pub(rst_string)
         print docinfo2dict(pub.document)
     """
-    nodes = doctree.traverse(docutils.nodes.docinfo)
+    nodes = list(doctree.findall(docutils.nodes.docinfo))
     md = {}
     if not nodes:
         return md
@@ -138,7 +135,7 @@ def create_toc(doctree, depth=9223372036854775807, writer_name='html',
     # want to be able to give just the sub-sections
     startnode = None
     if exclude_first_section:
-        nodes = doctree.traverse(docutils.nodes.section)
+        nodes = list(doctree.findall(docutils.nodes.section))
         if nodes:
             startnode = nodes[0]
 
@@ -196,7 +193,7 @@ def prefix_refids(document, href_prefix):
     # page.  In that case, an href_prefix can be sent in.  The only downfall
     # to doing this way is that the writer automatically sets an "external"
     # class on a reference with 'refuri' instead of 'refid'.
-    nodes = document.traverse(docutils.nodes.reference)
+    nodes = document.findall(docutils.nodes.reference)
     for node in nodes:
         node['refuri'] = '{0}#{1}'.format(href_prefix, node['refid'])
         del node['refid']

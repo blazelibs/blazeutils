@@ -3,8 +3,6 @@ import sys
 import site
 from os import path
 
-import six
-
 
 def prependsitedir(projdir, *args):
     """
@@ -81,7 +79,7 @@ def find_path_package(thepath):
     pname = find_path_package_name(thepath)
     if not pname:
         return None
-    fromlist = b'' if six.PY2 else ''
+    fromlist = ''
     return __import__(pname, globals(), locals(), [fromlist])
 
 

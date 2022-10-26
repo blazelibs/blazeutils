@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 from blazeutils.functional import posargs_limiter
 import blazeutils.functional as func
 

@@ -1,11 +1,8 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
+import logging
+from unittest.mock import Mock, patch, call
 import warnings
 
-import logging
-
 import pytest
-from mock import Mock, patch, call
 
 from blazeutils.decorators import curry, decorator
 from blazeutils.decorators import exc_emailer, retry, hybrid_method
@@ -98,11 +95,11 @@ class TestExcEmailer(object):
             if str(e) != 'myfunc':
                 raise
 
-        assert(m_log.exception.call_args_list == [
+        assert m_log.exception.call_args_list == [
             call('exc_mailer() caught an exception, email will be sent.'),
             call('exc_mailer(): send_mail_func() threw an exception, logging it & '
                  'then re-raising original exception'),
-        ])
+        ]
 
     def test_catch_arg_usage(self):
         send_mail = Mock()

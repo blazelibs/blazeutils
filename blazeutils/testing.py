@@ -1,10 +1,5 @@
-from __future__ import absolute_import
-from __future__ import print_function
-from __future__ import unicode_literals
-
 import datetime as dt
 import difflib
-import inspect
 from io import StringIO
 import logging
 import re
@@ -14,8 +9,6 @@ import warnings
 from blazeutils.decorators import deprecate
 from blazeutils.log import clear_handlers_by_attr
 from blazeutils.helpers import Tee, prettifysql
-import six
-from six.moves import zip as izip
 import wrapt
 
 
@@ -140,7 +133,7 @@ def emits_deprecation(*messages):
         with warnings.catch_warnings(record=True) as wcm:
             retval = fn(*args, **kw)
             count = 0
-            for w, m in izip(wcm, messages):
+            for w, m in zip(wcm, messages):
                 count += 1
                 assert m is not None, 'No message to match warning: %s' % w.message
                 assert w is not None, 'No warning to match message #%s: %s' % (count, m)
@@ -149,85 +142,6 @@ def emits_deprecation(*messages):
                 assert re.search(m, str(w.message)), \
                     'Message regex "%s" did not match "%s"' % (m, w.message)
             return retval
-    return decorate
-
-
-@deprecate('The @raises decorator is deprecated. Use pytest.raises instead.')
-def raises(arg1, arg2=None, re_esc=True, **kwargs):  # noqa
-    """
-        Decorate a test encorcing it emits the given Exception and message
-        regex.
-
-        Arguments to this decorator can be one or both of:
-
-            A) Exception type or callable to validate the exception
-            B) If A is an Exception type, then a message or regex to match against the string
-            representation of the exception
-
-        So, all the following are valid:
-
-            @raises(AttributeError)
-            @raises("object has no attribute 'foo'")
-            @raises(AttributeError, "object has no attribute 'foo')
-            @raises("^.+object has no attribute 'foo'", AttributeError)
-
-            # with regex support
-            @raises("^.+object has no attribute 'foo'", re_esc=False)
-
-            # using custom exception validator
-            @raises(my_custom_validator)
-
-            my_custom_validator() should accept a single argument, the exception caught by @raises,
-            and return True if the exception was expected and False otherwise
-
-        @raises also supports examing arbitrary attributes on the exception for a given message
-        by using keyword arguments:
-
-            @raises(SomeException, foo='bar')
-
-            This will ensure that the exception is of the SomeException type also that the exception
-            has an attribute "foo" with a value of "bar."  No regex support currently for these
-            messages.
-    """
-    exc_validator = None
-    # if arg1 is callable, and not a class or, if it is a class, not a BaseException, assume
-    # arg1 should be a validator of the exception
-    if callable(arg1) and (not inspect.isclass(arg1) or not issubclass(arg1, BaseException)):
-        exc_validator = arg1
-        msgregex = None
-        etype = None
-    elif isinstance(arg1, six.string_types):
-        msgregex = arg1
-        etype = arg2
-    elif isinstance(arg2, six.string_types):
-        etype = arg1
-        msgregex = arg2
-    else:
-        etype = arg1
-        msgregex = None
-
-    if re_esc and msgregex:
-        msgregex = re.escape(msgregex)
-
-    @wrapt.decorator
-    def decorate(fn, instance, args, kw):
-        try:
-            fn(*args, **kw)
-            assert False, '@raises: no exception raised in %s()' % fn.__name__
-        except Exception as e:
-            if exc_validator is not None and not exc_validator(e):
-                raise
-            if etype is not None and not isinstance(e, etype):
-                raise
-            if msgregex is not None and not re.search(msgregex, str(e)):
-                raise
-            for attrname, msg in six.iteritems(kwargs):
-                if not hasattr(e, attrname):
-                    print('@raises: exception missing "{0}" attribute'.format(attrname))
-                    raise
-                if getattr(e, attrname) != msg:
-                    raise
-
     return decorate
 
 

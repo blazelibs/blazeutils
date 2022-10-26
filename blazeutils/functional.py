@@ -1,11 +1,6 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import functools
 import itertools
 import inspect
-
-import six
 
 from blazeutils import curry
 
@@ -77,7 +72,7 @@ def first_where(pred, iterable, default=None):
 
     :param default: is the default value to use if the predicate matches none of the elements.
     """
-    return next(six.moves.filter(pred, iterable), default)
+    return next(filter(pred, iterable), default)
 
 
 def identity(x):
@@ -119,7 +114,7 @@ def unzip(iterable):
 
         left, right = unzip(two_columned_list) or ([], [])
     """
-    return list(map(list, list(six.moves.zip(*iterable))))
+    return list(map(list, list(zip(*iterable))))
 
 
 def flatten(iterable):

@@ -1,10 +1,6 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import csv
 import difflib
 from pprint import PrettyPrinter
-import six
 import time
 
 from blazeutils.datastructures import OrderedDict
@@ -63,7 +59,7 @@ def pformat(stuff, indent=4):
 
 
 def is_iterable(possible_iterable):
-    if isinstance(possible_iterable, six.string_types):
+    if isinstance(possible_iterable, str):
         return False
     try:
         iter(possible_iterable)

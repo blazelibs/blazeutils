@@ -1,6 +1,3 @@
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 from blazeutils.strings import StringIndenter, simplify_string, case_cw2us, case_mc2us, \
     case_us2mc, case_us2cw, reindent, randchars, randnumerics, randhash
 
