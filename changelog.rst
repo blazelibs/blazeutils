@@ -1,6 +1,17 @@
 Changelog
 =========
 
+0.7.0 released 2022-10-27
+-------------------------
+
+- update package setup and CI (e52cd73_)
+- dropped python 2 support and six dependency
+- removed deprecated error_handling methods (tb_depth_in, traceback_depth)
+- removed deprecated testing.raises decorator
+
+.. _e52cd73: https://github.com/blazelibs/blazeutils/commit/e52cd73
+
+
 0.6.5 released 2021-01-26
 -------------------------
 
