@@ -1,0 +1,111 @@
+[build-system]
+requires = [
+    'hatchling',
+]
+build-backend = 'hatchling.build'
+
+
+[project]
+name = 'BlazeUtils'
+description = 'A collection of Python utility functions and classes.'
+authors = [
+    {name = 'Randy Syring', email = 'randy.syring@level12.io'},
+]
+requires-python = '>=3.12'
+dynamic = ['version']
+readme = 'readme.md'
+license = 'BSD-3-Clause'
+license-files = ['license.txt']
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: BSD License',
+    'Operating System :: OS Independent',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
+]
+dependencies = [
+    'wrapt',
+]
+
+
+[project.urls]
+Homepage = 'https://github.com/blazelibs/blazeutils/'
+Repository = 'https://github.com/blazelibs/blazeutils/'
+
+
+[project.optional-dependencies]
+test = [
+    'codecov',
+    'colorama',
+    'docutils',
+    'nox',
+    'openpyxl',
+    'pytest',
+    'pytest-cov',
+    'sqlalchemy',
+    'wheel',
+    'xlrd<2.0.0',
+    'xlsxwriter',
+    'xlwt',
+]
+dev = [
+    'codecov',
+    'colorama',
+    'docutils',
+    'nox',
+    'openpyxl',
+    'pytest',
+    'pytest-cov',
+    'restview',
+    'ruff',
+    'sqlalchemy',
+    'wheel',
+    'xlrd<2.0.0',
+    'xlsxwriter',
+    'xlwt',
+]
+
+
+[dependency-groups]
+dev = [
+    {include-group = "pytest"},
+    {include-group = "prek"},
+    {include-group = "audit"},
+    {include-group = "build"},
+    {include-group = "nox"},
+    'click',
+    'restview',
+    'ruff==0.16.2',
+]
+# Used by nox
+pytest = [
+    'colorama',
+    'docutils',
+    'openpyxl',
+    'pytest',
+    'pytest-cov',
+    'sqlalchemy',
+    'xlrd<2.0.0',
+    'xlsxwriter',
+    'xlwt',
+]
+# Used by nox
+prek = [
+    'prek',
+]
+# Used by nox
+audit = [
+    'pip-audit',
+]
+# Used by nox
+build = [
+    'build',
+    'twine',
+]
+# Used by CI
+nox = [
+    'nox',
+]
