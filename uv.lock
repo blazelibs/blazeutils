@@ -48,7 +48,6 @@ dev = [
     { name = "ruff" },
     { name = "sqlalchemy" },
     { name = "wheel" },
-    { name = "xlrd" },
     { name = "xlsxwriter" },
     { name = "xlwt" },
 ]
@@ -62,7 +61,6 @@ test = [
     { name = "pytest-cov" },
     { name = "sqlalchemy" },
     { name = "wheel" },
-    { name = "xlrd" },
     { name = "xlsxwriter" },
     { name = "xlwt" },
 ]
@@ -90,7 +88,6 @@ dev = [
     { name = "ruff" },
     { name = "sqlalchemy" },
     { name = "twine" },
-    { name = "xlrd" },
     { name = "xlsxwriter" },
     { name = "xlwt" },
 ]
@@ -107,7 +104,6 @@ pytest = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "sqlalchemy" },
-    { name = "xlrd" },
     { name = "xlsxwriter" },
     { name = "xlwt" },
 ]
@@ -135,8 +131,6 @@ requires-dist = [
     { name = "wheel", marker = "extra == 'dev'" },
     { name = "wheel", marker = "extra == 'test'" },
     { name = "wrapt" },
-    { name = "xlrd", marker = "extra == 'dev'", specifier = "<2.0.0" },
-    { name = "xlrd", marker = "extra == 'test'", specifier = "<2.0.0" },
     { name = "xlsxwriter", marker = "extra == 'dev'" },
     { name = "xlsxwriter", marker = "extra == 'test'" },
     { name = "xlwt", marker = "extra == 'dev'" },
@@ -165,7 +159,6 @@ dev = [
     { name = "ruff", specifier = "==0.16.2" },
     { name = "sqlalchemy" },
     { name = "twine" },
-    { name = "xlrd", specifier = "<2.0.0" },
     { name = "xlsxwriter" },
     { name = "xlwt" },
 ]
@@ -178,7 +171,6 @@ pytest = [
     { name = "pytest" },
     { name = "pytest-cov" },
     { name = "sqlalchemy" },
-    { name = "xlrd", specifier = "<2.0.0" },
     { name = "xlsxwriter" },
     { name = "xlwt" },
 ]
@@ -1565,15 +1557,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/0d/d9/aef3035a3e3d918eb51e7db454af9e06919f0c5208fa0a9315548fef7734/wrapt-2.5.2-cp315-cp315t-win_amd64.whl", hash = "sha256:7f89423965b23aa62a90bf21c20353056a829ca9a60c01fde9aec9876c99392e", size = 110099, upload-time = "2026-10-29T23:06:19.293Z" },
     { url = "https://files.pythonhosted.org/packages/5f/ea/56eddba6249fae5361b53eb62e2e25ad86cabec4632d943d356aba8dea1b/wrapt-2.5.2-cp315-cp315t-win_arm64.whl", hash = "sha256:fa642d3781c061579cb138773add4a55b16f99de9ebc41603e89a756cf9e62c6", size = 106397, upload-time = "2026-10-29T23:06:20.826Z" },
     { url = "https://files.pythonhosted.org/packages/77/8b/1ea57b936b70f98e8e7620a352578096d778dbee95b262f73c066d210ffb/wrapt-2.5.2-py3-none-any.whl", hash = "sha256:61eb54e9540ea522c2c4752a57549a83d3c67e6704ed708403d28e067aaf90f0", size = 82025, upload-time = "2026-10-29T23:06:38.56Z" },
-]
-
-[[package]]
-name = "xlrd"
-version = "1.2.0"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/aa/05/ec9d4fcbbb74bbf4da9f622b3b61aec541e4eccf31d3c60c5422ec027ce2/xlrd-1.2.0.tar.gz", hash = "sha256:546eb36cee8db40c3eaa46c351e67ffee6eeb5fa2650b71bc4c758a29a1b29b2", size = 554079, upload-time = "2018-12-15T17:47:48.133Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/b0/16/63576a1a001752e34bf8ea62e367997530dc553b689356b9879339cf45a4/xlrd-1.2.0-py2.py3-none-any.whl", hash = "sha256:e551fb498759fa3a5384a94ccd4c3c02eb7c00ea424426e212ac0c57be9dfbde", size = 103251, upload-time = "2018-12-15T17:47:45.792Z" },
 ]
 
 [[package]]

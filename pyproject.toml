@@ -47,7 +47,6 @@ test = [
     'pytest-cov',
     'sqlalchemy',
     'wheel',
-    'xlrd<2.0.0',
     'xlsxwriter',
     'xlwt',
 ]
@@ -63,7 +62,6 @@ dev = [
     'ruff',
     'sqlalchemy',
     'wheel',
-    'xlrd<2.0.0',
     'xlsxwriter',
     'xlwt',
 ]
@@ -88,7 +86,6 @@ pytest = [
     'pytest',
     'pytest-cov',
     'sqlalchemy',
-    'xlrd<2.0.0',
     'xlsxwriter',
     'xlwt',
 ]

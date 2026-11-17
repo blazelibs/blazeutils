@@ -11,11 +11,6 @@ except ImportError:
     openpyxl = None
 
 try:
-    import xlrd
-except ImportError:
-    xlrd = None
-
-try:
     import xlwt
 except ImportError:
     xlwt = None
@@ -27,11 +22,6 @@ except ImportError:
 
 
 from .decorators import deprecate
-
-
-def _xlrd_required():
-    if xlrd is None:
-        raise ImportError('xlrd library is required to use this function or class')
 
 
 def _xlwt_required():
@@ -59,19 +49,6 @@ def http_headers(filename, randomize=True):
     return headers
 
 
-@deprecate('xlrd is no longer maintained, recommend switching to openpyxl')
-def workbook_to_reader(xlwt_wb):
-    """
-    convert xlwt Workbook instance to an xlrd instance for reading
-    """
-    _xlrd_required()
-    fh = BytesIO()
-    xlwt_wb.save(fh)
-    # prep for reading
-    fh.seek(0)
-    return xlrd.open_workbook(file_contents=fh.read())
-
-
 def xlsx_to_strio(xlsx_wb):
     """
     convert xlwt Workbook instance to a BytesIO instance
@@ -82,16 +59,6 @@ def xlsx_to_strio(xlsx_wb):
     # prep for reading
     fh.seek(0)
     return fh
-
-
-@deprecate('xlrd is no longer maintained, recommend switching to openpyxl')
-def xlsx_to_reader(xlsx_wb):
-    """
-    convert xlsxwriter Workbook instance to an xlrd instance for reading
-    """
-    _xlrd_required()
-    fh = xlsx_to_strio(xlsx_wb)
-    return xlrd.open_workbook(file_contents=fh.read())
 
 
 class Writer:
@@ -335,40 +302,6 @@ class XlwtHelper(Writer):
         Writer.__init__(self, ws)
 
 
-class _XlrdReader:
-    @deprecate('xlrd is no longer maintained, recommend switching to openpyxl')
-    def __init__(self, xlrd_wb, sheetnum=0):
-        self.book = xlrd_wb
-        self.sheetnum = sheetnum
-        self.rownum = 0
-        self.colnum = 0
-        self.sheet = self.book.sheet_by_index(self.sheetnum)
-
-    def cell_value(self, is_date=False):
-        try:
-            return self.sheet.cell_value(self.rownum, self.colnum)
-        finally:
-            self.colnum += 1
-
-    def cell_date(self):
-        value = self.cell_value()
-        date_tuple = xlrd.xldate_as_tuple(value, self.book.datemode)
-        return dt.datetime(*date_tuple).date()
-
-    def cell_datetime(self):
-        value = self.cell_value()
-        date_tuple = xlrd.xldate_as_tuple(value, self.book.datemode)
-        return dt.datetime(*date_tuple)
-
-    def cell_decimal(self):
-        value = self.cell_value()
-        return Decimal(value)
-
-    def next_row(self):
-        self.rownum += 1
-        self.colnum = 0
-
-
 class _OpenpyxlReader:
     def __init__(self, openpyxl_wb, sheetnum=0):
         self.book = openpyxl_wb
@@ -421,30 +354,8 @@ class Reader:
 
             if isinstance(workbook, Workbook):
                 self._reader = _OpenpyxlReader(workbook, sheetnum=sheetnum)
-        if xlrd:
-            if xlsxwriter:
-                from xlsxwriter import Workbook
-
-                if isinstance(workbook, Workbook):
-                    self._reader = _XlrdReader(workbook, sheetnum=sheetnum)
-            if xlwt:
-                from xlwt.Workbook import Workbook
-
-                if isinstance(workbook, Workbook):
-                    self._reader = _XlrdReader(workbook, sheetnum=sheetnum)
-
         if not self._reader:
             raise TypeError('workbook type not supported')
-
-    @classmethod
-    def from_xlwt(cls, xlwt_wb):
-        wb = workbook_to_reader(xlwt_wb)
-        return _XlrdReader(wb)
-
-    @classmethod
-    def from_xlsx(cls, xlsx_wb):
-        wb = xlsx_to_reader(xlsx_wb)
-        return _XlrdReader(wb)
 
     def cell_value(self, is_date=False):
         return self._reader.cell_value(is_date=is_date)

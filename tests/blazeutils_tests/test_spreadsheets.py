@@ -8,44 +8,8 @@ from blazeutils.spreadsheets import (
     WriterX,
     XlwtHelper,
     http_headers,
-    workbook_to_reader,
-    xlsx_to_reader,
     xlsx_to_strio,
 )
-
-
-class TestWorkbookToReader:
-    def test_xlwt_to_reader(self):
-        import xlwt
-
-        write_wb = xlwt.Workbook()
-        ws = write_wb.add_sheet('Foo')
-        ws.write(0, 0, 'bar')
-
-        with pytest.warns(
-            DeprecationWarning,
-            match='xlrd is no longer maintained, recommend switching to openpyxl',
-        ):
-            wb = workbook_to_reader(write_wb)
-        sh = wb.sheet_by_name('Foo')
-        assert sh.cell_value(rowx=0, colx=0) == 'bar'
-
-
-class TestXlsxToReader:
-    def test_xlsx_to_reader(self):
-        import xlsxwriter
-
-        write_wb = xlsxwriter.Workbook()
-        ws = write_wb.add_worksheet('Foo')
-        ws.write(0, 0, 'bar')
-
-        with pytest.warns(
-            DeprecationWarning,
-            match='xlrd is no longer maintained, recommend switching to openpyxl',
-        ):
-            wb = xlsx_to_reader(write_wb)
-        sh = wb.sheet_by_name('Foo')
-        assert sh.cell_value(rowx=0, colx=0) == 'bar'
 
 
 class TestWriter:
@@ -230,26 +194,6 @@ class TestReader:
         with pytest.raises(TypeError):
             Reader({'bad': 'format'})
 
-    def test_from_xlwt(self):
-        import xlwt
-
-        write_wb = xlwt.Workbook()
-        ws = write_wb.add_sheet('Foo')
-        ws.write(0, 0, 'bar')
-
-        reader = Reader.from_xlwt(write_wb)
-        assert reader.cell_value() == 'bar'
-
-    def test_from_xlsx(self):
-        import xlsxwriter
-
-        write_wb = xlsxwriter.Workbook()
-        ws = write_wb.add_worksheet('Foo')
-        ws.write('A1', 'bar')
-
-        reader = Reader.from_xlsx(write_wb)
-        assert reader.cell_value() == 'bar'
-
 
 class TestReaderOpenpyxl:
     def test_cell_value(self):
@@ -317,75 +261,6 @@ class TestReaderOpenpyxl:
         sheet['A2'] = 'A2-text'
         sheet['B2'] = 'B2-text'
         reader = Reader(workbook)
-        assert reader.cell_value() == 'A1-text'
-        reader.next_row()
-        assert reader.cell_value() == 'A2-text'
-        assert reader.cell_value() == 'B2-text'
-
-
-class TestReaderXlrd:
-    def test_cell_value(self):
-        import xlsxwriter
-
-        workbook = xlsxwriter.Workbook()
-        sheet = workbook.add_worksheet('Foo')
-        sheet.write(0, 0, 'Pooh')
-        sheet.write(0, 1, 'Bar')
-        reader = Reader.from_xlsx(workbook)
-        assert reader.cell_value() == 'Pooh'
-        assert reader.cell_value() == 'Bar'
-
-    def test_cell_date(self):
-        import xlsxwriter
-
-        workbook = xlsxwriter.Workbook()
-        sheet = workbook.add_worksheet('Foo')
-        sheet.write_datetime('A1', dt.date(2020, 1, 1))
-        sheet.write_datetime('B1', dt.datetime(2019, 12, 31, 3, 5))
-        sheet.write('C1', 'Bla')
-        reader = Reader.from_xlsx(workbook)
-        assert reader.cell_date() == dt.date(2020, 1, 1)
-        assert reader.cell_date() == dt.date(2019, 12, 31)
-        with pytest.raises(TypeError) as e:
-            reader.cell_date()
-            assert str(e) == 'Bla: not a date'
-
-    def test_cell_datetime(self):
-        import xlsxwriter
-
-        workbook = xlsxwriter.Workbook()
-        sheet = workbook.add_worksheet('Foo')
-        sheet.write_datetime('A1', dt.date(2020, 1, 1))
-        sheet.write_datetime('B1', dt.datetime(2019, 12, 31, 3, 5))
-        sheet.write('C1', 'Bla')
-        reader = Reader.from_xlsx(workbook)
-        assert reader.cell_datetime() == dt.datetime(2020, 1, 1, 0, 0)
-        assert reader.cell_datetime() == dt.datetime(2019, 12, 31, 3, 5)
-        with pytest.raises(TypeError) as e:
-            reader.cell_date()
-            assert str(e) == 'Bla: not a datetime'
-
-    def test_cell_decimal(self):
-        import xlsxwriter
-
-        workbook = xlsxwriter.Workbook()
-        sheet = workbook.add_worksheet('Foo')
-        sheet.write('A1', '1234.56')
-        sheet.write('B1', 'Bla')
-        reader = Reader.from_xlsx(workbook)
-        assert reader.cell_decimal() == decimal.Decimal('1234.56')
-        with pytest.raises(decimal.InvalidOperation):
-            reader.cell_decimal()
-
-    def test_next_row(self):
-        import xlsxwriter
-
-        workbook = xlsxwriter.Workbook()
-        sheet = workbook.add_worksheet('Foo')
-        sheet.write('A1', 'A1-text')
-        sheet.write('A2', 'A2-text')
-        sheet.write('B2', 'B2-text')
-        reader = Reader.from_xlsx(workbook)
         assert reader.cell_value() == 'A1-text'
         reader.next_row()
         assert reader.cell_value() == 'A2-text'
