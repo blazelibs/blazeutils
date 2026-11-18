@@ -66,7 +66,7 @@ def pytest_run(session: nox.Session, *args, **env):
     """
     Using functions for pytest and uv enables more advanced uses cases.  Examples:
 
-    py_all = ['3.10', '3.11', '3.12', '3.13']
+    py_all = ['3.12', '3.13', '3.14']
 
     @session(py=py_all)
     @parametrize('db', ['pg', 'sqlite'])
