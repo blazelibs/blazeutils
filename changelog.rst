@@ -1,6 +1,15 @@
 Changelog
 =========
 
+0.20261119.1 released 2026-11-19
+--------------------------------
+
+- modernize packaging and development tooling with Coppy, uv, Nox, prek, and
+  GitHub Actions
+- support and test Python 3.12 through 3.15
+- remove the deprecated xlrd-based spreadsheet helpers and xlrd dependency
+
+
 0.7.0 released 2022-10-27
 -------------------------
 
